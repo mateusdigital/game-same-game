@@ -27,6 +27,7 @@ class Brick
         this.bg        = Sprite_Create(BRICKS_TEXTURES_NAMES[type]);
         this.bg.width  = width;
         this.bg.height = height;
+        // this.alpha     = 0.3;
         this.bg.anchor.set(0.5);
         this.addChild(this.bg);
     } // CTOR

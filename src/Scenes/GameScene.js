@@ -3,7 +3,10 @@
 // Constants                                                                  //
 //----------------------------------------------------------------------------//
 const GROUND_HEIGHT   = 130;
-const GAME_HUD_HEIGHT = 0;
+const GAME_HUD_HEIGHT = 130;
+const CONTAINER_DESIGN_GAP_X  = 20;
+const CONTAINER_DESIGN_HEIGHT = GAME_DESIGN_HEIGHT  - (GROUND_HEIGHT + GAME_HUD_HEIGHT);
+const CONTAINER_DESIGN_WIDTH  = (GAME_DESIGN_WIDTH  - CONTAINER_DESIGN_GAP_X);
 
 //----------------------------------------------------------------------------//
 // Types                                                                      //
@@ -12,8 +15,16 @@ const GAME_HUD_HEIGHT = 0;
 class FixedSizeContainer
     extends PIXI.Container
 {
-    _calculateBounds()
-    {
+    constructor(width, height) {
+        super();
+
+        this.width = width;
+        this.height = height;
+
+
+        this.bg = Sprite_White(width, height);
+        this.bg.alpha = 0;
+        this.addChild(this.bg);
     }
 }
 
@@ -28,28 +39,25 @@ class GameScene
 
         //
         // Housekeeping.
-        this.bricks_cols        = 10;
-        this.bricks_rows        = 14;
+        this.bricks_cols        = 3;
+        this.bricks_rows        = 20;
         this.brick_types_count  = 3;
         this.brick_types        = [];
-
+        this.bricks_grid        = null;
+        this.brick_container    = null;
         this.is_input_enabled   = false;
         this.current_score      = 0;
-
-        //
-        // Brick and container properties.
-        this.container_max_height = GAME_DESIGN_HEIGHT - (GROUND_HEIGHT + GAME_HUD_HEIGHT);
-        this.container_start_y    = GAME_DESIGN_HEIGHT - this.container_max_height;
-        this.container_gap_x      = 20;
-        this.brick_width        = ((GAME_DESIGN_WIDTH - this.container_gap_x) / this.bricks_cols);
-        this.brick_height       = this.brick_width;
-
 
         //
         // Sky
         this.sky = new SkyBackground();
         this.addChild(this.sky);
 
+        //
+        // Foreground Layer
+        const foreground = Sprite_Create(MENU_BACKGROUND_TEXTURE_NAME);
+        foreground.y = GAME_DESIGN_HEIGHT - foreground.height;
+        this.addChild(foreground);
 
         //
         // Score HUD.
@@ -57,11 +65,6 @@ class GameScene
         this.score.x = (GAME_DESIGN_WIDTH * 0.5) - (this.score.width * 0.5);
         this.score.y = 100;
         this.addChild(this.score);
-
-        //
-        // Bricks.
-        this.bricks_grid     = null;
-        this.brick_container = null;
 
         //
         // Animation.
@@ -73,6 +76,28 @@ class GameScene
             .onComplete(()=>{ this._OnBricksFallEnded(); });
         this.slide_tween_group = Tween_CreateGroup()
             .onComplete(()=>{ this._OnBricksSlideEnded(); });
+
+
+        //
+        // Brick and container properties.
+
+        this.brick_width = Math_Min(
+            (CONTAINER_DESIGN_WIDTH  / this.bricks_cols),
+            (CONTAINER_DESIGN_HEIGHT / this.bricks_rows)
+        );
+        this.brick_height = this.brick_width;
+
+        const actual_container_width  = (this.brick_width  * this.bricks_cols);
+        const actual_container_height = (this.brick_height * this.bricks_rows);
+
+        this.brick_container  = new FixedSizeContainer(
+            actual_container_width,
+            actual_container_height
+        );
+
+        this.brick_container.x = (GAME_DESIGN_WIDTH * 0.5) - (actual_container_width * 0.5)
+        this.brick_container.y = GAME_DESIGN_HEIGHT - actual_container_height - GROUND_HEIGHT;
+        this.addChild(this.brick_container);
 
         this._InitializeBricks();
     } // CTOR
@@ -107,20 +132,13 @@ class GameScene
             this.bricks_cols
         );
 
-        this.brick_container   = new FixedSizeContainer();
-        this.brick_container.width = 100;
-        this.brick_container.height = 100;
-        this.brick_container.x = (this.brick_width  * 0.5) + (this.container_gap_x * 0.5);
-        this.brick_container.y = (this.brick_height * 0.5) + (this.container_start_y);
-        this.addChild(this.brick_container);
-
         for(let i = 0; i < this.bricks_rows; ++i) {
             for(let j = 0; j < this.bricks_cols; ++j) {
                 const type  = Random_Element(this.brick_types);
                 const brick = new Brick(this.brick_width, this.brick_height, type);
 
-                const pos_x = (this.brick_width  * j);
-                const pos_y = (this.brick_height * i);
+                const pos_x = (this.brick_width  * j) + this.brick_width  * 0.5;
+                const pos_y = (this.brick_height * i) + this.brick_height * 0.5;
                 this._CreateStartFallBrickAnimation(brick, pos_x, pos_y);
 
                 this.bricks_grid[i][j] = brick;
@@ -140,7 +158,7 @@ class GameScene
     _CreateStartFallBrickAnimation(brick, target_x, target_y)
     {
         const START_FALL_DURATION_MS = 1000;
-        const scale     = (this.container_max_height - target_y) / this.container_max_height;
+        const scale     = (this.brick_container.height - target_y) / this.brick_container.height;
         const duration  = START_FALL_DURATION_MS * (scale);
         const delay_min = duration * 0.7;
         const delay_max = duration * 1.2;
@@ -154,12 +172,10 @@ class GameScene
             .onUpdate((value)=>{
                 brick.x = value.x;
                 brick.y = value.y;
-
             })
             .onComplete(()=>{
                 brick.x = target_x;
                 brick.y = target_y;
-
             })
             .delay(Random_Int(delay_min, delay_max))
             .easing(TWEEN.Easing.Cubic.In)
@@ -313,7 +329,7 @@ class GameScene
                     this.bricks_grid[i][j] = above_brick;
                     this.bricks_grid[k][j] = null;
 
-                    const target_y = (this.brick_height * i);
+                    const target_y = (this.brick_height * i) + this.brick_height * 0.5;
                     this._CreateBrickFallAnimation(above_brick, target_y);
 
                     any_falling_bricks = true;
@@ -351,7 +367,7 @@ class GameScene
                     this.bricks_grid[i][j] = swap_brick;
                     this.bricks_grid[i][k] = null;
                     if(swap_brick) {
-                        const target_position = (j * this.brick_width);
+                        const target_position = (j * this.brick_width) + (this.brick_width * 0.5);
                         this._CreateBrickSlideAnimation(swap_brick, target_position);
                     }
                 }
