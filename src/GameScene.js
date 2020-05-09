@@ -1,62 +1,15 @@
-const NUMBERS_TEXTURES_NAMES = [
-    "res/textures/numbers/0.png",
-    "res/textures/numbers/1.png",
-    "res/textures/numbers/2.png",
-    "res/textures/numbers/3.png",
-    "res/textures/numbers/4.png",
-    "res/textures/numbers/5.png",
-    "res/textures/numbers/6.png",
-    "res/textures/numbers/7.png",
-    "res/textures/numbers/8.png",
-    "res/textures/numbers/9.png",
-];
-
-const BUTTONS_TEXTURES_NAMES = [
-    "res/textures/buttons/green.png",
-    "res/textures/buttons/green_pressed.png",
-
-    "res/textures/buttons/red.png",
-    "res/textures/buttons/red_pressed.png",
-
-    "res/textures/buttons/yellow.png",
-    "res/textures/buttons/yellow_pressed.png",
-
-    "res/textures/buttons/blue.png",
-    "res/textures/buttons/blue_pressed.png",
-]
 
 
-class UINumber
+const GROUND_HEIGHT   = 130;
+const GAME_HUD_HEIGHT = 0;
+
+class FixedSizeContainer
     extends PIXI.Container
 {
-    constructor(value)
+    _calculateBounds()
     {
-        super();
-
-        this.sprites = [];
-
-        const value_str = value.toString();
-        for(let i = 0; i < value_str.length; ++i) {
-            const digit = value_str[i];
-            const sprite = Sprite_Create(NUMBERS_TEXTURES_NAMES[parseInt(digit)]);
-            sprite.anchor.set(0.5);
-            sprite.x = this.width;
-            this.sprites.push(sprite);
-            this.addChild(sprite);
-        }
-    }
-
-    SetNumberAnimated(value)
-    {
-        const value_str = value.toString();
-        for(let i = 0; i < value_str.length; ++i) {
-
-            const digit = value_str[i];
-            // this.sprites[i].texture = Texture_Get(NUMBERS_TEXTURES_NAMES[parseInt(digit)]);
-        }
     }
 }
-
 
 class GameScene
     extends Base_Scene
@@ -67,26 +20,29 @@ class GameScene
         super();
 
         //
-        // Housekeeping
-        this.container_gap_x    = 26;
-        this.container_start_y  = TILE_HEIGHT * 2 - 49;
+        // Housekeeping.
         this.bricks_cols        = 10;
         this.bricks_rows        = 14;
-        this.brick_width        = ((GAME_DESIGN_WIDTH - this.container_gap_x)/ this.bricks_cols);
-        this.brick_height       = this.brick_width;
         this.brick_types_count  = 3;
         this.brick_types        = [];
+
         this.is_input_enabled   = true;
         this.current_score      = 0;
 
         //
-        let t = Sprite_Create("res/textures/untitled.png");
-        this.addChild(t);
+        // Brick and container properties.
+        this.container_max_height = GAME_DESIGN_HEIGHT - (GROUND_HEIGHT + GAME_HUD_HEIGHT);
+        this.container_start_y    = GAME_DESIGN_HEIGHT - this.container_max_height;
+        this.container_gap_x      = 20;
+        this.brick_width        = ((GAME_DESIGN_WIDTH - this.container_gap_x) / this.bricks_cols);
+        this.brick_height       = this.brick_width;
+
 
         //
-        this.score = new UINumber("0");
-        this.score.x = (TILE_WIDTH  * 6) - (this.score.width  * 0.5);
-        this.score.y = (TILE_HEIGHT * 1) - (this.score.height * 0.5) - 10;
+        // Score HUD.
+        this.score   = new UINumber("0");
+        this.score.x = (GAME_DESIGN_WIDTH * 0.5) - (this.score.width * 0.5);
+        this.score.y = 100;
         this.addChild(this.score);
 
         //
@@ -95,7 +51,9 @@ class GameScene
         this.brick_container = null;
 
         //
-        // Animation
+        // Animation.
+        this.start_fall_tween_group = Tween_CreateBasic()
+            .onComplete(()=> { this._OnStartFallEnded(); });
         this.destroy_tween_group = Tween_CreateGroup()
             .onComplete(()=>{ this._OnBricksDestroyEnded(); });
         this.fall_tween_group = Tween_CreateGroup()
@@ -103,9 +61,7 @@ class GameScene
         this.slide_tween_group = Tween_CreateGroup()
             .onComplete(()=>{ this._OnBricksSlideEnded(); });
 
-        // this._InitializeBricks();
-
-
+        this._InitializeBricks();
     } // CTOR
 
     //--------------------------------------------------------------------------
@@ -113,10 +69,10 @@ class GameScene
     {
         super.Update(dt);
 
-        this.destroy_tween_group.update(dt);
-        this.fall_tween_group   .update(dt);
-        this.slide_tween_group  .update(dt);
-
+        this.start_fall_tween_group.update(dt);
+        this.destroy_tween_group   .update(dt);
+        this.fall_tween_group      .update(dt);
+        this.slide_tween_group     .update(dt);
     } // Update
 
     //--------------------------------------------------------------------------
@@ -137,7 +93,9 @@ class GameScene
             this.bricks_cols
         );
 
-        this.brick_container   = new PIXI.Container();
+        this.brick_container   = new FixedSizeContainer();
+        this.brick_container.width = 100;
+        this.brick_container.height = 100;
         this.brick_container.x = (this.brick_width  * 0.5) + (this.container_gap_x * 0.5);
         this.brick_container.y = (this.brick_height * 0.5) + (this.container_start_y);
         this.addChild(this.brick_container);
@@ -147,8 +105,9 @@ class GameScene
                 const type  = Random_Element(this.brick_types);
                 const brick = new Brick(this.brick_width, this.brick_height, type);
 
-                brick.x = (this.brick_width  * j);
-                brick.y = (this.brick_height * i);
+                const pos_x = (this.brick_width  * j);
+                const pos_y = (this.brick_height * i);
+                this._CreateStartFallBrickAnimation(brick, pos_x, pos_y);
 
                 this.bricks_grid[i][j] = brick;
                 this.brick_container.addChild(brick);
@@ -160,7 +119,42 @@ class GameScene
                 });
             }
         }
+        this.brick_container.calculateBounds();
     } // _InitializeBricks
+
+    _CreateStartFallBrickAnimation(brick, target_x, target_y)
+    {
+        const START_FALL_DURATION_MS = 1000;
+        const scale     = (this.container_max_height - target_y) / this.container_max_height;
+        const duration  = START_FALL_DURATION_MS * (scale);
+        const delay_min = duration * 0.7;
+        const delay_max = duration * 1.2;
+        const start_y   = -200; // @XXX(stdmatt):
+
+        brick.y = start_y
+        brick.x = target_y;
+        const tween = Tween_CreateBasic(duration)
+            .from({x: target_x, y: start_y})
+            .to  ({x: target_x, y: target_y})
+            .onUpdate((value)=>{
+                brick.x = value.x;
+                brick.y = value.y;
+
+            })
+            .onComplete(()=>{
+                brick.x = target_x;
+                brick.y = target_y;
+
+            })
+            .delay(Random_Int(delay_min, delay_max))
+            .easing(TWEEN.Easing.Cubic.In)
+            .start();
+    }
+
+    _OnStartFallEnded()
+    {
+
+    }
 
     _print()
     {
