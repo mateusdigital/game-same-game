@@ -36,4 +36,13 @@ const BUTTONS_TEXTURES_NAMES = [
 
     "res/textures/buttons/blue.png",
     "res/textures/buttons/blue_pressed.png",
-]
+];
+
+
+const BRICKS_TEXTURES_NAMES = [
+    "res/textures/bricks2/1.png",
+    "res/textures/bricks2/2.png",
+    "res/textures/bricks2/3.png",
+    "res/textures/bricks2/4.png",
+    "res/textures/bricks2/5.png",
+];
