@@ -11,6 +11,21 @@ const NUMBERS_TEXTURES_NAMES = [
     "res/textures/numbers/9.png",
 ];
 
+const BUTTONS_TEXTURES_NAMES = [
+    "res/textures/buttons/green.png",
+    "res/textures/buttons/green_pressed.png",
+
+    "res/textures/buttons/red.png",
+    "res/textures/buttons/red_pressed.png",
+
+    "res/textures/buttons/yellow.png",
+    "res/textures/buttons/yellow_pressed.png",
+
+    "res/textures/buttons/blue.png",
+    "res/textures/buttons/blue_pressed.png",
+]
+
+
 class UINumber
     extends PIXI.Container
 {
@@ -89,6 +104,8 @@ class GameScene
             .onComplete(()=>{ this._OnBricksSlideEnded(); });
 
         // this._InitializeBricks();
+
+
     } // CTOR
 
     //--------------------------------------------------------------------------
