@@ -80,7 +80,28 @@ class GameScene
 
         //
         // Brick and container properties.
+        this._InitializeContainer();
+        this._InitializeBricks   ();
+    } // CTOR
 
+    //--------------------------------------------------------------------------
+    Update(dt)
+    {
+        super.Update(dt);
+        this.sky.Update(dt);
+
+        this.start_fall_tween_group.update(dt);
+        this.destroy_tween_group   .update(dt);
+        this.fall_tween_group      .update(dt);
+        this.slide_tween_group     .update(dt);
+    } // Update
+
+    //------------------------------------------------------------------------//
+    // Initialize                                                             //
+    //------------------------------------------------------------------------//
+    //--------------------------------------------------------------------------
+    _InitializeContainer()
+    {
         this.brick_width = Math_Min(
             (CONTAINER_DESIGN_WIDTH  / this.bricks_cols),
             (CONTAINER_DESIGN_HEIGHT / this.bricks_rows)
@@ -98,21 +119,7 @@ class GameScene
         this.brick_container.x = (GAME_DESIGN_WIDTH * 0.5) - (actual_container_width * 0.5)
         this.brick_container.y = GAME_DESIGN_HEIGHT - actual_container_height - GROUND_HEIGHT;
         this.addChild(this.brick_container);
-
-        this._InitializeBricks();
-    } // CTOR
-
-    //--------------------------------------------------------------------------
-    Update(dt)
-    {
-        super.Update(dt);
-        this.sky.Update(dt);
-
-        this.start_fall_tween_group.update(dt);
-        this.destroy_tween_group   .update(dt);
-        this.fall_tween_group      .update(dt);
-        this.slide_tween_group     .update(dt);
-    } // Update
+    } // _InitializeContainer
 
     //--------------------------------------------------------------------------
     _InitializeBricks()
@@ -154,6 +161,10 @@ class GameScene
         this.brick_container.calculateBounds();
     } // _InitializeBricks
 
+
+    //------------------------------------------------------------------------//
+    // Brick Start Fall                                                       //
+    //------------------------------------------------------------------------//
     //--------------------------------------------------------------------------
     _CreateStartFallBrickAnimation(brick, target_x, target_y)
     {
@@ -189,6 +200,9 @@ class GameScene
     } // _OnStartFallEnded
 
 
+    //------------------------------------------------------------------------//
+    // Brick Destroy                                                          //
+    //------------------------------------------------------------------------//
     //--------------------------------------------------------------------------
     _OnBrickClicked(brick)
     {
@@ -233,38 +247,6 @@ class GameScene
         this._CreateScoreAddAnimation(brick, points);
     } // _OnBrickClicked
 
-    _CreateScoreAddAnimation(target_brick, points)
-    {
-        const number_ui = new UINumber(points);
-
-        const brick_pos = target_brick.getGlobalPosition();
-        const score_pos = this.score.getGlobalPosition  ();
-
-        score_pos.x += (this.score.width - number_ui.width);
-
-        const tween = Tween_CreateBasic(1000)
-            .from({x: brick_pos.x, y: brick_pos.y})
-            .to  ({x: score_pos.x, y: score_pos.y})
-            .onUpdate((value)=>{
-                number_ui.x = value.x;
-                number_ui.y = value.y;
-
-                const r = tween.getRatio();
-                const m = Math_Sin(r * MATH_PI);
-                number_ui.scale.set(1 + m);
-            })
-            .onComplete(()=>{
-                number_ui.parent.removeChild(number_ui);
-
-                this.current_score += points;
-                this.score.SetNumberAnimated(this.current_score);
-            })
-            .easing(TWEEN.Easing.Quintic.In)
-            .start();
-
-        this.addChild(number_ui);
-    }
-
     //--------------------------------------------------------------------------
     _CreateBrickDestroyAnimation(brick)
     {
@@ -279,31 +261,6 @@ class GameScene
             })
             .start();
     } // _CreateBrickDestroyAnimation
-
-    //--------------------------------------------------------------------------
-    _CreateBrickFallAnimation(brick, target_y)
-    {
-        Tween_CreateBasic(500, this.fall_tween_group)
-            .from({y: brick.y})
-            .to({y: target_y})
-            .onUpdate((value)=>{
-                brick.y = value.y;
-            })
-            .start();
-    } // _CreateBrickFallAnimation
-
-    //--------------------------------------------------------------------------
-    _CreateBrickSlideAnimation(brick, target_x)
-    {
-        Tween_CreateBasic(500, this.slide_tween_group)
-            .from({x: brick.x})
-            .to({x: target_x})
-            .onUpdate((value)=>{
-                brick.x = value.x;
-            })
-            .start();
-    } //_CreateSlideAnimation
-
 
     //--------------------------------------------------------------------------
     _OnBricksDestroyEnded()
@@ -342,6 +299,22 @@ class GameScene
             this._OnBricksFallEnded();
         }
     } // _OnBricksDestroyEnded
+
+
+    //------------------------------------------------------------------------//
+    // Brick Fall                                                             //
+    //------------------------------------------------------------------------//
+    //--------------------------------------------------------------------------
+    _CreateBrickFallAnimation(brick, target_y)
+    {
+        Tween_CreateBasic(500, this.fall_tween_group)
+            .from({y: brick.y})
+            .to({y: target_y})
+            .onUpdate((value)=>{
+                brick.y = value.y;
+            })
+            .start();
+    } // _CreateBrickFallAnimation
 
     //--------------------------------------------------------------------------
     _OnBricksFallEnded()
@@ -383,6 +356,22 @@ class GameScene
         }
     } // _OnBricksFallEnded
 
+
+    //------------------------------------------------------------------------//
+    // Brick Slide                                                            //
+    //------------------------------------------------------------------------//
+    //--------------------------------------------------------------------------
+    _CreateBrickSlideAnimation(brick, target_x)
+    {
+        Tween_CreateBasic(500, this.slide_tween_group)
+            .from({x: brick.x})
+            .to({x: target_x})
+            .onUpdate((value)=>{
+                brick.x = value.x;
+            })
+            .start();
+    } //_CreateSlideAnimation
+
     //--------------------------------------------------------------------------
     _OnBricksSlideEnded()
     {
@@ -393,7 +382,48 @@ class GameScene
     } // _OnBricksSlideEnded
 
 
+    //------------------------------------------------------------------------//
+    // Score                                                                  //
+    //------------------------------------------------------------------------//
+    //--------------------------------------------------------------------------
+    _CreateScoreAddAnimation(target_brick, points)
+    {
+        const number_ui = new UINumber(points);
 
+        const brick_pos = target_brick.getGlobalPosition();
+        const score_pos = this.score.getGlobalPosition  ();
+
+        score_pos.x += (this.score.width - number_ui.width);
+
+        const tween = Tween_CreateBasic(1000)
+            .from({x: brick_pos.x, y: brick_pos.y})
+            .to  ({x: score_pos.x, y: score_pos.y})
+            .onUpdate((value)=>{
+                number_ui.x = value.x;
+                number_ui.y = value.y;
+
+                const r = tween.getRatio();
+                const m = Math_Sin(r * MATH_PI);
+                number_ui.scale.set(1 + m);
+            })
+            .onComplete(()=>{
+                number_ui.parent.removeChild(number_ui);
+
+                this.current_score += points;
+                this.score.SetNumberAnimated(this.current_score);
+            })
+            .easing(TWEEN.Easing.Quintic.In)
+            .start();
+
+        this.addChild(number_ui);
+    } // _CreateScoreAddAnimatioa
+
+
+
+
+    //------------------------------------------------------------------------//
+    // Debug//
+    //------------------------------------------------------------------------//
     _print()
     {
         let s = "";
