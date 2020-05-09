@@ -33,7 +33,7 @@ class GameScene
         this.brick_types_count  = 3;
         this.brick_types        = [];
 
-        this.is_input_enabled   = true;
+        this.is_input_enabled   = false;
         this.current_score      = 0;
 
         //
@@ -43,6 +43,12 @@ class GameScene
         this.container_gap_x      = 20;
         this.brick_width        = ((GAME_DESIGN_WIDTH - this.container_gap_x) / this.bricks_cols);
         this.brick_height       = this.brick_width;
+
+
+        //
+        // Sky
+        this.sky = new SkyBackground();
+        this.addChild(this.sky);
 
 
         //
@@ -75,6 +81,7 @@ class GameScene
     Update(dt)
     {
         super.Update(dt);
+        this.sky.Update(dt);
 
         this.start_fall_tween_group.update(dt);
         this.destroy_tween_group   .update(dt);
@@ -129,6 +136,7 @@ class GameScene
         this.brick_container.calculateBounds();
     } // _InitializeBricks
 
+    //--------------------------------------------------------------------------
     _CreateStartFallBrickAnimation(brick, target_x, target_y)
     {
         const START_FALL_DURATION_MS = 1000;
@@ -156,29 +164,14 @@ class GameScene
             .delay(Random_Int(delay_min, delay_max))
             .easing(TWEEN.Easing.Cubic.In)
             .start();
-    }
+    } // _CreateStartFallBrickAnimation
 
+    //--------------------------------------------------------------------------
     _OnStartFallEnded()
     {
+        this.is_input_enabled = true;
+    } // _OnStartFallEnded
 
-    }
-
-    _print()
-    {
-        let s = "";
-        for(let i = 0; i < this.bricks_rows; ++i) {
-            for(let j = 0; j < this.bricks_cols; ++j) {
-                if(this.bricks_grid[i][j]) {
-                    s += " " + this.bricks_grid[i][j].type;
-                }
-                else {
-                    s += " .";
-                }
-            }
-            s += "\n"
-        }
-        console.log(s);
-    }
 
     //--------------------------------------------------------------------------
     _OnBrickClicked(brick)
@@ -383,6 +376,24 @@ class GameScene
         this.is_input_enabled = true;
     } // _OnBricksSlideEnded
 
+
+
+    _print()
+    {
+        let s = "";
+        for(let i = 0; i < this.bricks_rows; ++i) {
+            for(let j = 0; j < this.bricks_cols; ++j) {
+                if(this.bricks_grid[i][j]) {
+                    s += " " + this.bricks_grid[i][j].type;
+                }
+                else {
+                    s += " .";
+                }
+            }
+            s += "\n"
+        }
+        console.log(s);
+    }
 } // class GameScene
 
 
