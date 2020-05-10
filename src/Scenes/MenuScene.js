@@ -1,4 +1,9 @@
 
+const BUTTON_BIG_WIDTH   = (GAME_DESIGN_WIDTH * 0.5);
+const BUTTON_GAP         = 10;
+const BUTTON_SMALL_WIDTH = BUTTON_BIG_WIDTH / 3 - BUTTON_GAP;
+const BUTTON_HEIGHT      = BUTTON_SMALL_WIDTH;
+
 //----------------------------------------------------------------------------//
 // Types                                                                     //
 //----------------------------------------------------------------------------//
@@ -29,6 +34,24 @@ class MenuScene
         this.more_button    = null;
 
         this._CreateButtons();
+
+
+        // Scores
+        this.last_score = new ScoreNumber(0, 5);
+        this.best_score = new ScoreNumber(0, 5);
+
+        this.best_score.bg.tint = 0xff00ff;
+        this.best_score.bg.alpha = 0.3;
+        this.best_score.x = GAME_DESIGN_WIDTH  * 0.5;
+        this.best_score.y = this.play_button.y - BUTTON_HEIGHT * 0.5 - BUTTON_GAP - this.best_score.height * 0.5
+        this.addChild(this.best_score);
+
+        this.last_score.bg.tint = 0x0000FF;
+        this.last_score.bg.alpha = 0.3;
+        this.last_score.x = GAME_DESIGN_WIDTH  * 0.5;
+        this.last_score.y = this.best_score.y - this.best_score.height - BUTTON_GAP;
+        this.addChild(this.last_score);
+
     } // CTOR
 
     //--------------------------------------------------------------------------
@@ -40,10 +63,6 @@ class MenuScene
     //--------------------------------------------------------------------------
     _CreateButtons()
     {
-        const BUTTON_BIG_WIDTH   = (GAME_DESIGN_WIDTH * 0.5);
-        const BUTTON_GAP         = 10;
-        const BUTTON_SMALL_WIDTH = BUTTON_BIG_WIDTH / 3 - BUTTON_GAP;
-        const BUTTON_HEIGHT      = BUTTON_SMALL_WIDTH;
 
         const NINE_SLICE_SETTINGS = {
             left_width:    3,
@@ -85,7 +104,7 @@ class MenuScene
         );
 
         this.play_button.x = GAME_DESIGN_WIDTH  * 0.5;
-        this.play_button.y = GAME_DESIGN_HEIGHT * 0.4;
+        this.play_button.y = GAME_DESIGN_HEIGHT * 0.40;
         this.play_button.on("pointerdown", ()=> { this.GoPlay() });
 
         this.addChild(this.play_button);
