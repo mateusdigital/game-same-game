@@ -9,13 +9,20 @@ const CONTAINER_DESIGN_HEIGHT = GAME_DESIGN_HEIGHT  - (GROUND_HEIGHT + GAME_HUD_
 const CONTAINER_DESIGN_WIDTH  = (GAME_DESIGN_WIDTH  - CONTAINER_DESIGN_GAP_X);
 
 const ANIMATION_SPEED_MULTIPLIER = 1;
-const START_FALL_ANIMATION_DURATION  = 1000 * ANIMATION_SPEED_MULTIPLIER;
+const START_FALL_ANIMATION_DURATION =  1000 * ANIMATION_SPEED_MULTIPLIER;
 const DESTROY_ANIMATION_DURATION    =   500 * ANIMATION_SPEED_MULTIPLIER;
-const FALL_ANIMATION_DURATION       =   500 * ANIMATION_SPEED_MULTIPLIER;
+const FALL_ANIMATION_DURATION       =   700 * ANIMATION_SPEED_MULTIPLIER;
 const SLIDE_ANIMATION_DURATION      =   500 * ANIMATION_SPEED_MULTIPLIER;
 const SCORE_ANIMATION_DURATION      =   500 * ANIMATION_SPEED_MULTIPLIER;
 
 const SCORE_HUD_DIGITS_COUNT = 5;
+
+const START_FALL_ANIMATION_EASING = TWEEN.Easing.Cubic.In;
+const DESTROY_ANIMATION_EASING    = TWEEN.Easing.Cubic.In;
+const FALL_ANIMATION_EASING       = TWEEN.Easing.Back.InOut;
+const SLIDE_ANIMATION_EASING      = TWEEN.Easing.Back.InOut;
+const SCORE_ANIMATION_EASING      = TWEEN.Easing.Quintic.In;
+
 
 //----------------------------------------------------------------------------//
 // Types                                                                      //
@@ -191,7 +198,7 @@ class GameScene
                 brick.y = target_y;
             })
             .delay(Random_Int(delay_min, delay_max))
-            .easing(TWEEN.Easing.Cubic.In)
+            .easing(START_FALL_ANIMATION_EASING)
             .start();
     } // _CreateStartFallBrickAnimation
 
@@ -263,6 +270,7 @@ class GameScene
             .onComplete(()=>{
                 brick.parent.removeChild(brick);
             })
+            .easing(DESTROY_ANIMATION_EASING)
             .start();
     } // _CreateBrickDestroyAnimation
 
@@ -317,6 +325,7 @@ class GameScene
             .onUpdate((value)=>{
                 brick.y = value.y;
             })
+            .easing(FALL_ANIMATION_EASING)
             .start();
     } // _CreateBrickFallAnimation
 
@@ -373,6 +382,7 @@ class GameScene
             .onUpdate((value)=>{
                 brick.x = value.x;
             })
+            .easing(SLIDE_ANIMATION_EASING)
             .start();
     } //_CreateSlideAnimation
 
@@ -426,7 +436,7 @@ class GameScene
                     half_way_callback
                 );
             })
-            .easing(TWEEN.Easing.Quintic.In)
+            .easing(SCORE_ANIMATION_EASING)
             .start();
 
         this.addChild(number_ui);
