@@ -67,9 +67,13 @@ class GameScene
 
         //
         // Score HUD.
-        this.score   = new ScoreNumber("0", 5);
-        this.score.x = (GAME_DESIGN_WIDTH * 0.5) - (this.score.width * 0.5);
-        this.score.y = 100;
+        this.score  = new ScoreNumber("0", 5); {
+            const s = (GAME_HUD_HEIGHT * 0.4) / this.score.height
+            this.score.height *= s;
+            this.score.width  *= s;
+            this.score.x = (GAME_DESIGN_WIDTH * 0.5) - (this.score.width * 0.5);
+            this.score.y = GAME_HUD_HEIGHT * 0.5 - this.score.height * 0.5;
+        }
         this.addChild(this.score);
 
         //

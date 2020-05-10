@@ -1,6 +1,7 @@
 class ScoreNumber
     extends PIXI.Container
 {
+    //--------------------------------------------------------------------------
     constructor(value, digits_count)
     {
         super();
@@ -14,13 +15,19 @@ class ScoreNumber
             const sprite = Sprite_Create(NUMBERS_TEXTURES_NAMES[parseInt(digit)]);
 
             sprite.anchor.set(0.5);
-            sprite.x = this.width;
+            sprite.x = this.width + sprite.width * 0.5;
+            sprite.y = sprite.width * 0.5
 
             this.sprites.push(sprite);
             this.addChild(sprite);
         }
-    }
 
+        // this.bg = Sprite_White(this.width, this.height);
+        // this.bg.alpha = 0.5;
+        // this.addChild(this.bg);
+    } // CTOR
+
+    //--------------------------------------------------------------------------
     SetNumberAnimated(value)
     {
         const value_str = value.toString();
@@ -43,8 +50,9 @@ class ScoreNumber
                 })
                 .start();
         }
-    }
+    } // SetNumberAnimated
 
+    //--------------------------------------------------------------------------
     _FillDigits(value)
     {
         let value_str = value.toString();
@@ -52,5 +60,5 @@ class ScoreNumber
             value_str = "0".repeat(this.digits_count - value_str.length) + value_str;
         }
         return value_str;
-    }
-}
+    } // _FillDigits
+} // ScoreNumber
