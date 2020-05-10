@@ -1,3 +1,8 @@
+
+const BUBBLE_ANIMATION_DURATION = 500;
+const BUBBLE_ANIMATION_EASING   = TWEEN.Easing.Back.In;
+
+
 class ScoreNumber
     extends FixedSizeContainer
 {
@@ -50,7 +55,7 @@ class ScoreNumber
     //--------------------------------------------------------------------------
     _CreateBubbleAnimation(sprite, digit)
     {
-        Tween_CreateBasic(500, this.bubble_tween_group)
+        Tween_CreateBasic(BUBBLE_ANIMATION_DURATION, this.bubble_tween_group)
             .from({s: 1})
             .to  ({s: 0})
             .yoyo(true)
@@ -58,7 +63,7 @@ class ScoreNumber
             .onUpdate((value)=>{
                 sprite.scale.set(value.s);
             })
-            .easing(TWEEN.Easing.Back.In)
+            .easing(BUBBLE_ANIMATION_EASING)
             .onRepeat(()=>{
                 sprite.texture = Texture_Get(NUMBERS_TEXTURES_NAMES[parseInt(digit)]);
                 if(this.bubble_tween_half_way_callback) {
