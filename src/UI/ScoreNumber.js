@@ -13,7 +13,12 @@ class ScoreNumber
         this.curr_value         = this._FillDigits(value);
 
         this.bubble_tween_group = Tween_CreateGroup()
-            .onComplete(()=>{ this._FixDigitsAlignment() });
+            // @NOTICE(stdmatt): I think that's better that numbers to be
+            // slightly not aligned than the disturbing visual artifact of
+            // of trying to align them...
+            // .onComplete(()=>{
+            //     // this._FixDigitsAlignment()
+            // });
         this.bubble_tween_half_way_callback = null;
 
         this._CreateSprites     ();
