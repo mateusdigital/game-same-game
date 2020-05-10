@@ -13,19 +13,13 @@ const START_FALL_ANIMATION_DURATION  = 1000 * ANIMATION_SPEED_MULTIPLIER;
 const DESTROY_ANIMATION_DURATION    =   500 * ANIMATION_SPEED_MULTIPLIER;
 const FALL_ANIMATION_DURATION       =   500 * ANIMATION_SPEED_MULTIPLIER;
 const SLIDE_ANIMATION_DURATION      =   500 * ANIMATION_SPEED_MULTIPLIER;
+const SCORE_ANIMATION_DURATION      =   500 * ANIMATION_SPEED_MULTIPLIER;
+
+const SCORE_HUD_DIGITS_COUNT = 5;
 
 //----------------------------------------------------------------------------//
 // Types                                                                      //
 //----------------------------------------------------------------------------//
-
-let hack = null;
-function OnMouseClick()
-{
-   if(!hack) {
-      return;
-   }
-   hack._CreateScoreAddAnimation(Mouse_X, Mouse_Y, Random_Int(0, 100));
-}
 //------------------------------------------------------------------------------
 class GameScene
     extends Base_Scene
@@ -34,12 +28,11 @@ class GameScene
     constructor()
     {
         super();
-        hack = this;
 
         //
         // Housekeeping.
-        this.bricks_cols        = 3;
-        this.bricks_rows        = 20;
+        this.bricks_cols        = 8;
+        this.bricks_rows        = 10;
         this.brick_types_count  = 3;
         this.brick_types        = [];
         this.bricks_grid        = null;
@@ -60,19 +53,16 @@ class GameScene
 
         //
         // Score HUD.
-        this.score_number  = new ScoreNumber("0", 5)
+        this.score_number_particle = new ScoreNumberParticle();
+        this.addChild(this.score_number_particle);
+
+        this.score_number  = new ScoreNumber("0", SCORE_HUD_DIGITS_COUNT)
+        this.score_number.x = (GAME_DESIGN_WIDTH * 0.5);
+        this.score_number.y = (GAME_HUD_HEIGHT   * 0.5);
         this.score_number.scale.set(1.5);
-        this.score_number.x = GAME_DESIGN_WIDTH * 0.5
-        this.score_number.y = GAME_HUD_HEIGHT * 0.5
-        Update_Anchor(this.score_number, 0.5)
-
-            // const s = (GAME_HUD_HEIGHT * 0.4) / this.score_number.height
-            // this.score_number.height *= s;
-            // this.score_number.width  *= s;
-            // this.score_number.x = (GAME_DESIGN_WIDTH * 0.5) - (this.score_number.width * 0.5);
-            // this.score_number.y = GAME_HUD_HEIGHT * 0.5 - this.score_number.height * 0.5;
-
+        Update_Anchor(this.score_number, 0.5);
         this.addChild(this.score_number);
+
 
         //
         // Animation.
@@ -85,13 +75,10 @@ class GameScene
         this.slide_tween_group = Tween_CreateGroup()
             .onComplete(()=>{ this._OnBricksSlideEnded(); });
 
-
         //
         // Brick and container properties.
-        // this._InitializeContainer();
-        // this._InitializeBricks   ();
-
-
+        this._InitializeContainer();
+        this._InitializeBricks   ();
     } // CTOR
 
     //--------------------------------------------------------------------------
@@ -99,8 +86,9 @@ class GameScene
     {
         super.Update(dt);
         // Objects.
-        this.sky         .Update(dt);
-        this.score_number.Update(dt);
+        this.sky                  .Update(dt);
+        this.score_number         .Update(dt);
+        this.score_number_particle.Update(dt);
 
         // this.score_number.x = Mouse_X;
         // this.score_number.y = Mouse_Y;
@@ -404,13 +392,17 @@ class GameScene
     //--------------------------------------------------------------------------
     _CreateScoreAddAnimation(spawn_x, spawn_y, points)
     {
-        const number_ui = new ScoreNumber(points, 0);
-        const score_pos = this.score_number.position.clone();
+        const number_ui           = new ScoreNumber(points, 0);
+        const target_digit_pos    = this.score_number.position.clone();
+        const target_particle_pos = this.score_number.position.clone();
+        const score_number_hw     = this.score_number.width * 0.5;
 
-        score_pos.x = score_pos.x + (this.score_number.width * 0.5) - (number_ui.width * 0.5);
-        const tween = Tween_CreateBasic(2000)
-            .from({x: spawn_x,     y: spawn_y    })
-            .to  ({x: score_pos.x, y: score_pos.y})
+        target_digit_pos   .x += (score_number_hw) - (number_ui.width * 0.5);
+        target_particle_pos.x += Random_Int(-score_number_hw, +score_number_hw);
+
+        const tween = Tween_CreateBasic(SCORE_ANIMATION_DURATION)
+            .from({x: spawn_x,            y: spawn_y           })
+            .to  ({x: target_digit_pos.x, y: target_digit_pos.y})
             .onUpdate((value)=>{
                 number_ui.x = value.x;
                 number_ui.y = value.y;
@@ -421,9 +413,18 @@ class GameScene
             })
             .onComplete(()=>{
                 number_ui.parent.removeChild(number_ui);
-
+                const half_way_callback = () => {
+                    // Animate Particles.
+                    this.score_number_particle.x = target_particle_pos.x;
+                    this.score_number_particle.y = target_particle_pos.y;
+                    this.score_number_particle.Play();
+                }
+                // Animate Score.
                 this.current_score += points;
-                this.score_number.SetNumberAnimated(this.current_score, 5);
+                this.score_number.SetNumberAnimated(
+                    this.current_score,
+                    half_way_callback
+                );
             })
             .easing(TWEEN.Easing.Quintic.In)
             .start();
