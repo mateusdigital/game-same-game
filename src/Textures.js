@@ -52,22 +52,6 @@ const SCORE_PARTICLES = [
 ]
 
 
-//------------------------------------------------------------------------------
-class FixedSizeContainer
-    extends PIXI.Container
-{
-    constructor(width, height) {
-        super();
-
-        this.bg = Sprite_White(width, height);
-        this.bg.alpha = 1;
-        this.bg.tint = 0xff00ff
-        this.addChild(this.bg);
-    }
-    _calculateBounds()
-    {
-    }
-}
 
 // C:/Users/m_mesquita/Documents/Projects/stdmatt/games/_game_assets_/kenney/output/_output__kenney_emotespack_PNG_Vector_Style 8_emote_star.png
 // C:/Users/m_mesquita/Documents/Projects/stdmatt/games/_game_assets_/kenney/output/_topdowntanks_PNG_Smoke_smokeWhite2.png
