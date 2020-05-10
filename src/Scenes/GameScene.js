@@ -8,7 +8,6 @@ const CONTAINER_DESIGN_GAP_X  = 20;
 const CONTAINER_DESIGN_HEIGHT = GAME_DESIGN_HEIGHT  - (GROUND_HEIGHT + GAME_HUD_HEIGHT);
 const CONTAINER_DESIGN_WIDTH  = (GAME_DESIGN_WIDTH  - CONTAINER_DESIGN_GAP_X);
 
-const ANIMATION_SPEED_MULTIPLIER = 1;
 const START_FALL_ANIMATION_DURATION =  1000 * ANIMATION_SPEED_MULTIPLIER;
 const DESTROY_ANIMATION_DURATION    =   500 * ANIMATION_SPEED_MULTIPLIER;
 const FALL_ANIMATION_DURATION       =   700 * ANIMATION_SPEED_MULTIPLIER;
@@ -40,7 +39,7 @@ class GameScene
         // Housekeeping.
         this.bricks_cols        = 8;
         this.bricks_rows        = 10;
-        this.brick_types_count  = 3;
+        this.brick_types_count  = 2;
         this.brick_types        = [];
         this.bricks_grid        = null;
         this.brick_container    = null;
@@ -220,19 +219,7 @@ class GameScene
             return;
         }
 
-        const brick_pos = brick.position;
-        const coord_x = Math_Int((brick_pos.x + 0.5) / this.brick_width);
-        const coord_y = Math_Int((brick_pos.y + 0.5) / this.brick_height);
-
-        console.log("Brick clicked at: ", coord_x, coord_y);
-        const matching_bricks = Algo_FloodFind(
-            this.bricks_grid,                             // container
-            coord_x, coord_y,                             // start coords
-            (item) => {                          // predicate
-                return item && item.type == brick.type;
-            }
-        );
-
+        const matching_bricks = this._FindMatchingBricks(brick);
         if(matching_bricks.length < 2) {
             return;
         }
@@ -312,6 +299,24 @@ class GameScene
         }
     } // _OnBricksDestroyEnded
 
+    _FindMatchingBricks(brick)
+    {
+        const brick_pos = brick.position;
+        const coord_x = Math_Int((brick_pos.x + 0.5) / this.brick_width);
+        const coord_y = Math_Int((brick_pos.y + 0.5) / this.brick_height);
+
+        console.log("Brick clicked at: ", coord_x, coord_y);
+        const matching_bricks = Algo_FloodFind(
+            this.bricks_grid,                             // container
+            coord_x, coord_y,                             // start coords
+            (item) => {                          // predicate
+                return item && item.type == brick.type;
+            }
+        );
+
+        return matching_bricks;
+    }
+
 
     //------------------------------------------------------------------------//
     // Brick Fall                                                             //
@@ -389,10 +394,43 @@ class GameScene
     //--------------------------------------------------------------------------
     _OnBricksSlideEnded()
     {
+        //
         // Check end game.
+        let end_game = true;
+        let defeat   = false;
 
-        // Re-enable input.
-        this.is_input_enabled = true;
+        for(let i = 0; i < this.bricks_rows; ++i) {
+            if(!end_game) {
+                break;
+            }
+            for(let j = 0; j < this.bricks_cols; ++j) {
+                const brick = this.bricks_grid[i][j];
+                if(!brick) {
+                    continue;
+                }
+
+                const matching_bricks = this._FindMatchingBricks(brick);
+                if(matching_bricks.length >= 2) {
+                    end_game = false;
+                    break;
+                } else {
+                    defeat = true;
+                }
+            }
+        }
+
+        if(!end_game) {
+            // Re-enable input.
+            this.is_input_enabled = true;
+            return;
+        }
+
+        if(!defeat) {
+            this._InitializeBricks();
+            return;
+        }
+
+        SCENE_MANAGER.SetScene(new MenuScene());
     } // _OnBricksSlideEnded
 
 
