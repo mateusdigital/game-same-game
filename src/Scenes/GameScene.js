@@ -17,23 +17,15 @@ const SLIDE_ANIMATION_DURATION      =   500 * ANIMATION_SPEED_MULTIPLIER;
 //----------------------------------------------------------------------------//
 // Types                                                                      //
 //----------------------------------------------------------------------------//
-//------------------------------------------------------------------------------
-class FixedSizeContainer
-    extends PIXI.Container
+
+let hack = null;
+function OnMouseClick()
 {
-    constructor(width, height) {
-        super();
-
-        this.width = width;
-        this.height = height;
-
-
-        this.bg = Sprite_White(width, height);
-        this.bg.alpha = 0;
-        this.addChild(this.bg);
-    }
+   if(!hack) {
+      return;
+   }
+   hack._CreateScoreAddAnimation(Mouse_X, Mouse_Y, Random_Int(0, 100));
 }
-
 //------------------------------------------------------------------------------
 class GameScene
     extends Base_Scene
@@ -42,6 +34,7 @@ class GameScene
     constructor()
     {
         super();
+        hack = this;
 
         //
         // Housekeeping.
@@ -67,14 +60,19 @@ class GameScene
 
         //
         // Score HUD.
-        this.score  = new ScoreNumber("0", 5); {
-            const s = (GAME_HUD_HEIGHT * 0.4) / this.score.height
-            this.score.height *= s;
-            this.score.width  *= s;
-            this.score.x = (GAME_DESIGN_WIDTH * 0.5) - (this.score.width * 0.5);
-            this.score.y = GAME_HUD_HEIGHT * 0.5 - this.score.height * 0.5;
-        }
-        this.addChild(this.score);
+        this.score_number  = new ScoreNumber("0", 5)
+        this.score_number.scale.set(1.5);
+        this.score_number.x = GAME_DESIGN_WIDTH * 0.5
+        this.score_number.y = GAME_HUD_HEIGHT * 0.5
+        Update_Anchor(this.score_number, 0.5)
+
+            // const s = (GAME_HUD_HEIGHT * 0.4) / this.score_number.height
+            // this.score_number.height *= s;
+            // this.score_number.width  *= s;
+            // this.score_number.x = (GAME_DESIGN_WIDTH * 0.5) - (this.score_number.width * 0.5);
+            // this.score_number.y = GAME_HUD_HEIGHT * 0.5 - this.score_number.height * 0.5;
+
+        this.addChild(this.score_number);
 
         //
         // Animation.
@@ -90,16 +88,23 @@ class GameScene
 
         //
         // Brick and container properties.
-        this._InitializeContainer();
-        this._InitializeBricks   ();
+        // this._InitializeContainer();
+        // this._InitializeBricks   ();
+
+
     } // CTOR
 
     //--------------------------------------------------------------------------
     Update(dt)
     {
         super.Update(dt);
-        this.sky.Update(dt);
+        // Objects.
+        this.sky         .Update(dt);
+        this.score_number.Update(dt);
 
+        // this.score_number.x = Mouse_X;
+        // this.score_number.y = Mouse_Y;
+        // Animation Tweens.
         this.start_fall_tween_group.update(dt);
         this.destroy_tween_group   .update(dt);
         this.fall_tween_group      .update(dt);
@@ -253,8 +258,9 @@ class GameScene
         }
 
         // Points earned animation.
-        const points = Math_Pow(matching_bricks.length -2, 2);
-        this._CreateScoreAddAnimation(brick, points);
+        const points           = Math_Pow(matching_bricks.length -2, 2);
+        const brick_global_pos = brick.getGlobalPosition();
+        this._CreateScoreAddAnimation(brick_global_pos.x, brick_global_pos.y, points);
     } // _OnBrickClicked
 
     //--------------------------------------------------------------------------
@@ -396,17 +402,14 @@ class GameScene
     // Score                                                                  //
     //------------------------------------------------------------------------//
     //--------------------------------------------------------------------------
-    _CreateScoreAddAnimation(target_brick, points)
+    _CreateScoreAddAnimation(spawn_x, spawn_y, points)
     {
         const number_ui = new ScoreNumber(points, 0);
+        const score_pos = this.score_number.position.clone();
 
-        const brick_pos = target_brick.getGlobalPosition();
-        const score_pos = this.score.getGlobalPosition  ();
-
-        score_pos.x += (this.score.width - number_ui.width);
-
-        const tween = Tween_CreateBasic(1000)
-            .from({x: brick_pos.x, y: brick_pos.y})
+        score_pos.x = score_pos.x + (this.score_number.width * 0.5) - (number_ui.width * 0.5);
+        const tween = Tween_CreateBasic(2000)
+            .from({x: spawn_x,     y: spawn_y    })
             .to  ({x: score_pos.x, y: score_pos.y})
             .onUpdate((value)=>{
                 number_ui.x = value.x;
@@ -420,7 +423,7 @@ class GameScene
                 number_ui.parent.removeChild(number_ui);
 
                 this.current_score += points;
-                this.score.SetNumberAnimated(this.current_score, 5);
+                this.score_number.SetNumberAnimated(this.current_score, 5);
             })
             .easing(TWEEN.Easing.Quintic.In)
             .start();
