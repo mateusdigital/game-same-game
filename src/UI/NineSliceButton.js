@@ -1,15 +1,13 @@
+//----------------------------------------------------------------------------//
+// Constants                                                                  //
+//----------------------------------------------------------------------------//
 const NINE_SLICE_BUTTON_PRESS_TINT  = 0xFF00FF;
 const NINE_SLICE_BUTTON_HOVER_TINT  = 0xCCccCC;
 const NINE_SLICE_BUTTON_NORMAL_TINT = 0xFFffFF;
 
-function _GetTextureFromSettings(settings, key)
-{
-    if(key in settings) {
-        return Texture_Get(settings[key]);
-    }
-    return null;
-}
-
+//----------------------------------------------------------------------------//
+// Types                                                                      //
+//----------------------------------------------------------------------------//
 class NineSliceButton
     extends PIXI.NineSlicePlane
 {
@@ -27,6 +25,7 @@ class NineSliceButton
             slice_settings.right_width,
             slice_settings.bottom_height
         );
+
         this.normal_texture = normal_texture;
         this.hover_texture  = hover_texture;
         this.press_texture  = press_texture;
@@ -101,4 +100,16 @@ class NineSliceButton
             obj.tint = color;
         }
     } // _SetTint
+
 } // NineSliceButton
+
+//----------------------------------------------------------------------------//
+// Helper Functions                                                           //
+//----------------------------------------------------------------------------//
+function _GetTextureFromSettings(settings, key)
+{
+    if(key in settings) {
+        return Texture_Get(settings[key]);
+    }
+    return null;
+}

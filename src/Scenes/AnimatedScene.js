@@ -1,9 +1,16 @@
+//----------------------------------------------------------------------------//
+// Constants                                                                  //
+//----------------------------------------------------------------------------//
 const ANIMATED_SCENE_CLOSE_DOWN_ANIMATION_DURATION = 800 * ANIMATION_SPEED_MULTIPLIER;
 const ANIMATED_SCENE_OPEN_UP_ANIMATION_DURATION    = 800 * ANIMATION_SPEED_MULTIPLIER;
 
 const ANIMATED_SCENE_CLOSE_DOWN_ANIMATION_EASING = TWEEN.Easing.Exponential.In;
 const ANIMATED_SCENE_OPEN_UP_ANIMATION_EASING    = TWEEN.Easing.Exponential.Out;
 
+
+//----------------------------------------------------------------------------//
+// Types                                                                      //
+//----------------------------------------------------------------------------//
 class AnimatedScene
     extends Base_Scene
 {
@@ -31,13 +38,17 @@ class AnimatedScene
         // Should be overridden...
     } // OnFinishedEnterAnimation
 
-
     //--------------------------------------------------------------------------
     _CreateAnimationWithCallback(is_opening_up, callback)
     {
+        // @TODO(stdmatt): Add more types of "closing" things...
         this.focus = new PIXI.Sprite(Texture_Get("res/textures/ola.png"))
 
-        const focus_radius = this.focus.height * (GAME_DESIGN_HEIGHT / this.focus.height) * 1.15;
+        // @XXX(stdmatt): This value is to make the thing goes TOTALLY out of
+        // the screen, otherwise it keeps a little bit inside...
+        const XXX_MAGIC = 1.15;
+
+        const focus_radius  = this.focus.height * (GAME_DESIGN_HEIGHT / this.focus.height) * XXX_MAGIC;
         const curr_radius   = (is_opening_up) ? 0 : focus_radius;
         const target_radius = (is_opening_up) ? focus_radius : 0;
 
@@ -53,11 +64,12 @@ class AnimatedScene
         const anim_time = (is_opening_up)
             ? ANIMATED_SCENE_OPEN_UP_ANIMATION_DURATION
             : ANIMATED_SCENE_CLOSE_DOWN_ANIMATION_DURATION;
+
         const anim_ease = (is_opening_up)
             ? ANIMATED_SCENE_OPEN_UP_ANIMATION_EASING
             : ANIMATED_SCENE_CLOSE_DOWN_ANIMATION_EASING;
 
-        const tween = Tween_CreateBasic(anim_time)
+        Tween_CreateBasic(anim_time)
             .from({r: curr_radius  })
             .to  ({r: target_radius})
             .onUpdate((value)=>{
@@ -75,7 +87,5 @@ class AnimatedScene
                 callback();
             })
             .start();
-
-        return tween;
     } // _CreateAnimationWithCallback
 } // AnimatedScene

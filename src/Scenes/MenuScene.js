@@ -1,7 +1,5 @@
-
-
 //----------------------------------------------------------------------------//
-// Types                                                                     //
+// Types                                                                      //
 //----------------------------------------------------------------------------//
 class MenuScene
     extends AnimatedScene
@@ -10,6 +8,7 @@ class MenuScene
     constructor()
     {
         super();
+
         //
         // Housekeeping
         this.has_scores = GameSettings_Get(SETTINGS_KEY_HAS_SCORE, false);
@@ -33,9 +32,11 @@ class MenuScene
         this._CreateButtons  ();
         this._UpdateSoundIcon();
 
+        //
         // Scores
         this.last_score = null;
         this.best_score = null;
+
         if(this.has_scores) {
             this._CreateScores();
         }
@@ -44,29 +45,30 @@ class MenuScene
     //--------------------------------------------------------------------------
     Update(dt)
     {
-        this.sky.Update(dt);
+        this.sky     .Update(dt);
+        this.scenario.Update(dt);
     } // Update
 
+    //------------------------------------------------------------------------//
+    // Initialize                                                             //
+    //------------------------------------------------------------------------//
     //--------------------------------------------------------------------------
     _CreateScores()
     {
         if(!this.has_scores) {
             return;
         }
+
         const last_score = GameSettings_Get(SETTINGS_KEY_LAST_SCORE, 0);
         const best_score = GameSettings_Get(SETTINGS_KEY_BEST_SCORE, 0);
 
         this.last_score = new ScoreNumber(last_score, SCORE_HUD_DIGITS_COUNT);
         this.best_score = new ScoreNumber(best_score, SCORE_HUD_DIGITS_COUNT);
 
-        this.best_score.bg.tint = 0xff00ff;
-        this.best_score.bg.alpha = 0.3;
         this.best_score.x = GAME_DESIGN_WIDTH  * 0.5;
         this.best_score.y = this.play_button.y - BUTTON_HEIGHT * 0.5 - BUTTON_GAP - this.best_score.height * 0.5
         this.addChild(this.best_score);
 
-        this.last_score.bg.tint = 0x0000FF;
-        this.last_score.bg.alpha = 0.3;
         this.last_score.x = GAME_DESIGN_WIDTH  * 0.5;
         this.last_score.y = this.best_score.y - this.best_score.height - BUTTON_GAP;
         this.addChild(this.last_score);
@@ -154,6 +156,10 @@ class MenuScene
         Update_Anchor(this.more_button, 0.5);
     } // _CreateButtons
 
+
+    //------------------------------------------------------------------------//
+    // Menu Button Callbacks                                                  //
+    //------------------------------------------------------------------------//
     //--------------------------------------------------------------------------
     GoPlay()
     {
@@ -187,6 +193,9 @@ class MenuScene
         SCENE_MANAGER.SetScene(new MoreScene());
     }
 
+    //------------------------------------------------------------------------//
+    // Helper Methods                                                         //
+    //------------------------------------------------------------------------//
     //--------------------------------------------------------------------------
     _UpdateSoundIcon()
     {

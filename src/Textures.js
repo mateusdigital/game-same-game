@@ -83,6 +83,8 @@ const SCORE_PARTICLES = [
 ]
 
 
+SCORE_NUMBER_PARTICLE_DATA_NAME = "res/emitter.json"
+
 
 // C:/Users/m_mesquita/Documents/Projects/stdmatt/games/_game_assets_/kenney/output/_output__kenney_emotespack_PNG_Vector_Style 8_emote_star.png
 // C:/Users/m_mesquita/Documents/Projects/stdmatt/games/_game_assets_/kenney/output/_topdowntanks_PNG_Smoke_smokeWhite2.png

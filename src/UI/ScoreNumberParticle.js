@@ -1,5 +1,6 @@
-SCORE_NUMBER_PARTICLE_DATA_NAME = "res/emitter.json"
-
+//----------------------------------------------------------------------------//
+// Types                                                                      //
+//----------------------------------------------------------------------------//
 class ScoreNumberParticle
     extends PIXI.Container
 {
@@ -23,7 +24,7 @@ class ScoreNumberParticle
         this.emitter.playOnce(()=>{
             this.emitter.emit = false;
         });
-    }
+    } // Play
 
     //--------------------------------------------------------------------------
     _CreateEmitter()

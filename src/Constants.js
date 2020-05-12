@@ -8,7 +8,7 @@ const GAME_SEED          = 4;
 
 const ANIMATION_SPEED_MULTIPLIER = 1;
 
-const SCORE_HUD_DIGITS_COUNT = 5;
+const SCORE_HUD_DIGITS_COUNT = 8;
 
 const SETTINGS_KEY_HAS_SCORE     = "menu_scene_has_scores";
 const SETTINGS_KEY_SOUND_ENABLED = "sound_enabled";

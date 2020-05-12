@@ -4,9 +4,12 @@
 //----------------------------------------------------------------------------//
 const GROUND_HEIGHT   = 130;
 const GAME_HUD_HEIGHT = 130;
+
 const CONTAINER_DESIGN_GAP_X  = 20;
 const CONTAINER_DESIGN_HEIGHT = GAME_DESIGN_HEIGHT  - (GROUND_HEIGHT + GAME_HUD_HEIGHT);
 const CONTAINER_DESIGN_WIDTH  = (GAME_DESIGN_WIDTH  - CONTAINER_DESIGN_GAP_X);
+
+const START_FALL_BRICKS_Y_OFFSET = -300;
 
 const START_FALL_ANIMATION_DURATION =  1000 * ANIMATION_SPEED_MULTIPLIER;
 const DESTROY_ANIMATION_DURATION    =   500 * ANIMATION_SPEED_MULTIPLIER;
@@ -102,10 +105,11 @@ class GameScene
         this.RunOnExit(new MenuScene());
     } // GoBack
 
+    //--------------------------------------------------------------------------
     GoScene(scene)
     {
         this.RunOnExit(scene);
-    }
+    } // GoScene
 
     //--------------------------------------------------------------------------
     OnFinishedEnterAnimation()
@@ -207,7 +211,7 @@ class GameScene
         const duration  = START_FALL_ANIMATION_DURATION * (scale);
         const delay_min = duration * 0.7;
         const delay_max = duration * 1.2;
-        const start_y   = -300; // @XXX(stdmatt):
+        const start_y   = START_FALL_BRICKS_Y_OFFSET;
 
         brick.y = start_y
         brick.x = target_y;
@@ -266,7 +270,7 @@ class GameScene
         }
 
         // Points earned animation.
-        const points           = Math_Pow(matching_bricks.length -2, 2);
+        const points           = this._CalculatePointsEarned(matching_bricks.length);
         const brick_global_pos = brick.getGlobalPosition();
         this._CreateScoreAddAnimation(brick_global_pos.x, brick_global_pos.y, points);
     } // _OnBrickClicked
@@ -324,24 +328,6 @@ class GameScene
             this._OnBricksFallEnded();
         }
     } // _OnBricksDestroyEnded
-
-    _FindMatchingBricks(brick)
-    {
-        const brick_pos = brick.position;
-        const coord_x = Math_Int((brick_pos.x + 0.5) / this.brick_width);
-        const coord_y = Math_Int((brick_pos.y + 0.5) / this.brick_height);
-
-        console.log("Brick clicked at: ", coord_x, coord_y);
-        const matching_bricks = Algo_FloodFind(
-            this.bricks_grid,                             // container
-            coord_x, coord_y,                             // start coords
-            (item) => {                          // predicate
-                return item && item.type == brick.type;
-            }
-        );
-
-        return matching_bricks;
-    }
 
 
     //------------------------------------------------------------------------//
@@ -525,10 +511,36 @@ class GameScene
         this.addChild(number_ui);
     } // _CreateScoreAddAnimation
 
+    _CalculatePointsEarned(bricks_count)
+    {
+        return Math_Pow(bricks_count -2, 2);
+    }
 
 
     //------------------------------------------------------------------------//
-    // Debug//
+    // Game Logic                                                             //
+    //------------------------------------------------------------------------//
+    _FindMatchingBricks(brick)
+    {
+        const brick_pos = brick.position;
+        const coord_x = Math_Int((brick_pos.x + 0.5) / this.brick_width);
+        const coord_y = Math_Int((brick_pos.y + 0.5) / this.brick_height);
+
+        console.log("Brick clicked at: ", coord_x, coord_y);
+        const matching_bricks = Algo_FloodFind(
+            this.bricks_grid,                             // container
+            coord_x, coord_y,                             // start coords
+            (item) => {                          // predicate
+                return item && item.type == brick.type;
+            }
+        );
+
+        return matching_bricks;
+    } // _FindMatchingBricks
+
+
+    //------------------------------------------------------------------------//
+    // Debug                                                                  //
     //------------------------------------------------------------------------//
     _print()
     {
