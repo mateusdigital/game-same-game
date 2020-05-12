@@ -7,3 +7,8 @@ const GAME_DESIGN_HEIGHT = TILE_HEIGHT * TILE_COUNT_Y;
 const GAME_SEED          = 4;
 
 const ANIMATION_SPEED_MULTIPLIER = 1;
+
+
+
+const SETTINGS_KEY_HAS_SCORE     = "menu_scene_has_scores";
+const SETTINGS_KEY_SOUND_ENABLED = "sound_enabled";

@@ -1,9 +1,4 @@
 
-const BUTTON_BIG_WIDTH   = (GAME_DESIGN_WIDTH * 0.5);
-const BUTTON_GAP         = 10;
-const BUTTON_SMALL_WIDTH = BUTTON_BIG_WIDTH / 3 - BUTTON_GAP;
-const BUTTON_HEIGHT      = BUTTON_SMALL_WIDTH;
-
 
 //----------------------------------------------------------------------------//
 // Types                                                                     //
@@ -15,6 +10,10 @@ class MenuScene
     constructor()
     {
         super();
+        //
+        // Housekeeping
+        this.has_scores = GameSettings_Get(SETTINGS_KEY_HAS_SCORE, false);
+
         //
         // Scenario
         this.sky      = new SkyBackground();
@@ -31,13 +30,15 @@ class MenuScene
         this.leaders_button = null;
         this.more_button    = null;
 
-        this._CreateButtons();
-
+        this._CreateButtons  ();
+        this._UpdateSoundIcon();
 
         // Scores
         this.last_score = null;
         this.best_score = null;
-        this._CreateScores();
+        if(this.has_scores) {
+            this._CreateScores();
+        }
     } // CTOR
 
     //--------------------------------------------------------------------------
@@ -46,8 +47,13 @@ class MenuScene
         this.sky.Update(dt);
     } // Update
 
+    //--------------------------------------------------------------------------
     _CreateScores()
     {
+        if(!this.has_scores) {
+            return;
+        }
+
         this.last_score = new ScoreNumber(0, 5);
         this.best_score = new ScoreNumber(0, 5);
 
@@ -62,52 +68,25 @@ class MenuScene
         this.last_score.x = GAME_DESIGN_WIDTH  * 0.5;
         this.last_score.y = this.best_score.y - this.best_score.height - BUTTON_GAP;
         this.addChild(this.last_score);
-    }
+    } // _CreateScores
 
     //--------------------------------------------------------------------------
     _CreateButtons()
     {
-        const NINE_SLICE_SETTINGS = {
-            left_width:    3,
-            top_height:    3,
-            right_width:   3,
-            bottom_height: 5
-        };
-        const BIG_BUTTON_SIZE_SETTINGS = {
-            width:  BUTTON_BIG_WIDTH,
-            height: BUTTON_HEIGHT
-        };
-        const SMALL_BUTTON_SIZE_SETTINGS = {
-            width:  BUTTON_SMALL_WIDTH,
-            height: BUTTON_HEIGHT
-        };
-        const GREEN_TEXTURE_SETINGS = {
-            normal:  Texture_Get(BUTTONS_TEXTURES_NAMES[0]),
-            pressed: Texture_Get(BUTTONS_TEXTURES_NAMES[1]),
-        };
-        const ORANGE_TEXTURE_SETINGS = {
-            normal:  Texture_Get(BUTTONS_TEXTURES_NAMES[2]),
-            pressed: Texture_Get(BUTTONS_TEXTURES_NAMES[3]),
-        };
-        const YELLOW_TEXTURE_SETINGS = {
-            normal:  Texture_Get(BUTTONS_TEXTURES_NAMES[4]),
-            pressed: Texture_Get(BUTTONS_TEXTURES_NAMES[5]),
-        };
-        const BLUE_TEXTURE_SETINGS = {
-            normal:  Texture_Get(BUTTONS_TEXTURES_NAMES[6]),
-            pressed: Texture_Get(BUTTONS_TEXTURES_NAMES[7]),
-        };
-
         //
         // Play.
         this.play_button = new NineSliceButton(
-            GREEN_TEXTURE_SETINGS,
+            GREEN_TEXTURE_SETTINGS,
             NINE_SLICE_SETTINGS,
             BIG_BUTTON_SIZE_SETTINGS
         );
 
-        this.play_button.x = GAME_DESIGN_WIDTH  * 0.5;
-        this.play_button.y = GAME_DESIGN_HEIGHT * 0.40;
+        const play_button_y = this.has_scores
+            ? PLAY_BUTTON_WITH_SCORES_Y
+            : PLAY_BUTTON_NO_SCORES_Y;
+
+        this.play_button.x = GAME_DESIGN_WIDTH * 0.5;
+        this.play_button.y = play_button_y;
         this.play_button.on("pointerdown", ()=> { this.GoPlay() });
 
         this.addChild(this.play_button);
@@ -116,12 +95,12 @@ class MenuScene
         //
         // Credits
         this.credits_button = new NineSliceButton(
-            BLUE_TEXTURE_SETINGS,
+            BLUE_TEXTURE_SETTINGS,
             NINE_SLICE_SETTINGS,
             BIG_BUTTON_SIZE_SETTINGS
         );
 
-        this.credits_button.x = GAME_DESIGN_WIDTH  * 0.5;
+        this.credits_button.x = this.play_button.x;
         this.credits_button.y = this.play_button.y + BUTTON_HEIGHT + BUTTON_GAP;
         this.credits_button.on("pointerdown", ()=> { this.GoCredits() });
 
@@ -131,47 +110,44 @@ class MenuScene
         //
         // Sound - Left.
         this.sound_button = new NineSliceButton(
-            YELLOW_TEXTURE_SETINGS,
+            YELLOW_TEXTURE_SETTINGS,
             NINE_SLICE_SETTINGS,
             SMALL_BUTTON_SIZE_SETTINGS,
-            { "normal": Texture_Get(BUTTONS_ICONS_TEXTURES_NAMES[1])}
         );
 
         this.sound_button.x = this.play_button.x - (BUTTON_BIG_WIDTH * 0.5) + (BUTTON_SMALL_WIDTH * 0.5);
         this.sound_button.y = this.credits_button.y + BUTTON_HEIGHT + BUTTON_GAP;
         this.sound_button.on("pointerdown", ()=> { this.ToggleSound() });
-
+        this.sound_button.AddIcon(Sprite_Create(BUTTON_ICON_NAME_SOUND_ON));
         this.addChild(this.sound_button);
         Update_Anchor(this.sound_button, 0.5);
 
         //
         // Leaderboards - Center.
         this.leaders_button = new NineSliceButton(
-            ORANGE_TEXTURE_SETINGS,
+            ORANGE_TEXTURE_SETTINGS,
             NINE_SLICE_SETTINGS,
             SMALL_BUTTON_SIZE_SETTINGS,
-            { "normal": Texture_Get(BUTTONS_ICONS_TEXTURES_NAMES[0])}
         );
 
         this.leaders_button.x = this.play_button.x;
         this.leaders_button.y = this.credits_button.y + BUTTON_HEIGHT + BUTTON_GAP;
         this.leaders_button.on("pointerdown", ()=> { this.GoLeaderboards() });
-
+        this.leaders_button.AddIcon(Sprite_Create(BUTTON_ICON_NAME_LEADERS));
         this.addChild(this.leaders_button);
         Update_Anchor(this.leaders_button, 0.5);
 
         //
         // More - Right.
         this.more_button = new NineSliceButton(
-            GREEN_TEXTURE_SETINGS,
+            GREEN_TEXTURE_SETTINGS,
             NINE_SLICE_SETTINGS,
             SMALL_BUTTON_SIZE_SETTINGS,
-            { "normal": Texture_Get(BUTTONS_ICONS_TEXTURES_NAMES[3])}
         );
         this.more_button.x = this.play_button.x + (BUTTON_BIG_WIDTH * 0.5) - (BUTTON_SMALL_WIDTH * 0.5);
         this.more_button.y = this.credits_button.y + BUTTON_HEIGHT + BUTTON_GAP;
         this.more_button.on("pointerdown", ()=> { this.GoMore() });
-
+        this.more_button.AddIcon(Sprite_Create(BUTTON_ICON_NAME_MORE));
         this.addChild(this.more_button);
         Update_Anchor(this.more_button, 0.5);
     } // _CreateButtons
@@ -192,18 +168,9 @@ class MenuScene
     //--------------------------------------------------------------------------
     ToggleSound()
     {
-        let texture_name = null;
-
-        const sound_on = GameSettings_Get("sound", true);
-        GameSettings_Set("sound", !sound_on);
-
-        if(sound_on) {
-            texture_name = BUTTONS_ICONS_TEXTURES_NAMES[1];
-        } else {
-            texture_name = BUTTONS_ICONS_TEXTURES_NAMES[2];
-        }
-
-        this.sound_button.icon.texture = Texture_Get(texture_name);
+        const sound_on = GameSettings_Get(SETTINGS_KEY_SOUND_ENABLED, true);
+        GameSettings_Set(SETTINGS_KEY_SOUND_ENABLED, !sound_on);
+        this._UpdateSoundIcon();
     }
 
     //--------------------------------------------------------------------------
@@ -217,4 +184,16 @@ class MenuScene
     {
         SCENE_MANAGER.SetScene(new MoreScene());
     }
+
+    //--------------------------------------------------------------------------
+    _UpdateSoundIcon()
+    {
+        const sound_on     = GameSettings_Get(SETTINGS_KEY_SOUND_ENABLED, true);
+        const texture_name = (sound_on)
+            ? BUTTON_ICON_NAME_SOUND_ON
+            : BUTTON_ICON_NAME_SOUND_OFF;
+
+        console.log(texture_name);
+        this.sound_button.icon_sprite.texture = Texture_Get(texture_name);
+    } // _UpdateSoundIcon
 } // class MenuScene

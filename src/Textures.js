@@ -53,6 +53,13 @@ const BUTTONS_ICONS_TEXTURES_NAMES = [
     "res/textures/buttons/plus.png",
 ];
 
+const BUTTON_ICON_NAME_SOUND_ON  = "res/textures/buttons/musicOn.png";
+const BUTTON_ICON_NAME_SOUND_OFF = "res/textures/buttons/musicOff.png";
+const BUTTON_ICON_NAME_LEADERS   = "res/textures/buttons/leaderboardsComplex.png";
+const BUTTON_ICON_NAME_MORE      = "res/textures/buttons/plus.png";
+
+
+
 //----------------------------------------------------------------------------//
 // Bricks                                                                     //
 //----------------------------------------------------------------------------//
