@@ -20,6 +20,7 @@ function PreLoad()
         SCORE_PARTICLES,
         "res/emitter.json",
         "res/textures/ola.png",
+        "res/fonts/main.fnt"
     );
 
     Texture_SetBasePath("res");
@@ -29,7 +30,8 @@ function PreLoad()
 //------------------------------------------------------------------------------
 function Setup()
 {
-    GameSettings_Init();
+    GameSettings_Init     ();
+    LeaderboardsUtils_Init();
 
     // SCENE_MANAGER.SetScene(new GameScene());
     SCENE_MANAGER.SetScene(new MenuScene());
