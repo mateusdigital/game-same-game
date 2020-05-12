@@ -14,7 +14,6 @@ const FALL_ANIMATION_DURATION       =   700 * ANIMATION_SPEED_MULTIPLIER;
 const SLIDE_ANIMATION_DURATION      =   500 * ANIMATION_SPEED_MULTIPLIER;
 const SCORE_ANIMATION_DURATION      =   800 * ANIMATION_SPEED_MULTIPLIER;
 
-const SCORE_HUD_DIGITS_COUNT = 5;
 
 const START_FALL_ANIMATION_EASING = TWEEN.Easing.Cubic.In;
 const DESTROY_ANIMATION_EASING    = TWEEN.Easing.Cubic.In;
@@ -103,6 +102,11 @@ class GameScene
         this.RunOnExit(new MenuScene());
     } // GoBack
 
+    GoScene(scene)
+    {
+        this.RunOnExit(scene);
+    }
+
     //--------------------------------------------------------------------------
     OnFinishedEnterAnimation()
     {
@@ -114,15 +118,11 @@ class GameScene
     Update(dt)
     {
         super.Update(dt);
-        // this.focus.x = Mouse_X;
-        // this.focus.y = Mouse_Y;
         // Objects.
         this.sky                  .Update(dt);
         this.score_number         .Update(dt);
         this.score_number_particle.Update(dt);
 
-        // this.score_number.x = Mouse_X;
-        // this.score_number.y = Mouse_Y;
         // Animation Tweens.
         this.start_fall_tween_group.update(dt);
         this.destroy_tween_group   .update(dt);
@@ -462,7 +462,20 @@ class GameScene
             return;
         }
 
-        SCENE_MANAGER.SetScene(new MenuScene());
+        //
+        // Set the best and last score...
+        GameSettings_Set(SETTINGS_KEY_HAS_SCORE, true);
+        GameSettings_Set(SETTINGS_KEY_LAST_SCORE, this.current_score);
+
+        const old_best_score = GameSettings_Get(SETTINGS_KEY_BEST_SCORE, 0);
+        const new_best_score = Math_Max(old_best_score, this.current_score);
+        GameSettings_Set(SETTINGS_KEY_BEST_SCORE, new_best_score);
+
+        if(LeaderboardsUtils_IsOnLeaderboard(new_best_score)) {
+            this.GoScene(new LeaderboardsScene(LEADERBOARDS_SCENE_MODE_ENTER));
+        } else {
+            this.GoScene(new MenuScene());
+        }
     } // _OnBricksSlideEnded
 
 
@@ -511,7 +524,6 @@ class GameScene
 
         this.addChild(number_ui);
     } // _CreateScoreAddAnimation
-
 
 
 

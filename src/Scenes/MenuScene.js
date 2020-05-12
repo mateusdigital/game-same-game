@@ -53,9 +53,11 @@ class MenuScene
         if(!this.has_scores) {
             return;
         }
+        const last_score = GameSettings_Get(SETTINGS_KEY_LAST_SCORE, 0);
+        const best_score = GameSettings_Get(SETTINGS_KEY_BEST_SCORE, 0);
 
-        this.last_score = new ScoreNumber(0, 5);
-        this.best_score = new ScoreNumber(0, 5);
+        this.last_score = new ScoreNumber(last_score, SCORE_HUD_DIGITS_COUNT);
+        this.best_score = new ScoreNumber(best_score, SCORE_HUD_DIGITS_COUNT);
 
         this.best_score.bg.tint = 0xff00ff;
         this.best_score.bg.alpha = 0.3;
