@@ -1,3 +1,6 @@
+const ANIMATED_SCENE_CLOSE_DOWN_ANIMATION_DURATION = 1000 * ANIMATION_SPEED_MULTIPLIER
+const ANIMATED_SCENE_OPEN_UP_ANIMATION_DURATION    = 1000 * ANIMATION_SPEED_MULTIPLIER
+
 class AnimatedScene
     extends Base_Scene
 {
@@ -19,7 +22,7 @@ class AnimatedScene
         this.mask = this.focus;
         this.parent.addChild(this.focus);
 
-        Tween_CreateBasic(1000)
+        Tween_CreateBasic(ANIMATED_SCENE_CLOSE_DOWN_ANIMATION_DURATION)
             .from({r: curr_radius  })
             .to  ({r: target_radius})
             .onUpdate((value)=>{
@@ -59,7 +62,7 @@ class AnimatedScene
         this.mask = this.focus;
         this.parent.addChild(this.focus);
 
-        Tween_CreateBasic(1000)
+        Tween_CreateBasic(ANIMATED_SCENE_OPEN_UP_ANIMATION_DURATION)
             .from({r: curr_radius  })
             .to  ({r: target_radius})
             .onUpdate((value)=>{
