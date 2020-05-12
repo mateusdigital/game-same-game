@@ -28,7 +28,7 @@ const SCORE_ANIMATION_EASING      = TWEEN.Easing.Quintic.In;
 //----------------------------------------------------------------------------//
 //------------------------------------------------------------------------------
 class GameScene
-    extends Base_Scene
+    extends AnimatedScene
 {
     //--------------------------------------------------------------------------
     constructor()
@@ -69,7 +69,6 @@ class GameScene
         Update_Anchor(this.score_number, 0.5);
         this.addChild(this.score_number);
 
-
         //
         // Animation.
         this.start_fall_tween_group = Tween_CreateGroup()
@@ -84,13 +83,19 @@ class GameScene
         //
         // Brick and container properties.
         this._InitializeContainer();
-        this._InitializeBricks   ();
     } // CTOR
+
+    OnFinishedEnterAnimation() {
+        super.OnFinishedEnterAnimation();
+        this._InitializeBricks   ();
+    }
 
     //--------------------------------------------------------------------------
     Update(dt)
     {
         super.Update(dt);
+        // this.focus.x = Mouse_X;
+        // this.focus.y = Mouse_Y;
         // Objects.
         this.sky                  .Update(dt);
         this.score_number         .Update(dt);
@@ -167,6 +172,7 @@ class GameScene
                 });
             }
         }
+
         this.brick_container.calculateBounds();
     } // _InitializeBricks
 
@@ -181,7 +187,7 @@ class GameScene
         const duration  = START_FALL_ANIMATION_DURATION * (scale);
         const delay_min = duration * 0.7;
         const delay_max = duration * 1.2;
-        const start_y   = -200; // @XXX(stdmatt):
+        const start_y   = -300; // @XXX(stdmatt):
 
         brick.y = start_y
         brick.x = target_y;

@@ -4,11 +4,12 @@ const BUTTON_GAP         = 10;
 const BUTTON_SMALL_WIDTH = BUTTON_BIG_WIDTH / 3 - BUTTON_GAP;
 const BUTTON_HEIGHT      = BUTTON_SMALL_WIDTH;
 
+
 //----------------------------------------------------------------------------//
 // Types                                                                     //
 //----------------------------------------------------------------------------//
 class MenuScene
-    extends Base_Scene
+    extends AnimatedScene
 {
     //--------------------------------------------------------------------------
     constructor()
@@ -37,6 +38,21 @@ class MenuScene
 
 
         // Scores
+        this.last_score = null;
+        this.best_score = null;
+        this._CreateScores();
+
+
+    } // CTOR
+
+    //--------------------------------------------------------------------------
+    Update(dt)
+    {
+        this.sky.Update(dt);
+    } // Update
+
+    _CreateScores()
+    {
         this.last_score = new ScoreNumber(0, 5);
         this.best_score = new ScoreNumber(0, 5);
 
@@ -51,19 +67,11 @@ class MenuScene
         this.last_score.x = GAME_DESIGN_WIDTH  * 0.5;
         this.last_score.y = this.best_score.y - this.best_score.height - BUTTON_GAP;
         this.addChild(this.last_score);
-
-    } // CTOR
-
-    //--------------------------------------------------------------------------
-    Update(dt)
-    {
-        this.sky.Update(dt);
-    } // Update
+    }
 
     //--------------------------------------------------------------------------
     _CreateButtons()
     {
-
         const NINE_SLICE_SETTINGS = {
             left_width:    3,
             top_height:    3,
@@ -130,7 +138,8 @@ class MenuScene
         this.sound_button = new NineSliceButton(
             YELLOW_TEXTURE_SETINGS,
             NINE_SLICE_SETTINGS,
-            SMALL_BUTTON_SIZE_SETTINGS
+            SMALL_BUTTON_SIZE_SETTINGS,
+            { "normal": Texture_Get(BUTTONS_ICONS_TEXTURES_NAMES[1])}
         );
 
         this.sound_button.x = this.play_button.x - (BUTTON_BIG_WIDTH * 0.5) + (BUTTON_SMALL_WIDTH * 0.5);
@@ -145,7 +154,8 @@ class MenuScene
         this.leaders_button = new NineSliceButton(
             ORANGE_TEXTURE_SETINGS,
             NINE_SLICE_SETTINGS,
-            SMALL_BUTTON_SIZE_SETTINGS
+            SMALL_BUTTON_SIZE_SETTINGS,
+            { "normal": Texture_Get(BUTTONS_ICONS_TEXTURES_NAMES[0])}
         );
 
         this.leaders_button.x = this.play_button.x;
@@ -160,7 +170,8 @@ class MenuScene
         this.more_button = new NineSliceButton(
             GREEN_TEXTURE_SETINGS,
             NINE_SLICE_SETTINGS,
-            SMALL_BUTTON_SIZE_SETTINGS
+            SMALL_BUTTON_SIZE_SETTINGS,
+            { "normal": Texture_Get(BUTTONS_ICONS_TEXTURES_NAMES[3])}
         );
         this.more_button.x = this.play_button.x + (BUTTON_BIG_WIDTH * 0.5) - (BUTTON_SMALL_WIDTH * 0.5);
         this.more_button.y = this.credits_button.y + BUTTON_HEIGHT + BUTTON_GAP;
@@ -173,7 +184,8 @@ class MenuScene
     //--------------------------------------------------------------------------
     GoPlay()
     {
-        SCENE_MANAGER.SetScene(new GameScene());
+        this.RunOnExit(new GameScene())
+        // SCENE_MANAGER.SetScene(new GameScene());
     }
 
     //--------------------------------------------------------------------------
@@ -185,6 +197,18 @@ class MenuScene
     //--------------------------------------------------------------------------
     ToggleSound()
     {
+        let texture_name = null;
+
+        const sound_on = GameSettings_Get("sound", true);
+        GameSettings_Set("sound", !sound_on);
+
+        if(sound_on) {
+            texture_name = BUTTONS_ICONS_TEXTURES_NAMES[1];
+        } else {
+            texture_name = BUTTONS_ICONS_TEXTURES_NAMES[2];
+        }
+
+        this.sound_button.icon.texture = Texture_Get(texture_name);
     }
 
     //--------------------------------------------------------------------------

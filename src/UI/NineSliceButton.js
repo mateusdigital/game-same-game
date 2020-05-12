@@ -22,7 +22,7 @@ class NineSliceButton
     extends PIXI.NineSlicePlane
 {
     //--------------------------------------------------------------------------
-    constructor(texture_settings, slice_settings, size_settings)
+    constructor(texture_settings, slice_settings, size_settings, icon_settings)
     {
         super(
             texture_settings.normal,
@@ -33,10 +33,21 @@ class NineSliceButton
         );
         this.texture_settings = texture_settings;
         this.slice_settings   = slice_settings;
+        this.icon_settings    = icon_settings;
+        this.icon             = null;
 
         if(size_settings) {
             this.width  = size_settings.width;
             this.height = size_settings.height;
+        }
+
+        if(icon_settings) {
+            this.icon = new PIXI.Sprite(icon_settings["normal"]);
+            this.addChild(this.icon);
+
+            Update_Anchor(this.icon, 0.5);
+            this.icon.x = this.width * 0.5;
+            this.icon.y = this.height * 0.5
         }
 
         this.interactive = true;
@@ -45,6 +56,12 @@ class NineSliceButton
         this._SetupCallbacks();
     } // CTOR
 
+    _SetTint(obj, color)
+    {
+        if(obj) {
+            obj.tint = color;
+        }
+    }
     //--------------------------------------------------------------------------
     _SetupCallbacks()
     {
@@ -52,14 +69,16 @@ class NineSliceButton
             if(this.texture_settings["hover"]) {
                 this.texture =  this.texture_settings["hover"];
             } else {
-                this.tint = NINE_SLICE_BUTTON_HOVER_TINT;
+                this._SetTint(this,      NINE_SLICE_BUTTON_HOVER_TINT);
+                this._SetTint(this.icon, NINE_SLICE_BUTTON_HOVER_TINT);
             }
         }
         this.mouseout = () => {
             if(this.texture_settings["hover"]) {
-                this.texture =  this.texture_settings.normal;
+                this.texture = this.texture_settings.normal;
             } else {
-                this.tint = NINE_SLICE_BUTTON_NORMAL_TINT;
+                this._SetTint(this,      NINE_SLICE_BUTTON_NORMAL_TINT);
+                this._SetTint(this.icon, NINE_SLICE_BUTTON_NORMAL_TINT);
             }
         }
 
@@ -67,14 +86,16 @@ class NineSliceButton
             if(this.texture_settings["pressed"]) {
                 this.texture =  this.texture_settings["pressed"];
             } else {
-                this.tint = NINE_SLICE_BUTTON_PRESS_TINT;
+                this._SetTint(this,      NINE_SLICE_BUTTON_PRESS_TINT);
+                this._SetTint(this.icon, NINE_SLICE_BUTTON_PRESS_TINT);
             }
         }
         this.mouseup = this.touchend= () => {
             if(this.texture_settings["pressed"]) {
                 this.texture =  this.texture_settings.normal
             } else {
-                this.tint = NINE_SLICE_BUTTON_NORMAL_TINT;
+                this._SetTint(this,      NINE_SLICE_BUTTON_NORMAL_TINT);
+                this._SetTint(this.icon, NINE_SLICE_BUTTON_NORMAL_TINT);
             }
         }
     } // _SetupCallbacks
