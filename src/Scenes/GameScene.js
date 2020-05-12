@@ -332,6 +332,9 @@ class GameScene
             .onUpdate((value)=>{
                 brick.y = value.y;
             })
+            .onComplete(()=>{
+                brick.y = target_y;
+            })
             .easing(FALL_ANIMATION_EASING)
             .start();
     } // _CreateBrickFallAnimation
@@ -388,6 +391,9 @@ class GameScene
             .to({x: target_x})
             .onUpdate((value)=>{
                 brick.x = value.x;
+            })
+            .onComplete(()=>{
+                brick.x = target_x;
             })
             .easing(SLIDE_ANIMATION_EASING)
             .start();
