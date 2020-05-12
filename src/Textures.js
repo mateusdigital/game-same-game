@@ -1,4 +1,7 @@
 
+//----------------------------------------------------------------------------//
+// Background                                                                 //
+//----------------------------------------------------------------------------//
 const MENU_BACKGROUND_TEXTURE_NAME = [
     "res/textures/test.png"
 ];
@@ -9,6 +12,9 @@ const CLOUD_BACKGROUND_TEXTURES_NAMES = [
     "res/textures/background/hills.png",
 ];
 
+//----------------------------------------------------------------------------//
+// Numbers                                                                    //
+//----------------------------------------------------------------------------//
 const NUMBERS_TEXTURES_NAMES = [
     "res/textures/numbers/0.png",
     "res/textures/numbers/1.png",
@@ -22,20 +28,34 @@ const NUMBERS_TEXTURES_NAMES = [
     "res/textures/numbers/9.png",
 ];
 
+//----------------------------------------------------------------------------//
+// Buttons                                                                    //
+//----------------------------------------------------------------------------//
 const BUTTONS_TEXTURES_NAMES = [
+    // Green
     "res/textures/buttons/green.png",
     "res/textures/buttons/green_pressed.png",
-
+    // Red
     "res/textures/buttons/red.png",
     "res/textures/buttons/red_pressed.png",
-
+    // Yellow
     "res/textures/buttons/yellow.png",
     "res/textures/buttons/yellow_pressed.png",
-
+    // Blue
     "res/textures/buttons/blue.png",
     "res/textures/buttons/blue_pressed.png",
 ];
 
+const BUTTONS_ICONS_TEXTURES_NAMES = [
+    "res/textures/buttons/leaderboardsComplex.png",
+    "res/textures/buttons/musicOff.png",
+    "res/textures/buttons/musicOn.png",
+    "res/textures/buttons/plus.png",
+];
+
+//----------------------------------------------------------------------------//
+// Bricks                                                                     //
+//----------------------------------------------------------------------------//
 const BRICKS_TEXTURES_NAMES = [
     "res/textures/bricks2/1.png",
     "res/textures/bricks2/2.png",
@@ -44,6 +64,9 @@ const BRICKS_TEXTURES_NAMES = [
     "res/textures/bricks2/5.png",
 ];
 
+//----------------------------------------------------------------------------//
+// Score                                                                      //
+//----------------------------------------------------------------------------//
 const SCORE_PARTICLES = [
     "res/textures/particles/emote_heart.png",
     "res/textures/particles/emote_hearts.png",

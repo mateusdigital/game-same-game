@@ -14,8 +14,12 @@ function PreLoad()
         NUMBERS_TEXTURES_NAMES,
         "res/textures/untitled.png",
         BUTTONS_TEXTURES_NAMES,
+        BUTTONS_ICONS_TEXTURES_NAMES,
         MENU_BACKGROUND_TEXTURE_NAME,
         CLOUD_BACKGROUND_TEXTURES_NAMES,
+        SCORE_PARTICLES,
+        "res/emitter.json",
+        "res/textures/ola.png",
     );
 
     Texture_SetBasePath("res");
@@ -25,10 +29,12 @@ function PreLoad()
 //------------------------------------------------------------------------------
 function Setup()
 {
-    SCENE_MANAGER.SetScene(new GameScene());
-    // SCENE_MANAGER.SetScene(new MenuScene());
+    GameSettings_Init();
+
+    // SCENE_MANAGER.SetScene(new GameScene());
+    SCENE_MANAGER.SetScene(new MenuScene());
     Application_Start(GameLoop);
-    Input_InstallBasicMouseHandler(g_App.view   )
+    Input_InstallBasicMouseHandler(g_App.view);
 }
 
 //------------------------------------------------------------------------------
