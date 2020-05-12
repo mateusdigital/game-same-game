@@ -47,15 +47,11 @@ class GameScene
         this.current_score      = 0;
 
         //
-        // Sky
-        this.sky = new SkyBackground();
+        // Scenario
+        this.sky      = new SkyBackground();
+        this.scenario = new ScenarioLayer();
         this.addChild(this.sky);
-
-        //
-        // Foreground Layer
-        const foreground = Sprite_Create(MENU_BACKGROUND_TEXTURE_NAME);
-        foreground.y = GAME_DESIGN_HEIGHT - foreground.height;
-        this.addChild(foreground);
+        this.addChild(this.scenario);
 
         //
         // Score HUD.

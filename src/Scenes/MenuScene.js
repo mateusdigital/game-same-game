@@ -16,15 +16,12 @@ class MenuScene
     {
         super();
         //
-        // Sky Layers...
-        this.sky = new SkyBackground();
-        this.addChild(this.sky);
+        // Scenario
+        this.sky      = new SkyBackground();
+        this.scenario = new ScenarioLayer();
 
-        //
-        // Foreground Layer
-        const foreground = Sprite_Create(MENU_BACKGROUND_TEXTURE_NAME);
-        foreground.y = GAME_DESIGN_HEIGHT - foreground.height;
-        this.addChild(foreground);
+        this.addChild(this.sky);
+        this.addChild(this.scenario);
 
         //
         // Buttons
@@ -41,8 +38,6 @@ class MenuScene
         this.last_score = null;
         this.best_score = null;
         this._CreateScores();
-
-
     } // CTOR
 
     //--------------------------------------------------------------------------
