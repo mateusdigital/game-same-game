@@ -1,5 +1,5 @@
-const ANIMATED_SCENE_CLOSE_DOWN_ANIMATION_DURATION = 1000 * ANIMATION_SPEED_MULTIPLIER;
-const ANIMATED_SCENE_OPEN_UP_ANIMATION_DURATION    = 1000 * ANIMATION_SPEED_MULTIPLIER;
+const ANIMATED_SCENE_CLOSE_DOWN_ANIMATION_DURATION = 800 * ANIMATION_SPEED_MULTIPLIER;
+const ANIMATED_SCENE_OPEN_UP_ANIMATION_DURATION    = 800 * ANIMATION_SPEED_MULTIPLIER;
 
 const ANIMATED_SCENE_CLOSE_DOWN_ANIMATION_EASING = TWEEN.Easing.Exponential.In;
 const ANIMATED_SCENE_OPEN_UP_ANIMATION_EASING    = TWEEN.Easing.Exponential.Out;
@@ -37,7 +37,7 @@ class AnimatedScene
     {
         this.focus = new PIXI.Sprite(Texture_Get("res/textures/ola.png"))
 
-        const focus_radius = this.focus.height * (GAME_DESIGN_HEIGHT / this.focus.height) * 1.2;
+        const focus_radius = this.focus.height * (GAME_DESIGN_HEIGHT / this.focus.height) * 1.15;
         const curr_radius   = (is_opening_up) ? 0 : focus_radius;
         const target_radius = (is_opening_up) ? focus_radius : 0;
 
