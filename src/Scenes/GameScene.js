@@ -54,6 +54,22 @@ class GameScene
         this.addChild(this.scenario);
 
         //
+        // Buttons
+        this.back_button = new NineSliceButton(
+            ORANGE_TEXTURE_SETTINGS,
+            NINE_SLICE_SETTINGS,
+            SMALL_BUTTON_SIZE_SETTINGS,
+        );
+
+        this.back_button.scale.set(0.6);
+        this.back_button.x = (this.back_button.width  * 0.5) + (CONTAINER_DESIGN_GAP_X * 0.5);
+        this.back_button.y = (this.back_button.height * 0.5) + (CONTAINER_DESIGN_GAP_X * 0.5);
+        this.back_button.on("pointerdown", ()=> { this.GoBack() });
+        this.back_button.AddIcon(Sprite_Create(BUTTON_ICON_NAME_BACK));
+        this.addChild(this.back_button);
+        Update_Anchor(this.back_button, 0.5);
+
+        //
         // Score HUD.
         this.score_number_particle = new ScoreNumberParticle();
         this.addChild(this.score_number_particle);
@@ -81,10 +97,18 @@ class GameScene
         this._InitializeContainer();
     } // CTOR
 
-    OnFinishedEnterAnimation() {
+    //--------------------------------------------------------------------------
+    GoBack()
+    {
+        this.RunOnExit(new MenuScene());
+    } // GoBack
+
+    //--------------------------------------------------------------------------
+    OnFinishedEnterAnimation()
+    {
         super.OnFinishedEnterAnimation();
         this._InitializeBricks   ();
-    }
+    } // OnFinishedEnterAnimation
 
     //--------------------------------------------------------------------------
     Update(dt)
