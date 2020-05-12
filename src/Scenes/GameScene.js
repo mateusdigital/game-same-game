@@ -12,7 +12,7 @@ const START_FALL_ANIMATION_DURATION =  1000 * ANIMATION_SPEED_MULTIPLIER;
 const DESTROY_ANIMATION_DURATION    =   500 * ANIMATION_SPEED_MULTIPLIER;
 const FALL_ANIMATION_DURATION       =   700 * ANIMATION_SPEED_MULTIPLIER;
 const SLIDE_ANIMATION_DURATION      =   500 * ANIMATION_SPEED_MULTIPLIER;
-const SCORE_ANIMATION_DURATION      =   500 * ANIMATION_SPEED_MULTIPLIER;
+const SCORE_ANIMATION_DURATION      =   800 * ANIMATION_SPEED_MULTIPLIER;
 
 const SCORE_HUD_DIGITS_COUNT = 5;
 
@@ -47,15 +47,27 @@ class GameScene
         this.current_score      = 0;
 
         //
-        // Sky
-        this.sky = new SkyBackground();
+        // Scenario
+        this.sky      = new SkyBackground();
+        this.scenario = new ScenarioLayer();
         this.addChild(this.sky);
+        this.addChild(this.scenario);
 
         //
-        // Foreground Layer
-        const foreground = Sprite_Create(MENU_BACKGROUND_TEXTURE_NAME);
-        foreground.y = GAME_DESIGN_HEIGHT - foreground.height;
-        this.addChild(foreground);
+        // Buttons
+        this.back_button = new NineSliceButton(
+            ORANGE_TEXTURE_SETTINGS,
+            NINE_SLICE_SETTINGS,
+            SMALL_BUTTON_SIZE_SETTINGS,
+        );
+
+        this.back_button.scale.set(0.6);
+        this.back_button.x = (this.back_button.width  * 0.5) + (CONTAINER_DESIGN_GAP_X * 0.5);
+        this.back_button.y = (this.back_button.height * 0.5) + (CONTAINER_DESIGN_GAP_X * 0.5);
+        this.back_button.on("pointerdown", ()=> { this.GoBack() });
+        this.back_button.AddIcon(Sprite_Create(BUTTON_ICON_NAME_BACK));
+        this.addChild(this.back_button);
+        Update_Anchor(this.back_button, 0.5);
 
         //
         // Score HUD.
@@ -85,10 +97,18 @@ class GameScene
         this._InitializeContainer();
     } // CTOR
 
-    OnFinishedEnterAnimation() {
+    //--------------------------------------------------------------------------
+    GoBack()
+    {
+        this.RunOnExit(new MenuScene());
+    } // GoBack
+
+    //--------------------------------------------------------------------------
+    OnFinishedEnterAnimation()
+    {
         super.OnFinishedEnterAnimation();
         this._InitializeBricks   ();
-    }
+    } // OnFinishedEnterAnimation
 
     //--------------------------------------------------------------------------
     Update(dt)
@@ -336,6 +356,9 @@ class GameScene
             .onUpdate((value)=>{
                 brick.y = value.y;
             })
+            .onComplete(()=>{
+                brick.y = target_y;
+            })
             .easing(FALL_ANIMATION_EASING)
             .start();
     } // _CreateBrickFallAnimation
@@ -392,6 +415,9 @@ class GameScene
             .to({x: target_x})
             .onUpdate((value)=>{
                 brick.x = value.x;
+            })
+            .onComplete(()=>{
+                brick.x = target_x;
             })
             .easing(SLIDE_ANIMATION_EASING)
             .start();
