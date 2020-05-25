@@ -33,8 +33,19 @@ function Setup()
     GameSettings_Init     ();
     LeaderboardsUtils_Init();
 
-    // SCENE_MANAGER.SetScene(new GameScene());
-    SCENE_MANAGER.SetScene(new MenuScene());
+    const params     = new URLSearchParams(location.search);
+    const scene_name = params.get("scene");
+
+    if(scene_name == "menu") {
+        SCENE_MANAGER.SetScene(new MenuScene());
+    } else if(scene_name == "game") {
+        SCENE_MANAGER.SetScene(new GameScene());
+    } else if(scene_name == "leaderboards") {
+        SCENE_MANAGER.SetScene(new LeaderboardsScene());
+    } else {
+        SCENE_MANAGER.SetScene(new MenuScene());
+    }
+
     Application_Start(GameLoop);
     Input_InstallBasicMouseHandler(g_App.view);
 }
