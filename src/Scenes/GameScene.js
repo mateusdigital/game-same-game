@@ -4,17 +4,19 @@
 //----------------------------------------------------------------------------//
 const GROUND_HEIGHT   = 130;
 const GAME_HUD_HEIGHT = 130;
+
 const CONTAINER_DESIGN_GAP_X  = 20;
 const CONTAINER_DESIGN_HEIGHT = GAME_DESIGN_HEIGHT  - (GROUND_HEIGHT + GAME_HUD_HEIGHT);
 const CONTAINER_DESIGN_WIDTH  = (GAME_DESIGN_WIDTH  - CONTAINER_DESIGN_GAP_X);
+
+const START_FALL_BRICKS_Y_OFFSET = -300;
 
 const START_FALL_ANIMATION_DURATION =  1000 * ANIMATION_SPEED_MULTIPLIER;
 const DESTROY_ANIMATION_DURATION    =   500 * ANIMATION_SPEED_MULTIPLIER;
 const FALL_ANIMATION_DURATION       =   700 * ANIMATION_SPEED_MULTIPLIER;
 const SLIDE_ANIMATION_DURATION      =   500 * ANIMATION_SPEED_MULTIPLIER;
-const SCORE_ANIMATION_DURATION      =   500 * ANIMATION_SPEED_MULTIPLIER;
+const SCORE_ANIMATION_DURATION      =   800 * ANIMATION_SPEED_MULTIPLIER;
 
-const SCORE_HUD_DIGITS_COUNT = 5;
 
 const START_FALL_ANIMATION_EASING = TWEEN.Easing.Cubic.In;
 const DESTROY_ANIMATION_EASING    = TWEEN.Easing.Cubic.In;
@@ -28,7 +30,7 @@ const SCORE_ANIMATION_EASING      = TWEEN.Easing.Quintic.In;
 //----------------------------------------------------------------------------//
 //------------------------------------------------------------------------------
 class GameScene
-    extends Base_Scene
+    extends AnimatedScene
 {
     //--------------------------------------------------------------------------
     constructor()
@@ -47,15 +49,27 @@ class GameScene
         this.current_score      = 0;
 
         //
-        // Sky
-        this.sky = new SkyBackground();
+        // Scenario
+        this.sky      = new SkyBackground();
+        this.scenario = new ScenarioLayer();
         this.addChild(this.sky);
+        this.addChild(this.scenario);
 
         //
-        // Foreground Layer
-        const foreground = Sprite_Create(MENU_BACKGROUND_TEXTURE_NAME);
-        foreground.y = GAME_DESIGN_HEIGHT - foreground.height;
-        this.addChild(foreground);
+        // Buttons
+        this.back_button = new NineSliceButton(
+            ORANGE_TEXTURE_SETTINGS,
+            NINE_SLICE_SETTINGS,
+            SMALL_BUTTON_SIZE_SETTINGS,
+        );
+
+        this.back_button.scale.set(0.6);
+        this.back_button.x = (this.back_button.width  * 0.5) + (CONTAINER_DESIGN_GAP_X * 0.5);
+        this.back_button.y = (this.back_button.height * 0.5) + (CONTAINER_DESIGN_GAP_X * 0.5);
+        this.back_button.on("pointerdown", ()=> { this.GoBack() });
+        this.back_button.AddIcon(Sprite_Create(BUTTON_ICON_NAME_BACK));
+        this.addChild(this.back_button);
+        Update_Anchor(this.back_button, 0.5);
 
         //
         // Score HUD.
@@ -68,7 +82,6 @@ class GameScene
         this.score_number.scale.set(1.5);
         Update_Anchor(this.score_number, 0.5);
         this.addChild(this.score_number);
-
 
         //
         // Animation.
@@ -84,8 +97,26 @@ class GameScene
         //
         // Brick and container properties.
         this._InitializeContainer();
-        this._InitializeBricks   ();
     } // CTOR
+
+    //--------------------------------------------------------------------------
+    GoBack()
+    {
+        this.RunOnExit(new MenuScene());
+    } // GoBack
+
+    //--------------------------------------------------------------------------
+    GoScene(scene)
+    {
+        this.RunOnExit(scene);
+    } // GoScene
+
+    //--------------------------------------------------------------------------
+    OnFinishedEnterAnimation()
+    {
+        super.OnFinishedEnterAnimation();
+        this._InitializeBricks   ();
+    } // OnFinishedEnterAnimation
 
     //--------------------------------------------------------------------------
     Update(dt)
@@ -96,8 +127,6 @@ class GameScene
         this.score_number         .Update(dt);
         this.score_number_particle.Update(dt);
 
-        // this.score_number.x = Mouse_X;
-        // this.score_number.y = Mouse_Y;
         // Animation Tweens.
         this.start_fall_tween_group.update(dt);
         this.destroy_tween_group   .update(dt);
@@ -167,6 +196,7 @@ class GameScene
                 });
             }
         }
+
         this.brick_container.calculateBounds();
     } // _InitializeBricks
 
@@ -181,7 +211,7 @@ class GameScene
         const duration  = START_FALL_ANIMATION_DURATION * (scale);
         const delay_min = duration * 0.7;
         const delay_max = duration * 1.2;
-        const start_y   = -200; // @XXX(stdmatt):
+        const start_y   = START_FALL_BRICKS_Y_OFFSET;
 
         brick.y = start_y
         brick.x = target_y;
@@ -240,7 +270,7 @@ class GameScene
         }
 
         // Points earned animation.
-        const points           = Math_Pow(matching_bricks.length -2, 2);
+        const points           = this._CalculatePointsEarned(matching_bricks.length);
         const brick_global_pos = brick.getGlobalPosition();
         this._CreateScoreAddAnimation(brick_global_pos.x, brick_global_pos.y, points);
     } // _OnBrickClicked
@@ -299,24 +329,6 @@ class GameScene
         }
     } // _OnBricksDestroyEnded
 
-    _FindMatchingBricks(brick)
-    {
-        const brick_pos = brick.position;
-        const coord_x = Math_Int((brick_pos.x + 0.5) / this.brick_width);
-        const coord_y = Math_Int((brick_pos.y + 0.5) / this.brick_height);
-
-        console.log("Brick clicked at: ", coord_x, coord_y);
-        const matching_bricks = Algo_FloodFind(
-            this.bricks_grid,                             // container
-            coord_x, coord_y,                             // start coords
-            (item) => {                          // predicate
-                return item && item.type == brick.type;
-            }
-        );
-
-        return matching_bricks;
-    }
-
 
     //------------------------------------------------------------------------//
     // Brick Fall                                                             //
@@ -329,6 +341,9 @@ class GameScene
             .to({y: target_y})
             .onUpdate((value)=>{
                 brick.y = value.y;
+            })
+            .onComplete(()=>{
+                brick.y = target_y;
             })
             .easing(FALL_ANIMATION_EASING)
             .start();
@@ -387,6 +402,9 @@ class GameScene
             .onUpdate((value)=>{
                 brick.x = value.x;
             })
+            .onComplete(()=>{
+                brick.x = target_x;
+            })
             .easing(SLIDE_ANIMATION_EASING)
             .start();
     } //_CreateSlideAnimation
@@ -430,7 +448,20 @@ class GameScene
             return;
         }
 
-        SCENE_MANAGER.SetScene(new MenuScene());
+        //
+        // Set the best and last score...
+        GameSettings_Set(SETTINGS_KEY_HAS_SCORE, true);
+        GameSettings_Set(SETTINGS_KEY_LAST_SCORE, this.current_score);
+
+        const old_best_score = GameSettings_Get(SETTINGS_KEY_BEST_SCORE, 0);
+        const new_best_score = Math_Max(old_best_score, this.current_score);
+        GameSettings_Set(SETTINGS_KEY_BEST_SCORE, new_best_score);
+
+        if(LeaderboardsUtils_IsOnLeaderboard(new_best_score)) {
+            this.GoScene(new LeaderboardsScene(LEADERBOARDS_SCENE_MODE_ENTER));
+        } else {
+            this.GoScene(new MenuScene());
+        }
     } // _OnBricksSlideEnded
 
 
@@ -480,11 +511,36 @@ class GameScene
         this.addChild(number_ui);
     } // _CreateScoreAddAnimation
 
-
+    _CalculatePointsEarned(bricks_count)
+    {
+        return Math_Pow(bricks_count -2, 2);
+    }
 
 
     //------------------------------------------------------------------------//
-    // Debug//
+    // Game Logic                                                             //
+    //------------------------------------------------------------------------//
+    _FindMatchingBricks(brick)
+    {
+        const brick_pos = brick.position;
+        const coord_x = Math_Int((brick_pos.x + 0.5) / this.brick_width);
+        const coord_y = Math_Int((brick_pos.y + 0.5) / this.brick_height);
+
+        console.log("Brick clicked at: ", coord_x, coord_y);
+        const matching_bricks = Algo_FloodFind(
+            this.bricks_grid,                             // container
+            coord_x, coord_y,                             // start coords
+            (item) => {                          // predicate
+                return item && item.type == brick.type;
+            }
+        );
+
+        return matching_bricks;
+    } // _FindMatchingBricks
+
+
+    //------------------------------------------------------------------------//
+    // Debug                                                                  //
     //------------------------------------------------------------------------//
     _print()
     {

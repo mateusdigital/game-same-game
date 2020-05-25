@@ -1,25 +1,24 @@
 //----------------------------------------------------------------------------//
 // Types                                                                      //
 //----------------------------------------------------------------------------//
-class Brick
+class ScenarioLayer
     extends PIXI.Container
 {
     //--------------------------------------------------------------------------
-    constructor(width, height, type)
+    constructor()
     {
         super();
 
         //
-        // HouseKeeping
-        this.type = type;
+        // Create the static stuff...
+        const foreground = Sprite_Create(MENU_BACKGROUND_TEXTURE_NAME);
+        foreground.y = GAME_DESIGN_HEIGHT - foreground.height;
 
-        //
-        // Sprite.
-        this.bg        = Sprite_Create(BRICKS_TEXTURES_NAMES[type]);
-        this.bg.width  = width;
-        this.bg.height = height;
-
-        Update_Anchor(this.bg, 0.5);
-        this.addChild(this.bg);
+        this.addChild(foreground);
     } // CTOR
-} // class Brick
+
+    //--------------------------------------------------------------------------
+    Update(dt)
+    {
+    } // Update
+} // class ScenarioLayer

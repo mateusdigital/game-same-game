@@ -1,8 +1,12 @@
-
-const BUBBLE_ANIMATION_DURATION = 500;
+//----------------------------------------------------------------------------//
+// Constants                                                                  //
+//----------------------------------------------------------------------------//
+const BUBBLE_ANIMATION_DURATION = 500 * ANIMATION_SPEED_MULTIPLIER;
 const BUBBLE_ANIMATION_EASING   = TWEEN.Easing.Back.In;
 
-
+//----------------------------------------------------------------------------//
+// Types                                                                      //
+//----------------------------------------------------------------------------//
 class ScoreNumber
     extends FixedSizeContainer
 {
@@ -11,11 +15,8 @@ class ScoreNumber
     {
         super(0, 0)
 
-        let a = this.width;
-
-        this.sprites            = [];
-        this.digits_count       = digits_count;
-        this.curr_value         = this._FillDigits(value);
+        this.sprites    = [];
+        this.curr_value = FillDigits(value, digits_count);
 
         this.bubble_tween_group = Tween_CreateGroup()
             // @NOTICE(stdmatt): I think that's better that numbers to be
@@ -40,8 +41,11 @@ class ScoreNumber
     //--------------------------------------------------------------------------
     SetNumberAnimated(value, half_way_callback)
     {
+        // This will be called when the number has finished
+        // scaled down and is about to start to scale up again.
         this.bubble_tween_half_way_callback = half_way_callback;
-        const value_str = this._FillDigits(value);
+
+        const value_str = FillDigits(value);
         for(let i = 0; i < value_str.length; ++i) {
             if(value_str[i] == this.curr_value[i]) {
                 continue;
@@ -73,16 +77,6 @@ class ScoreNumber
             })
             .start();
     } // _CreateBubbleAnimation
-
-    //--------------------------------------------------------------------------
-    _FillDigits(value)
-    {
-        let value_str = value.toString();
-        if(value_str.length < this.digits_count) {
-            value_str = "0".repeat(this.digits_count - value_str.length) + value_str;
-        }
-        return value_str;
-    } // _FillDigits
 
     //--------------------------------------------------------------------------
     _CreateSprites()
