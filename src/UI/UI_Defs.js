@@ -3,6 +3,12 @@ const BUTTON_GAP         = 10;
 const BUTTON_SMALL_WIDTH = BUTTON_BIG_WIDTH / 3 - BUTTON_GAP;
 const BUTTON_HEIGHT      = BUTTON_SMALL_WIDTH;
 
+const BIG_FONT_NAME = "ARCO Typography";
+const BIG_FONT_SIZE = 80;
+
+const MEDIUM_FONT_NAME = "ARCO Typography";
+const MEDIUM_FONT_SIZE = 40;
+
 //
 // Nine Slice Settings
 //
