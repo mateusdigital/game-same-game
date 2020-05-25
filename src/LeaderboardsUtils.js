@@ -5,6 +5,7 @@ const LEADERBOARD_URL       = "localhost";
 const LEADERBOARD_PORT      = 5000;
 const LEADERBOARD_END_POINT = "leaderboards"
 
+
 //----------------------------------------------------------------------------//
 // Private Vars                                                               //
 //----------------------------------------------------------------------------//
@@ -29,7 +30,7 @@ function LeaderboardsUtils_Init()
 }
 
 //------------------------------------------------------------------------------
-function LeaderboardsUtils_FetchFromServer()
+function LeaderboardsUtils_FetchFromServer(callback, errorCallback)
 {
     if(_already_updating) {
         return;
@@ -41,11 +42,15 @@ function LeaderboardsUtils_FetchFromServer()
         _already_updating = false;
         if(http.readyState === XMLHttpRequest.DONE) {
             const status = http.status;
-            if (status === 0 || (status >= 200 && status < 400)) {
+            if (status == 200) {
                 _curr_leaderboard = JSON.parse(http.responseText);
-                // SCENE_MANAGER.SetScene(new LeaderboardsScene(0));
+                if(callback) {
+                    callback();
+                }
             } else {
-                // Oh no! There has been an error with the request!
+                if(errorCallback) {
+                    errorCallback();
+                }
             }
         }
     }
