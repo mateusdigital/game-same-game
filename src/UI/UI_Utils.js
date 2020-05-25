@@ -16,6 +16,30 @@ function Update_Anchor(obj, x, y)
     }
 }
 
+function Center_Anchor(obj)
+{
+    Update_Anchor(obj, 0.5, 0.5);
+}
+
+
+function Debug_Tint(...args)
+{
+    for(let i = 0; i < args.length; ++i) {
+        args[i].tint = 0xff00ff;
+    }
+}
+
+function Tween_Scale(obj, time, target_scale)
+{
+    return Tween_CreateBasic(time)
+        .from({s: obj.scale.x})
+        .to({s: target_scale})
+        .onUpdate((v)=>{
+            obj.scale.set(v.s);
+        });
+}
+
+
 //-----------------------------------------------------------------------------
 // @XXX(stdmatt): Should move to lib...
 function RemoveFromParent(obj)
