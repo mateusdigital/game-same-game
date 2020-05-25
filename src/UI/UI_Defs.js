@@ -1,13 +1,33 @@
-const BUTTON_BIG_WIDTH   = (GAME_DESIGN_WIDTH * 0.5);
-const BUTTON_GAP         = 10;
-const BUTTON_SMALL_WIDTH = BUTTON_BIG_WIDTH / 3 - BUTTON_GAP;
-const BUTTON_HEIGHT      = BUTTON_SMALL_WIDTH;
+//----------------------------------------------------------------------------//
+// Game Size / Resolution                                                     //
+//----------------------------------------------------------------------------//
+const TILE_COUNT_X       = 20;
+const TILE_COUNT_Y       = 35;
+const TILE_WIDTH         = 31;
+const TILE_HEIGHT        = 31;
+const GAME_DESIGN_WIDTH  = TILE_WIDTH  * TILE_COUNT_X;
+const GAME_DESIGN_HEIGHT = TILE_HEIGHT * TILE_COUNT_Y;
 
+const SCORE_HUD_DIGITS_COUNT = 8;
+
+//----------------------------------------------------------------------------//
+// Fonts                                                                      //
+//----------------------------------------------------------------------------//
 const BIG_FONT_NAME = "ARCO Typography";
 const BIG_FONT_SIZE = 80;
 
 const MEDIUM_FONT_NAME = "ARCO Typography";
 const MEDIUM_FONT_SIZE = 40;
+
+
+//----------------------------------------------------------------------------//
+// Buttons                                                                    //
+//----------------------------------------------------------------------------//
+const BUTTON_BIG_WIDTH   = (GAME_DESIGN_WIDTH * 0.5);
+const BUTTON_GAP         = 10;
+const BUTTON_SMALL_WIDTH = BUTTON_BIG_WIDTH / 3 - BUTTON_GAP;
+const BUTTON_HEIGHT      = BUTTON_SMALL_WIDTH;
+
 
 //
 // Nine Slice Settings
