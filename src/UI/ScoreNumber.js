@@ -15,9 +15,8 @@ class ScoreNumber
     {
         super(0, 0)
 
-        this.sprites            = [];
-        this.digits_count       = digits_count;
-        this.curr_value         = FillDigits(value);
+        this.sprites    = [];
+        this.curr_value = FillDigits(value, digits_count);
 
         this.bubble_tween_group = Tween_CreateGroup()
             // @NOTICE(stdmatt): I think that's better that numbers to be
