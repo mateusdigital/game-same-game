@@ -1,0 +1,47 @@
+- General
+    - Transition Mask
+        - Make the mask texture totally white
+        - Add more mask shapes.
+    - Score Numbers
+        - Should we use the font rendering to make it?
+    - Start to research sounds...
+    - Implementing scaling.
+
+- Splash Scene
+    - Make the artwork.
+    - Implement it.
+
+- Menu Scene
+    - Logo
+    - Labels on the Buttons
+        - Play
+        - Credits
+    - Make the Icons smaller.
+        - Sound
+        - Leaderboards
+        - More
+    - Finish the Scenario
+        - Split the objects
+        - Make the house smokes
+        - Add the Sun.
+    - Add sounds.
+    - Make the more button opens a tab to my website.
+
+- Game Scene
+    - Fix the position of the Back Button.
+    - Add a level progression.
+    - Fix the go to leaderboards scene.
+
+- Leaderboards Scene
+    - Fix the labels.
+    - Make the fetching label appears after a delay.
+    - Implement the ENTER_MODE
+
+- Credits Scene
+    - Add thanks
+        - To Kenney
+        - To the font author.
+        - To Sasha
+        - To mother
+    - Dedicate for all ppl from COVID.
+
