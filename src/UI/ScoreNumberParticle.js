@@ -1,4 +1,15 @@
 //----------------------------------------------------------------------------//
+// Constants                                                                  //
+//----------------------------------------------------------------------------//
+const SCORE_NUMBER_PARTICLE_DATA_NAME = "res/particles/score.json";
+const SCORE_NUMBER_PARTICLE_TEXTURES = [
+    PARTICLES_EMOTE_HEART,
+    PARTICLES_EMOTE_HEARTS,
+    PARTICLES_EMOTE_STAR,
+    PARTICLES_EMOTE_STARS
+];
+
+//----------------------------------------------------------------------------//
 // Types                                                                      //
 //----------------------------------------------------------------------------//
 class ScoreNumberParticle
@@ -31,8 +42,8 @@ class ScoreNumberParticle
     {
         const data   = Data_Get(SCORE_NUMBER_PARTICLE_DATA_NAME);
         let textures = [];
-        for(let i = 0; i < SCORE_PARTICLES.length; ++i) {
-            textures.push(Texture_Get(SCORE_PARTICLES[i]));
+        for(let i = 0; i < SCORE_NUMBER_PARTICLE_TEXTURES.length; ++i) {
+            textures.push(Texture_Get(SCORE_NUMBER_PARTICLE_TEXTURES[i]));
         }
 
         this.emitter = new PIXI.particles.Emitter(this, textures, data);

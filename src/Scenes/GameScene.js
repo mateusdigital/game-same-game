@@ -17,13 +17,19 @@ const FALL_ANIMATION_DURATION       =   700 * ANIMATION_SPEED_MULTIPLIER;
 const SLIDE_ANIMATION_DURATION      =   500 * ANIMATION_SPEED_MULTIPLIER;
 const SCORE_ANIMATION_DURATION      =   800 * ANIMATION_SPEED_MULTIPLIER;
 
-
 const START_FALL_ANIMATION_EASING = TWEEN.Easing.Cubic.In;
 const DESTROY_ANIMATION_EASING    = TWEEN.Easing.Cubic.In;
 const FALL_ANIMATION_EASING       = TWEEN.Easing.Back.InOut;
 const SLIDE_ANIMATION_EASING      = TWEEN.Easing.Back.InOut;
 const SCORE_ANIMATION_EASING      = TWEEN.Easing.Quintic.In;
 
+const BRICK_TEXTURES = [
+    BRICKS_1,
+    BRICKS_2,
+    BRICKS_3,
+    BRICKS_4,
+    BRICKS_5
+];
 
 //----------------------------------------------------------------------------//
 // Types                                                                      //
@@ -57,19 +63,7 @@ class GameScene
 
         //
         // Buttons
-        this.back_button = new NineSliceButton(
-            ORANGE_TEXTURE_SETTINGS,
-            NINE_SLICE_SETTINGS,
-            SMALL_BUTTON_SIZE_SETTINGS,
-        );
-
-        Center_Anchor(this.back_button);
-
-        this.back_button.scale.set(0.6);
-        this.back_button.x = (this.back_button.width  * 0.5) + (CONTAINER_DESIGN_GAP_X * 0.5);
-        this.back_button.y = (this.back_button.height * 0.5) + (CONTAINER_DESIGN_GAP_X * 0.5);
-        this.back_button.on("pointerdown", ()=> { this.GoBack() });
-        this.back_button.AddIcon(Sprite_Create(BUTTON_ICON_NAME_BACK));
+        this.back_button = CreateBackButton(()=>{ this.GoBack(); });
         this.addChild(this.back_button);
 
         //
@@ -166,10 +160,10 @@ class GameScene
     {
         // Make the list of bricks types random, so every time that we play
         // different bricks will appear.
-        if(this.brick_types_count != BRICKS_TEXTURES_NAMES.length) {
+        if(this.brick_types_count != BRICK_TEXTURES.length) {
             let unique_elements = new Set();
             while(unique_elements.size != this.brick_types_count) {
-                unique_elements.add(Random_Int(0, BRICKS_TEXTURES_NAMES.length));
+                unique_elements.add(Random_Int(0, BRICK_TEXTURES.length));
             }
             this.brick_types = [...unique_elements];
         }

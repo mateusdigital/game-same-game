@@ -21,6 +21,13 @@ class MenuScene
         this.addChild(this.sky);
         this.addChild(this.scenario);
 
+        this.logo = Sprite_Create(LOGO);
+        Center_Anchor(this.logo);
+        this.logo.x = GAME_DESIGN_WIDTH  * 0.5;
+        this.logo.y = GAME_DESIGN_HEIGHT * 0.2;
+
+        this.addChild(this.logo);
+
         //
         // Buttons
         this.play_button    = null;
@@ -92,6 +99,7 @@ class MenuScene
         this.play_button.x = GAME_DESIGN_WIDTH * 0.5;
         this.play_button.y = play_button_y;
         this.play_button.on("pointerdown", ()=> { this.GoPlay() });
+        this.play_button.AddIcon(Sprite_Create(BUTTONS_ICON_PLAY));
 
         this.addChild(this.play_button);
         Update_Anchor(this.play_button, 0.5);
@@ -107,6 +115,7 @@ class MenuScene
         this.credits_button.x = this.play_button.x;
         this.credits_button.y = this.play_button.y + BUTTON_HEIGHT + BUTTON_GAP;
         this.credits_button.on("pointerdown", ()=> { this.GoCredits() });
+        this.credits_button.AddIcon(Sprite_Create(BUTTONS_ICON_CREDITS));
 
         this.addChild(this.credits_button);
         Update_Anchor(this.credits_button, 0.5);
@@ -122,7 +131,7 @@ class MenuScene
         this.sound_button.x = this.play_button.x - (BUTTON_BIG_WIDTH * 0.5) + (BUTTON_SMALL_WIDTH * 0.5);
         this.sound_button.y = this.credits_button.y + BUTTON_HEIGHT + BUTTON_GAP;
         this.sound_button.on("pointerdown", ()=> { this.ToggleSound() });
-        this.sound_button.AddIcon(Sprite_Create(BUTTON_ICON_NAME_SOUND_ON));
+        this.sound_button.AddIcon(Sprite_Create(BUTTONS_ICON_MUSIC_ON));
         this.addChild(this.sound_button);
         Update_Anchor(this.sound_button, 0.5);
 
@@ -137,7 +146,7 @@ class MenuScene
         this.leaders_button.x = this.play_button.x;
         this.leaders_button.y = this.credits_button.y + BUTTON_HEIGHT + BUTTON_GAP;
         this.leaders_button.on("pointerdown", ()=> { this.GoLeaderboards() });
-        this.leaders_button.AddIcon(Sprite_Create(BUTTON_ICON_NAME_LEADERS));
+        this.leaders_button.AddIcon(Sprite_Create(BUTTONS_ICON_LEADERBOARDS));
         this.addChild(this.leaders_button);
         Update_Anchor(this.leaders_button, 0.5);
 
@@ -151,7 +160,7 @@ class MenuScene
         this.more_button.x = this.play_button.x + (BUTTON_BIG_WIDTH * 0.5) - (BUTTON_SMALL_WIDTH * 0.5);
         this.more_button.y = this.credits_button.y + BUTTON_HEIGHT + BUTTON_GAP;
         this.more_button.on("pointerdown", ()=> { this.GoMore() });
-        this.more_button.AddIcon(Sprite_Create(BUTTON_ICON_NAME_MORE));
+        this.more_button.AddIcon(Sprite_Create(BUTTONS_ICON_PLUS));
         this.addChild(this.more_button);
         Update_Anchor(this.more_button, 0.5);
     } // _CreateButtons
@@ -184,7 +193,7 @@ class MenuScene
     //--------------------------------------------------------------------------
     GoLeaderboards()
     {
-        SCENE_MANAGER.SetScene(new LeaderboardsScene());
+        this.RunOnExit(new LeaderboardsScene(LEADERBOARD_SCENE_MODE_VIEW));
     }
 
     //--------------------------------------------------------------------------
@@ -201,8 +210,8 @@ class MenuScene
     {
         const sound_on     = GameSettings_Get(SETTINGS_KEY_SOUND_ENABLED, true);
         const texture_name = (sound_on)
-            ? BUTTON_ICON_NAME_SOUND_ON
-            : BUTTON_ICON_NAME_SOUND_OFF;
+            ? BUTTONS_ICON_MUSIC_ON
+            : BUTTONS_ICON_MUSIC_OFF;
 
         console.log(texture_name);
         this.sound_button.icon_sprite.texture = Texture_Get(texture_name);

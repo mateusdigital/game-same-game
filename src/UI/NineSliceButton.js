@@ -44,7 +44,7 @@ class NineSliceButton
     //--------------------------------------------------------------------------
     AddIcon(sprite)
     {
-        RemoveFromParent(this.icon_sprite);
+        Remove_From_Parent(this.icon_sprite);
 
         this.icon_sprite = sprite;
         this.addChild(this.icon_sprite);

@@ -15,7 +15,7 @@ class Brick
 
         //
         // Sprite.
-        this.bg        = Sprite_Create(BRICKS_TEXTURES_NAMES[type]);
+        this.bg        = Sprite_Create(BRICK_TEXTURES[type]);
         this.bg.width  = width;
         this.bg.height = height;
 

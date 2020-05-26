@@ -10,14 +10,20 @@ const GAME_DESIGN_HEIGHT = TILE_HEIGHT * TILE_COUNT_Y;
 
 const SCORE_HUD_DIGITS_COUNT = 8;
 
+
 //----------------------------------------------------------------------------//
 // Fonts                                                                      //
 //----------------------------------------------------------------------------//
-const BIG_FONT_NAME = "ARCO Typography";
+const BIG_FONT_NAME = "Ai_Carai";
 const BIG_FONT_SIZE = 80;
 
-const MEDIUM_FONT_NAME = "ARCO Typography";
+const MEDIUM_FONT_NAME = "Ai_Carai";
 const MEDIUM_FONT_SIZE = 40;
+
+const FONT_FILE_NAMES = [
+    "res/fonts/Test_FontSuffix.fnt",
+    "res/fonts/main.fnt"
+];
 
 
 //----------------------------------------------------------------------------//
@@ -56,24 +62,24 @@ const SMALL_BUTTON_SIZE_SETTINGS = {
 // Textures Settings
 //
 const GREEN_TEXTURE_SETTINGS = {
-    normal: BUTTONS_TEXTURES_NAMES[0],
-    press:  BUTTONS_TEXTURES_NAMES[1],
+    normal: BUTTONS_BOX_GREEN,
+    press:  BUTTONS_BOX_GREEN_PRESSED
 };
 const ORANGE_TEXTURE_SETTINGS = {
-    normal: BUTTONS_TEXTURES_NAMES[2],
-    press:  BUTTONS_TEXTURES_NAMES[3],
+    normal: BUTTONS_BOX_RED,
+    press:  BUTTONS_BOX_RED_PRESSED
 };
 const YELLOW_TEXTURE_SETTINGS = {
-    normal: BUTTONS_TEXTURES_NAMES[4],
-    press:  BUTTONS_TEXTURES_NAMES[5],
+    normal: BUTTONS_BOX_YELLOW,
+    press:  BUTTONS_BOX_YELLOW_PRESSED
 };
 const BLUE_TEXTURE_SETTINGS = {
-    normal: BUTTONS_TEXTURES_NAMES[6],
-    press:  BUTTONS_TEXTURES_NAMES[7],
+    normal: BUTTONS_BOX_BLUE,
+    press:  BUTTONS_BOX_BLUE_PRESSED
 };
 
 //
 // Position Settings
 //
 const PLAY_BUTTON_WITH_SCORES_Y = GAME_DESIGN_HEIGHT * 0.4;
-const PLAY_BUTTON_NO_SCORES_Y   = GAME_DESIGN_HEIGHT * 0.4;
+const PLAY_BUTTON_NO_SCORES_Y   = GAME_DESIGN_HEIGHT * 0.42;

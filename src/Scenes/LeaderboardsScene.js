@@ -41,7 +41,14 @@ class LeaderboardsScene
         //
         // Animations
         this.data_fetch_bubble_tween = null;
-    }
+    } // CTOR
+
+    //--------------------------------------------------------------------------
+    Update(dt)
+    {
+        this.sky     .Update(dt);
+        this.scenario.Update(dt);
+    } // Update
 
     //--------------------------------------------------------------------------
     _OnLeaderboardFetched()
@@ -53,7 +60,7 @@ class LeaderboardsScene
 
         Tween_Scale(this.data_fetch_status_text, 500, 0)
             .onComplete(()=>{
-                RemoveFromParent(this.data_fetch_status_text);
+                Remove_From_Parent(this.data_fetch_status_text);
             })
             .start();
 
@@ -97,31 +104,18 @@ class LeaderboardsScene
     {
         //
         // Back Button.
-        this.back_button = new NineSliceButton(
-            ORANGE_TEXTURE_SETTINGS,
-            NINE_SLICE_SETTINGS,
-            BIG_BUTTON_SIZE_SETTINGS,
-        );
-        Update_Anchor(this.back_button, 0.5);
-
-        this.back_button.scale.set(0.7);
-        this.back_button.x = GAME_DESIGN_WIDTH  * 0.5;
-        this.back_button.y = GAME_DESIGN_HEIGHT * 0.8;
-        this.back_button.on("pointerdown", ()=> { this.GoBack() });
-        this.back_button.AddIcon(Sprite_Create(BUTTON_ICON_NAME_BACK));
+        this.back_button = CreateBackButton(()=>{
+            this.RunOnExit(new MenuScene());
+        });
         this.addChild(this.back_button);
 
         //
         // Title.
-        this.title_text = new Base_BMPText(
-            "LEADERBOARDS",
-            BIG_FONT_NAME,
-            BIG_FONT_SIZE
-        );
+        this.title_text = Sprite_Create(LEADERBOARDS);
         Center_Anchor(this.title_text);
 
         this.title_text.x = GAME_DESIGN_WIDTH  * 0.5;
-        this.title_text.y = GAME_DESIGN_HEIGHT * 0.1;
+        this.title_text.y = GAME_DESIGN_HEIGHT * 0.11;
         this.addChild(this.title_text);
 
         //

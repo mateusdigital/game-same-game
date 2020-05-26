@@ -60,11 +60,31 @@ function Tween_Scale(obj, time, target_scale)
 
 //-----------------------------------------------------------------------------
 // @XXX(stdmatt): Should move to lib...
-function RemoveFromParent(obj)
+function Remove_From_Parent(obj)
 {
     if(obj && obj.parent) {
         obj.parent.removeChild(obj);
     }
+}
+
+function
+CreateBackButton(callback)
+{
+    const back_button = new NineSliceButton(
+        ORANGE_TEXTURE_SETTINGS,
+        NINE_SLICE_SETTINGS,
+        SMALL_BUTTON_SIZE_SETTINGS,
+    );
+
+    Center_Anchor(back_button);
+
+    back_button.scale.set(0.6);
+    back_button.x = (back_button.width  * 0.5);
+    back_button.y = (back_button.height * 0.5);
+    back_button.on("pointerdown", ()=> { callback() });
+    back_button.AddIcon(Sprite_Create(BUTTONS_ICON_ARROW_LEFT));
+
+    return back_button;
 }
 
 //-----------------------------------------------------------------------------

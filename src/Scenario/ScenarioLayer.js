@@ -11,7 +11,7 @@ class ScenarioLayer
 
         //
         // Create the static stuff...
-        const foreground = Sprite_Create(MENU_BACKGROUND_TEXTURE_NAME);
+        const foreground = Sprite_Create(TEST);
         foreground.y = GAME_DESIGN_HEIGHT - foreground.height;
 
         this.addChild(foreground);

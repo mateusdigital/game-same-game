@@ -4,6 +4,19 @@
 const BUBBLE_ANIMATION_DURATION = 500 * ANIMATION_SPEED_MULTIPLIER;
 const BUBBLE_ANIMATION_EASING   = TWEEN.Easing.Back.In;
 
+const SCORE_NUMBER_TEXTURES = [
+    NUMBERS_0,
+    NUMBERS_1,
+    NUMBERS_2,
+    NUMBERS_3,
+    NUMBERS_4,
+    NUMBERS_5,
+    NUMBERS_6,
+    NUMBERS_7,
+    NUMBERS_8,
+    NUMBERS_9,
+];
+
 //----------------------------------------------------------------------------//
 // Types                                                                      //
 //----------------------------------------------------------------------------//
@@ -69,7 +82,7 @@ class ScoreNumber
             })
             .easing(BUBBLE_ANIMATION_EASING)
             .onRepeat(()=>{
-                sprite.texture = Texture_Get(NUMBERS_TEXTURES_NAMES[parseInt(digit)]);
+                sprite.texture = Texture_Get(SCORE_NUMBER_TEXTURES[parseInt(digit)]);
                 if(this.bubble_tween_half_way_callback) {
                     this.bubble_tween_half_way_callback();
                     this.bubble_tween_half_way_callback = null;
@@ -83,7 +96,7 @@ class ScoreNumber
     {
         for(let i = 0; i < this.curr_value.length; ++i) {
             const digit  = this.curr_value[i];
-            const sprite = Sprite_Create(NUMBERS_TEXTURES_NAMES[parseInt(digit)]);
+            const sprite = Sprite_Create(SCORE_NUMBER_TEXTURES[parseInt(digit)]);
             this.sprites.push(sprite);
             this.addChild(sprite);
         }

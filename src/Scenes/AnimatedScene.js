@@ -7,6 +7,9 @@ const ANIMATED_SCENE_OPEN_UP_ANIMATION_DURATION    = 800 * ANIMATION_SPEED_MULTI
 const ANIMATED_SCENE_CLOSE_DOWN_ANIMATION_EASING = TWEEN.Easing.Exponential.In;
 const ANIMATED_SCENE_OPEN_UP_ANIMATION_EASING    = TWEEN.Easing.Exponential.Out;
 
+const ANIMATED_SCENE_SHAPES = [
+    FADE_SHAPE_5,
+]
 
 //----------------------------------------------------------------------------//
 // Types                                                                      //
@@ -41,8 +44,8 @@ class AnimatedScene
     //--------------------------------------------------------------------------
     _CreateAnimationWithCallback(is_opening_up, callback)
     {
-        // @TODO(stdmatt): Add more types of "closing" things...
-        this.focus = new PIXI.Sprite(Texture_Get("res/textures/ola.png"))
+        const fade_shape = Random_Element(ANIMATED_SCENE_SHAPES);
+        this.focus = new PIXI.Sprite(Texture_Get(fade_shape));
 
         // @XXX(stdmatt): This value is to make the thing goes TOTALLY out of
         // the screen, otherwise it keeps a little bit inside...
@@ -81,7 +84,7 @@ class AnimatedScene
             })
             .easing(anim_ease)
             .onComplete(()=>{
-                RemoveFromParent(this.focus);
+                Remove_From_Parent(this.focus);
                 this.mask = null;
 
                 callback();
