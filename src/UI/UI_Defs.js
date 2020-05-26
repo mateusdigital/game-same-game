@@ -22,7 +22,6 @@ const MEDIUM_FONT_SIZE = 40;
 
 const FONT_FILE_NAMES = [
     "res/fonts/Test_FontSuffix.fnt",
-    "res/fonts/main.fnt"
 ];
 
 
