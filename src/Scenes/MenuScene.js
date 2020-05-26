@@ -98,7 +98,7 @@ class MenuScene
 
         this.play_button.x = GAME_DESIGN_WIDTH * 0.5;
         this.play_button.y = play_button_y;
-        this.play_button.on("pointerdown", ()=> { this.GoPlay() });
+        this.play_button.OnPointerDown(()=> { this.GoPlay() });
         this.play_button.AddIcon(Sprite_Create(BUTTONS_ICON_PLAY));
 
         this.addChild(this.play_button);
@@ -114,7 +114,7 @@ class MenuScene
 
         this.credits_button.x = this.play_button.x;
         this.credits_button.y = this.play_button.y + BUTTON_HEIGHT + BUTTON_GAP;
-        this.credits_button.on("pointerdown", ()=> { this.GoCredits() });
+        this.credits_button.OnPointerDown(()=> { this.GoCredits() });
         this.credits_button.AddIcon(Sprite_Create(BUTTONS_ICON_CREDITS));
 
         this.addChild(this.credits_button);
@@ -130,7 +130,7 @@ class MenuScene
 
         this.sound_button.x = this.play_button.x - (BUTTON_BIG_WIDTH * 0.5) + (BUTTON_SMALL_WIDTH * 0.5);
         this.sound_button.y = this.credits_button.y + BUTTON_HEIGHT + BUTTON_GAP;
-        this.sound_button.on("pointerdown", ()=> { this.ToggleSound() });
+        this.sound_button.OnPointerDown(()=> { this.ToggleSound() });
         this.sound_button.AddIcon(Sprite_Create(BUTTONS_ICON_MUSIC_ON));
         this.addChild(this.sound_button);
         Update_Anchor(this.sound_button, 0.5);
@@ -145,7 +145,7 @@ class MenuScene
 
         this.leaders_button.x = this.play_button.x;
         this.leaders_button.y = this.credits_button.y + BUTTON_HEIGHT + BUTTON_GAP;
-        this.leaders_button.on("pointerdown", ()=> { this.GoLeaderboards() });
+        this.leaders_button.OnPointerDown(()=> { this.GoLeaderboards() });
         this.leaders_button.AddIcon(Sprite_Create(BUTTONS_ICON_LEADERBOARDS));
         this.addChild(this.leaders_button);
         Update_Anchor(this.leaders_button, 0.5);
@@ -159,7 +159,7 @@ class MenuScene
         );
         this.more_button.x = this.play_button.x + (BUTTON_BIG_WIDTH * 0.5) - (BUTTON_SMALL_WIDTH * 0.5);
         this.more_button.y = this.credits_button.y + BUTTON_HEIGHT + BUTTON_GAP;
-        this.more_button.on("pointerdown", ()=> { this.GoMore() });
+        this.more_button.OnPointerDown(()=> { this.GoMore() });
         this.more_button.AddIcon(Sprite_Create(BUTTONS_ICON_PLUS));
         this.addChild(this.more_button);
         Update_Anchor(this.more_button, 0.5);

@@ -54,7 +54,15 @@ class NineSliceButton
         this.icon_sprite.y = this.height * 0.5;
     } // AddIcon
 
-
+    OnPointerDown(callback)
+    {
+        this.on("pointerdown", ()=> {
+            if(this.parent.is_doing_fade_animation) {
+                return;
+            }
+            callback()
+        });
+    } // OnPointerDown
     //--------------------------------------------------------------------------
     _SetupCallbacks()
     {

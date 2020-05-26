@@ -81,7 +81,7 @@ CreateBackButton(callback)
     back_button.scale.set(0.6);
     back_button.x = (back_button.width  * 0.5);
     back_button.y = (back_button.height * 0.5);
-    back_button.on("pointerdown", ()=> { callback() });
+    back_button.OnPointerDown(()=> { callback() });
     back_button.AddIcon(Sprite_Create(BUTTONS_ICON_ARROW_LEFT));
 
     return back_button;

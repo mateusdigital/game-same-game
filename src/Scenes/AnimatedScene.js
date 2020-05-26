@@ -18,11 +18,18 @@ class AnimatedScene
     extends Base_Scene
 {
     //--------------------------------------------------------------------------
+    constructor()
+    {
+        super();
+        this.is_doing_fade_animation = false;
+    } // CTOR
+
+    //--------------------------------------------------------------------------
     OnEnter()
     {
         super.OnEnter();
         this._CreateAnimationWithCallback(true, ()=>{
-            this.OnFinishedEnterAnimation()
+            this.OnFinishedEnterAnimation();
         })
     } // OnEnter
 
@@ -44,6 +51,8 @@ class AnimatedScene
     //--------------------------------------------------------------------------
     _CreateAnimationWithCallback(is_opening_up, callback)
     {
+        this.is_doing_fade_animation = true;
+
         const fade_shape = Random_Element(ANIMATED_SCENE_SHAPES);
         this.focus = new PIXI.Sprite(Texture_Get(fade_shape));
 
@@ -87,6 +96,7 @@ class AnimatedScene
                 Remove_From_Parent(this.focus);
                 this.mask = null;
 
+                this.is_doing_fade_animation = false;
                 callback();
             })
             .start();
