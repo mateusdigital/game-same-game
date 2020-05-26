@@ -60,7 +60,8 @@ function Tween_Scale(obj, time, target_scale)
 
 //-----------------------------------------------------------------------------
 // @XXX(stdmatt): Should move to lib...
-function Remove_From_Parent(obj)
+function
+Remove_From_Parent(obj)
 {
     if(obj && obj.parent) {
         obj.parent.removeChild(obj);

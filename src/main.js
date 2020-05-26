@@ -20,6 +20,7 @@ function
 PreLoad()
 {
     RES_LoadResources(Setup,
+        "res/data/balance.json",
         SCORE_NUMBER_PARTICLE_DATA_NAME,
         TEXTURES_TO_LOAD,
         FONT_FILE_NAMES

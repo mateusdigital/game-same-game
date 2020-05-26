@@ -9,7 +9,7 @@ const CONTAINER_DESIGN_GAP_X  = 20;
 const CONTAINER_DESIGN_HEIGHT = GAME_DESIGN_HEIGHT  - (GROUND_HEIGHT + GAME_HUD_HEIGHT);
 const CONTAINER_DESIGN_WIDTH  = (GAME_DESIGN_WIDTH  - CONTAINER_DESIGN_GAP_X);
 
-const START_FALL_BRICKS_Y_OFFSET = -300;
+const GAME_START_LEVEL = 1;
 
 const START_FALL_ANIMATION_DURATION =  1000 * ANIMATION_SPEED_MULTIPLIER;
 const DESTROY_ANIMATION_DURATION    =   500 * ANIMATION_SPEED_MULTIPLIER;
@@ -43,16 +43,19 @@ class GameScene
     {
         super();
 
+
         //
         // Housekeeping.
-        this.bricks_cols        = 8;
-        this.bricks_rows        = 10;
-        this.brick_types_count  = 2;
+        this.balance            = Data_Get("res/data/balance.json");
+        this.bricks_cols        = null;
+        this.bricks_rows        = null;
+        this.brick_types_count  = null;
         this.brick_types        = [];
         this.bricks_grid        = null;
         this.brick_container    = null;
         this.is_input_enabled   = false;
         this.current_score      = 0;
+        this.current_level      = GAME_START_LEVEL;
 
         //
         // Scenario
@@ -91,7 +94,8 @@ class GameScene
             .onComplete(()=>{ this._OnBricksSlideEnded(); });
 
         //
-        // Brick and container properties.
+        // Init
+        this._InitializeLevelData();
         this._InitializeContainer();
     } // CTOR
 
@@ -134,6 +138,22 @@ class GameScene
     // Initialize                                                             //
     //------------------------------------------------------------------------//
     //--------------------------------------------------------------------------
+    _InitializeLevelData()
+    {
+        const level_data = this.balance[this.current_level.toString()];
+
+        this.bricks_rows       = level_data["Height"];
+        this.bricks_cols       = level_data["Width"];
+        this.brick_types_count = level_data["Colours"];
+
+        console.log(
+            "Rows: ", this.bricks_rows,
+            " Cols: ", this.bricks_cols,
+            " Types: ", this.brick_types_count
+        );
+    } // _InitializeLevelData
+
+    //--------------------------------------------------------------------------
     _InitializeContainer()
     {
         this.brick_width = Math_Min(
@@ -145,7 +165,8 @@ class GameScene
         const actual_container_width  = (this.brick_width  * this.bricks_cols);
         const actual_container_height = (this.brick_height * this.bricks_rows);
 
-        this.brick_container  = new FixedSizeContainer(
+        Remove_From_Parent(this.brick_container);
+        this.brick_container = new FixedSizeContainer(
             actual_container_width,
             actual_container_height
         );
@@ -203,15 +224,20 @@ class GameScene
     //--------------------------------------------------------------------------
     _CreateStartFallBrickAnimation(brick, target_x, target_y)
     {
-        const scale     = (this.brick_container.height - target_y) / this.brick_container.height;
-        const duration  = START_FALL_ANIMATION_DURATION * (scale);
-        const delay_min = duration * 0.7;
-        const delay_max = duration * 1.2;
-        const start_y   = START_FALL_BRICKS_Y_OFFSET;
+        const brick_height      = this.brick_height;
+        const container_start_y = this.brick_container.y;
+        const container_height  = this.bricks_rows * brick_height;
 
-        brick.y = start_y
-        brick.x = target_y;
-        const tween = Tween_CreateBasic(duration, this.start_fall_tween_group)
+        const scale     = Math_Map( target_y, 0, container_height, 1.2, 0.6);
+        const duration  = START_FALL_ANIMATION_DURATION * (scale);
+        const delay_min = duration * 0.8;
+        const delay_max = duration * 1.2;
+        const start_y   = -container_start_y - (brick_height * 0.5);
+
+        brick.y = start_y;
+        brick.x = target_x;
+
+        Tween_CreateBasic(duration, this.start_fall_tween_group)
             .from({x: target_x, y: start_y})
             .to  ({x: target_x, y: target_y})
             .onUpdate((value)=>{
@@ -444,7 +470,11 @@ class GameScene
         }
 
         if(!defeat) {
-            this._InitializeBricks();
+            ++this.current_level;
+
+            this._InitializeLevelData();
+            this._InitializeContainer();
+            this._InitializeBricks   ();
             return;
         }
 
