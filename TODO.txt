@@ -5,7 +5,7 @@
     - Score Numbers
         - Should we use the font rendering to make it?
     - Start to research sounds...
-    - Implementing scaling.
+    - [DONE] Implementing scaling.
 
 - Splash Scene
     - Make the artwork.

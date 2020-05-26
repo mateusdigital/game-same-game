@@ -29,6 +29,24 @@ function Debug_Tint(...args)
     }
 }
 
+
+// @TODO(stdmatt): We should be able to get a float with the scale that
+// applied to both sides make the game fits on the window...
+const GAME_WINDOW_PORTRAIT  = 0;
+const GAME_WINDOW_LANDSCAPE = 1;
+
+function
+Calculate_Window_Scale(window_mode, design_width, design_height)
+{
+    const parent_width  = window.innerWidth;
+    const parent_height = window.innerHeight;
+
+    const width_ratio  = (parent_width  / design_width);
+    const height_ratio = (parent_height / design_height);
+
+    return Math_Min(width_ratio, height_ratio);
+}
+
 function Tween_Scale(obj, time, target_scale)
 {
     return Tween_CreateBasic(time)

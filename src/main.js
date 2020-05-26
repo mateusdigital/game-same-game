@@ -1,11 +1,23 @@
 //------------------------------------------------------------------------------
-function PreInit()
+function
+PreInit()
 {
-    Application_Create(GAME_DESIGN_WIDTH, GAME_DESIGN_HEIGHT, GAME_SEED);
+    Application_Create(
+        GAME_DESIGN_WIDTH,
+        GAME_DESIGN_HEIGHT,
+        GAME_SEED
+    );
+
+    window.onresize = function(event) {
+        ResizeGame();
+    };
+
+    ResizeGame();
 }
 
 //------------------------------------------------------------------------------
-function PreLoad()
+function
+PreLoad()
 {
     RES_LoadResources(Setup,
         BRICKS_TEXTURES_NAMES,
@@ -26,7 +38,8 @@ function PreLoad()
 
 
 //------------------------------------------------------------------------------
-function Setup()
+function
+Setup()
 {
     GameSettings_Init     ();
     LeaderboardsUtils_Init();
@@ -49,8 +62,26 @@ function Setup()
 }
 
 //------------------------------------------------------------------------------
-function GameLoop()
+function
+GameLoop()
 {
+}
+
+
+function
+ResizeGame()
+{
+    const scale = Calculate_Window_Scale(
+        GAME_WINDOW_PORTRAIT,
+        GAME_DESIGN_WIDTH,
+        GAME_DESIGN_HEIGHT
+    );
+
+    g_App.stage.scale.set(scale, scale);
+    g_App.renderer.resize(
+        GAME_DESIGN_WIDTH  * scale,
+        GAME_DESIGN_HEIGHT * scale
+    );
 }
 
 //----------------------------------------------------------------------------//
