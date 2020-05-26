@@ -63,24 +63,26 @@ class GameScene
             SMALL_BUTTON_SIZE_SETTINGS,
         );
 
+        Center_Anchor(this.back_button);
+
         this.back_button.scale.set(0.6);
         this.back_button.x = (this.back_button.width  * 0.5) + (CONTAINER_DESIGN_GAP_X * 0.5);
         this.back_button.y = (this.back_button.height * 0.5) + (CONTAINER_DESIGN_GAP_X * 0.5);
         this.back_button.on("pointerdown", ()=> { this.GoBack() });
         this.back_button.AddIcon(Sprite_Create(BUTTON_ICON_NAME_BACK));
         this.addChild(this.back_button);
-        Update_Anchor(this.back_button, 0.5);
 
         //
         // Score HUD.
         this.score_number_particle = new ScoreNumberParticle();
         this.addChild(this.score_number_particle);
 
-        this.score_number  = new ScoreNumber("0", SCORE_HUD_DIGITS_COUNT)
+        this.score_number = new ScoreNumber("0", SCORE_HUD_DIGITS_COUNT)
+        Center_Anchor(this.score_number);
+
         this.score_number.x = (GAME_DESIGN_WIDTH * 0.5);
         this.score_number.y = (GAME_HUD_HEIGHT   * 0.5);
         this.score_number.scale.set(1.5);
-        Update_Anchor(this.score_number, 0.5);
         this.addChild(this.score_number);
 
         //
@@ -245,7 +247,7 @@ class GameScene
     _OnBrickClicked(brick)
     {
         if(!this.is_input_enabled) {
-            console.log("Input disabled...");
+            // console.log("Input disabled...");
             return;
         }
 
@@ -262,7 +264,7 @@ class GameScene
             const coord_x = Math_Int((curr_brick_pos.x + 0.5) / this.brick_width);
             const coord_y = Math_Int((curr_brick_pos.y + 0.5) / this.brick_height);
 
-            console.log("Matching brick to remove:", coord_y, coord_x)
+            // console.log("Matching brick to remove:", coord_y, coord_x)
             this.bricks_grid[coord_y][coord_x] = null;
 
             // Destroy Animation.
@@ -270,9 +272,13 @@ class GameScene
         }
 
         // Points earned animation.
-        const points           = this._CalculatePointsEarned(matching_bricks.length);
-        const brick_global_pos = brick.getGlobalPosition();
-        this._CreateScoreAddAnimation(brick_global_pos.x, brick_global_pos.y, points);
+        const points = this._CalculatePointsEarned(matching_bricks.length);
+        // @NOTICE(stdmatt): When we applied the scale to the stage
+        // the globalPosition became crazy...
+        const x = brick.position.x + brick.parent.position.x;
+        const y = brick.position.y + brick.parent.position.y;
+
+        this._CreateScoreAddAnimation(x, y, points);
     } // _OnBrickClicked
 
     //--------------------------------------------------------------------------
@@ -365,7 +371,7 @@ class GameScene
                 if(!this.bricks_grid[bottom_row][k]) {
                     continue;
                 }
-                console.log("swaping", j, k)
+                // console.log("swaping", j, k)
                 any_sliding_bricks = true;
                 // Swap
                 for(let i = 0; i < this.bricks_rows; ++i) {
@@ -526,7 +532,7 @@ class GameScene
         const coord_x = Math_Int((brick_pos.x + 0.5) / this.brick_width);
         const coord_y = Math_Int((brick_pos.y + 0.5) / this.brick_height);
 
-        console.log("Brick clicked at: ", coord_x, coord_y);
+        // console.log("Brick clicked at: ", coord_x, coord_y);
         const matching_bricks = Algo_FloodFind(
             this.bricks_grid,                             // container
             coord_x, coord_y,                             // start coords
@@ -556,7 +562,7 @@ class GameScene
             }
             s += "\n"
         }
-        console.log(s);
+        // console.log(s);
     }
 } // class GameScene
 
