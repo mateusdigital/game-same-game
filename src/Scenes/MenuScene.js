@@ -36,17 +36,12 @@ class MenuScene
         this.leaders_button = null;
         this.more_button    = null;
 
+        this.play_button_ui_anchor = this.logo;
+
+        this._CreateScores   ();
         this._CreateButtons  ();
         this._UpdateSoundIcon();
 
-        //
-        // Scores
-        this.last_score = null;
-        this.best_score = null;
-
-        if(this.has_scores) {
-            this._CreateScores();
-        }
     } // CTOR
 
     //--------------------------------------------------------------------------
@@ -66,19 +61,41 @@ class MenuScene
             return;
         }
 
-        const last_score = GameSettings_Get(SETTINGS_KEY_LAST_SCORE, 0);
-        const best_score = GameSettings_Get(SETTINGS_KEY_BEST_SCORE, 0);
+        let last_value = GameSettings_Get(SETTINGS_KEY_LAST_SCORE, 0);
+        let best_value = GameSettings_Get(SETTINGS_KEY_BEST_SCORE, 0);
+        last_value = FillDigits(last_value);
+        best_value = FillDigits(best_value);
 
-        this.last_score = new ScoreNumber(last_score, SCORE_HUD_DIGITS_COUNT);
-        this.best_score = new ScoreNumber(best_score, SCORE_HUD_DIGITS_COUNT);
+        const label_font_size = SMALL_FONT_SIZE * 0.8;
+        const value_font_size = SMALL_FONT_SIZE;
 
-        this.best_score.x = GAME_DESIGN_WIDTH  * 0.5;
-        this.best_score.y = this.play_button.y - BUTTON_HEIGHT * 0.5 - BUTTON_GAP - this.best_score.height * 0.5
-        this.addChild(this.best_score);
+        const last_text  = new Base_BMPText("LAST", SMALL_FONT_NAME, label_font_size);
+        const best_text  = new Base_BMPText("BEST", SMALL_FONT_NAME, label_font_size);
+        const last_score = new Base_BMPText(last_value, SMALL_FONT_NAME, value_font_size);
+        const best_score = new Base_BMPText(best_value, SMALL_FONT_NAME, value_font_size);
 
-        this.last_score.x = GAME_DESIGN_WIDTH  * 0.5;
-        this.last_score.y = this.best_score.y - this.best_score.height - BUTTON_GAP;
-        this.addChild(this.last_score);
+        Center_Anchor(best_text);
+        best_text.x = (GAME_DESIGN_WIDTH * 0.5);
+        best_text.y = this.logo.y + (this.logo.height * 0.5) + (best_text.height * 0.5) + BUTTON_GAP * 2;
+
+        Center_Anchor(best_score);
+        best_score.x = best_text.x;
+        best_score.y = best_text.y + best_text.height;
+
+        Center_Anchor(last_text);
+        last_text.x = best_score.x;
+        last_text.y = best_score.y + best_score.height;
+
+        Center_Anchor(last_score);
+        last_score.x = last_text.x;
+        last_score.y = last_text.y + last_text.height;
+
+        this.addChild(best_text);
+        this.addChild(best_score);
+        this.addChild(last_text);
+        this.addChild(last_score);
+
+        this.play_button_ui_anchor = last_score;
     } // _CreateScores
 
     //--------------------------------------------------------------------------
@@ -92,17 +109,18 @@ class MenuScene
             BIG_BUTTON_SIZE_SETTINGS
         );
 
-        const play_button_y = this.has_scores
-            ? PLAY_BUTTON_WITH_SCORES_Y
-            : PLAY_BUTTON_NO_SCORES_Y;
-
+        Center_Anchor(this.play_button);
         this.play_button.x = GAME_DESIGN_WIDTH * 0.5;
-        this.play_button.y = play_button_y;
+        const play_button_gap = (this.has_scores) ? BUTTON_GAP * 2 : BUTTON_GAP * 6;
+        this.play_button.y = (
+            this.play_button_ui_anchor.y            +
+            this.play_button_ui_anchor.height * 0.5 +
+            this.play_button.height           * 0.5
+        ) + play_button_gap;
+
         this.play_button.OnPointerDown(()=> { this.GoPlay() });
         this.play_button.AddIcon(Sprite_Create(BUTTONS_ICON_PLAY));
-
         this.addChild(this.play_button);
-        Update_Anchor(this.play_button, 0.5);
 
         //
         // Credits
@@ -173,13 +191,12 @@ class MenuScene
     GoPlay()
     {
         this.RunOnExit(new GameScene())
-        // SCENE_MANAGER.SetScene(new GameScene());
     }
 
     //--------------------------------------------------------------------------
     GoCredits()
     {
-        SCENE_MANAGER.SetScene(new CreditsScene());
+        this.RunOnExit(new CreditsScene())
     }
 
     //--------------------------------------------------------------------------
@@ -199,7 +216,8 @@ class MenuScene
     //--------------------------------------------------------------------------
     GoMore()
     {
-        SCENE_MANAGER.SetScene(new MoreScene());
+        const win = window.open("https://stdmatt.com/games.html", '_blank');
+        win.focus();
     }
 
     //------------------------------------------------------------------------//

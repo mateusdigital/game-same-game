@@ -44,6 +44,8 @@ Setup()
         SCENE_MANAGER.SetScene(new GameScene());
     } else if(scene_name == "leaderboards") {
         SCENE_MANAGER.SetScene(new LeaderboardsScene());
+    } else if(scene_name == "credits") {
+        SCENE_MANAGER.SetScene(new CreditsScene());
     } else {
         SCENE_MANAGER.SetScene(new MenuScene());
     }
