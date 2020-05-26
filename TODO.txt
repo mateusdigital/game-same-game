@@ -1,7 +1,7 @@
 - General
-    - Transition Mask
-        - Make the mask texture totally white
-        - Add more mask shapes.
+    - [DONE] Transition Mask
+        - [DONE] Make the mask texture totally white
+        - [WONT_DO] Add more mask shapes.
     - Score Numbers
         - Should we use the font rendering to make it?
     - Start to research sounds...
@@ -12,10 +12,10 @@
     - Implement it.
 
 - Menu Scene
-    - Logo
-    - Labels on the Buttons
-        - Play
-        - Credits
+    - [DONE] Logo
+    - [DONE] Labels on the Buttons
+        - [DONE] Play
+        - [DONE] Credits
     - Make the Icons smaller.
         - Sound
         - Leaderboards
@@ -28,7 +28,7 @@
     - Make the more button opens a tab to my website.
 
 - Game Scene
-    - Fix the position of the Back Button.
+    - [DONE] Fix the position of the Back Button.
     - Add a level progression.
     - Fix the go to leaderboards scene.
 
