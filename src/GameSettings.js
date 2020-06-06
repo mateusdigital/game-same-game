@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------//
 // Private Vars                                                               //
 //----------------------------------------------------------------------------//
-const _game_settings_dict = {};
+let _storage = null;
 
 
 //----------------------------------------------------------------------------//
@@ -10,21 +10,33 @@ const _game_settings_dict = {};
 //------------------------------------------------------------------------------
 function GameSettings_Init()
 {
-    // @TODO(stdmatt): Load from storage
+    // @notice(stdmatt): Maybe in future we might want to put that in
+    // the indexed db or some other way...
+    _storage = localStorage;
+    if(!_storage) {
+        console.log("Can't store data on this browser...");
+    }
 }
 
 //------------------------------------------------------------------------------
 function GameSettings_Set(key, value)
 {
-    // @TODO(stdmatt): Save to Storage
-    _game_settings_dict[key] = value;
+    if(_storage) {
+        _storage.setItem(key, value);
+    }
 }
 
 //------------------------------------------------------------------------------
 function GameSettings_Get(key, default_value)
 {
-    if(key in _game_settings_dict) {
-        return _game_settings_dict[key];
+    if(_storage) {
+        const value = _storage.getItem(key);
+        if(value) {
+            switch(typeof(default_value)) {
+                case "number":  return Number(value); break;
+                case "boolean": return value == "true"; break;
+            }
+        }
+        return default_value;
     }
-    return default_value;
 }
