@@ -207,6 +207,7 @@ class MenuScene
         win.focus();
     }
 
+
     //------------------------------------------------------------------------//
     // Helper Methods                                                         //
     //------------------------------------------------------------------------//
@@ -218,7 +219,6 @@ class MenuScene
             ? BUTTONS_ICON_MUSIC_ON
             : BUTTONS_ICON_MUSIC_OFF;
 
-        console.log(texture_name);
         this.sound_button.icon_sprite.texture = Texture_Get(texture_name);
     } // _UpdateSoundIcon
 } // class MenuScene
