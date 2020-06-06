@@ -22,14 +22,6 @@ class LeaderboardsScene
         this._leaderboard_data = null;
 
         //
-        // Scenario
-        this.sky      = new SkyBackground();
-        this.scenario = new ScenarioLayer();
-
-        this.addChild(this.sky);
-        this.addChild(this.scenario);
-
-        //
         // UI
         this.title_text             = null;
         this.back_button            = null;
@@ -42,13 +34,6 @@ class LeaderboardsScene
         // Animations
         this.data_fetch_bubble_tween = null;
     } // CTOR
-
-    //--------------------------------------------------------------------------
-    Update(dt)
-    {
-        this.sky     .Update(dt);
-        this.scenario.Update(dt);
-    } // Update
 
     //--------------------------------------------------------------------------
     _OnLeaderboardFetched()

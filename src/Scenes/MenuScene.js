@@ -14,13 +14,7 @@ class MenuScene
         this.has_scores = GameSettings_Get(SETTINGS_KEY_HAS_SCORE, false);
 
         //
-        // Scenario
-        this.sky      = new SkyBackground();
-        this.scenario = new ScenarioLayer();
-
-        this.addChild(this.sky);
-        this.addChild(this.scenario);
-
+        // Logo
         this.logo = Sprite_Create(LOGO);
         Center_Anchor(this.logo);
         this.logo.x = GAME_DESIGN_WIDTH  * 0.5;
@@ -41,15 +35,8 @@ class MenuScene
         this._CreateScores   ();
         this._CreateButtons  ();
         this._UpdateSoundIcon();
-
     } // CTOR
 
-    //--------------------------------------------------------------------------
-    Update(dt)
-    {
-        this.sky     .Update(dt);
-        this.scenario.Update(dt);
-    } // Update
 
     //------------------------------------------------------------------------//
     // Initialize                                                             //

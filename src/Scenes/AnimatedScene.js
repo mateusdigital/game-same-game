@@ -22,12 +22,14 @@ class AnimatedScene
     {
         super();
         this.is_doing_fade_animation = false;
+        this.sortableChildren        = true;
     } // CTOR
 
     //--------------------------------------------------------------------------
     OnEnter()
     {
         super.OnEnter();
+        SCENARIO.SetParent(this);
         this._CreateAnimationWithCallback(true, ()=>{
             this.OnFinishedEnterAnimation();
         })

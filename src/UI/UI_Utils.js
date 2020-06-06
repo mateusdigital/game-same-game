@@ -68,6 +68,19 @@ Remove_From_Parent(obj)
     }
 }
 
+//-----------------------------------------------------------------------------
+// @XXX(stdmatt): Should move to lib...
+function
+Add_To_Parent(parent, ...args)
+{
+    // parent.addChild(args);
+    for(let i = 0; i < args.length; ++i) {
+        parent.addChild(args[i]);
+    }
+}
+
+
+
 function
 CreateBackButton(callback)
 {

@@ -29,14 +29,6 @@ class CreditsScene
     {
         super();
 
-        //
-        // Scenario
-        this.sky      = new SkyBackground();
-        this.scenario = new ScenarioLayer();
-
-        this.addChild(this.sky);
-        this.addChild(this.scenario);
-
         // Button
         const back_button = CreateBackButton(()=>{
             this.RunOnExit(new MenuScene());
@@ -60,13 +52,8 @@ class CreditsScene
         this._StartAnimation();
     } // OnFinishedEnterAnimation
 
-    //--------------------------------------------------------------------------
-    Update(dt)
-    {
-        this.sky     .Update(dt);
-        this.scenario.Update(dt);
-    } // Update
 
+    //--------------------------------------------------------------------------
     _StartAnimation()
     {
         Center_Anchor(this.msgs[0]);
@@ -80,6 +67,7 @@ class CreditsScene
         }).start();
     }
 
+    //--------------------------------------------------------------------------
     _StartThanksAnimation()
     {
         let curr_index = 2;
@@ -130,6 +118,7 @@ class CreditsScene
         }).start();
     }
 
+    //--------------------------------------------------------------------------
     _StartForPeopleAnimation()
     {
         // Main
@@ -153,6 +142,7 @@ class CreditsScene
         }).start();
     }
 
+    //--------------------------------------------------------------------------
     _StartSTDMATTAnimation()
     {
         // Main

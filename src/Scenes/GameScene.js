@@ -43,7 +43,6 @@ class GameScene
     {
         super();
 
-
         //
         // Housekeeping.
         this.balance            = Data_Get("res/data/balance.json");
@@ -56,13 +55,6 @@ class GameScene
         this.is_input_enabled   = false;
         this.current_score      = 0;
         this.current_level      = GAME_START_LEVEL;
-
-        //
-        // Scenario
-        this.sky      = new SkyBackground();
-        this.scenario = new ScenarioLayer();
-        this.addChild(this.sky);
-        this.addChild(this.scenario);
 
         //
         // Buttons
@@ -123,7 +115,6 @@ class GameScene
     {
         super.Update(dt);
         // Objects.
-        this.sky                  .Update(dt);
         this.score_number         .Update(dt);
         this.score_number_particle.Update(dt);
 
@@ -589,5 +580,3 @@ class GameScene
         // console.log(s);
     }
 } // class GameScene
-
-

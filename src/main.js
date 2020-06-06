@@ -38,6 +38,7 @@ Setup()
     const params     = new URLSearchParams(location.search);
     const scene_name = params.get("scene");
 
+    Scenario_Init();
     if(scene_name == "menu") {
         SCENE_MANAGER.SetScene(new MenuScene());
     } else if(scene_name == "game") {
@@ -58,9 +59,10 @@ Setup()
 function
 GameLoop()
 {
+    SCENARIO.Update(Application_Delta_Time);
 }
 
-
+//------------------------------------------------------------------------------
 function
 ResizeGame()
 {
