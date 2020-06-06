@@ -16,20 +16,20 @@
     - [DONE] Labels on the Buttons
         - [DONE] Play
         - [DONE] Credits
-    - Make the Icons smaller.
-        - Sound
-        - Leaderboards
-        - More
+    - [DONE] Make the Icons smaller.
+        - [DONE] Sound
+        - [DONE] Leaderboards
+        - [DONE] More
     - Finish the Scenario
         - Split the objects
         - Make the house smokes
         - Add the Sun.
     - Add sounds.
-    - Make the more button opens a tab to my website.
+    - [DONE] Make the more button opens a tab to my website.
 
 - Game Scene
     - [DONE] Fix the position of the Back Button.
-    - Add a level progression.
+    - [DONE] Add a level progression.
     - Fix the go to leaderboards scene.
 
 - Leaderboards Scene
@@ -38,10 +38,10 @@
     - Implement the ENTER_MODE
 
 - Credits Scene
-    - Add thanks
-        - To Kenney
+    - [DONE] Add thanks
+        - [DONE] To Kenney
+        - [DONE] To Sasha
+        - [DONE] To mother
         - To the font author.
-        - To Sasha
-        - To mother
-    - Dedicate for all ppl from COVID.
+    - [DONE] Dedicate for all ppl from COVID.
 

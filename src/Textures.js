@@ -41,6 +41,20 @@ const PARTICLES_EMOTE_STARS = "res/textures/particles/emote_stars.png"
 const PARTICLES_EMOTE_STAR = "res/textures/particles/emote_star.png"
 const PARTICLES_EMOTE_HEARTS = "res/textures/particles/emote_hearts.png"
 const PARTICLES_EMOTE_HEART = "res/textures/particles/emote_heart.png"
+const CREDITS_MSG_9 = "res/textures/credits/msg_9.png"
+const CREDITS_MSG_8 = "res/textures/credits/msg_8.png"
+const CREDITS_MSG_3 = "res/textures/credits/msg_3.png"
+const CREDITS_MSG_2 = "res/textures/credits/msg_2.png"
+const CREDITS_MSG_1 = "res/textures/credits/msg_1.png"
+const CREDITS_MSG_14 = "res/textures/credits/msg_14.png"
+const CREDITS_MSG_10 = "res/textures/credits/msg_10.png"
+const CREDITS_MSG_5 = "res/textures/credits/msg_5.png"
+const CREDITS_MSG_4 = "res/textures/credits/msg_4.png"
+const CREDITS_MSG_11 = "res/textures/credits/msg_11.png"
+const CREDITS_MSG_13 = "res/textures/credits/msg_13.png"
+const CREDITS_MSG_6 = "res/textures/credits/msg_6.png"
+const CREDITS_MSG_7 = "res/textures/credits/msg_7.png"
+const CREDITS_MSG_12 = "res/textures/credits/msg_12.png"
 
 const TEXTURES_TO_LOAD = [ "res/textures/test.png",
 "res/textures/Leaderboards.png",
@@ -84,4 +98,18 @@ const TEXTURES_TO_LOAD = [ "res/textures/test.png",
 "res/textures/particles/emote_stars.png",
 "res/textures/particles/emote_star.png",
 "res/textures/particles/emote_hearts.png",
-"res/textures/particles/emote_heart.png" ]
+"res/textures/particles/emote_heart.png",
+"res/textures/credits/msg_9.png",
+"res/textures/credits/msg_8.png",
+"res/textures/credits/msg_3.png",
+"res/textures/credits/msg_2.png",
+"res/textures/credits/msg_1.png",
+"res/textures/credits/msg_14.png",
+"res/textures/credits/msg_10.png",
+"res/textures/credits/msg_5.png",
+"res/textures/credits/msg_4.png",
+"res/textures/credits/msg_11.png",
+"res/textures/credits/msg_13.png",
+"res/textures/credits/msg_6.png",
+"res/textures/credits/msg_7.png",
+"res/textures/credits/msg_12.png" ]

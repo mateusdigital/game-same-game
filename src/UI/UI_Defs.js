@@ -20,6 +20,10 @@ const BIG_FONT_SIZE = 80;
 const MEDIUM_FONT_NAME = "Ai_Carai";
 const MEDIUM_FONT_SIZE = 40;
 
+const SMALL_FONT_NAME = "Ai_Carai";
+const SMALL_FONT_SIZE = 50;
+
+
 const FONT_FILE_NAMES = [
     "res/fonts/Test_FontSuffix.fnt",
 ];
@@ -80,5 +84,5 @@ const BLUE_TEXTURE_SETTINGS = {
 //
 // Position Settings
 //
-const PLAY_BUTTON_WITH_SCORES_Y = GAME_DESIGN_HEIGHT * 0.4;
+const PLAY_BUTTON_WITH_SCORES_Y = GAME_DESIGN_HEIGHT * 0.47;
 const PLAY_BUTTON_NO_SCORES_Y   = GAME_DESIGN_HEIGHT * 0.42;
