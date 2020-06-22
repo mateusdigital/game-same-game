@@ -18,6 +18,6 @@ class Text
                 console.log("Size:", size, "Diff:", diff_size, best_font_def.size, best_font_def.family)
             }
         }
-        super(str.toLowerCase(), best_font_def.family, best_font_def.size);
+        super(str.toLowerCase(), best_font_def.family, size);
     }
 }
