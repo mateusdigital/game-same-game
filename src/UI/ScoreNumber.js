@@ -4,18 +4,6 @@
 const BUBBLE_ANIMATION_DURATION = 500 * ANIMATION_SPEED_MULTIPLIER;
 const BUBBLE_ANIMATION_EASING   = TWEEN.Easing.Back.In;
 
-const SCORE_NUMBER_TEXTURES = [
-    NUMBERS_0,
-    NUMBERS_1,
-    NUMBERS_2,
-    NUMBERS_3,
-    NUMBERS_4,
-    NUMBERS_5,
-    NUMBERS_6,
-    NUMBERS_7,
-    NUMBERS_8,
-    NUMBERS_9,
-];
 
 //----------------------------------------------------------------------------//
 // Types                                                                      //
@@ -28,7 +16,7 @@ class ScoreNumber
     {
         super(0, 0)
 
-        this.sprites    = [];
+        this.digits    = [];
         this.curr_value = FillDigits(value, digits_count);
 
         this.bubble_tween_group = Tween_CreateGroup()
@@ -40,7 +28,7 @@ class ScoreNumber
             // });
         this.bubble_tween_half_way_callback = null;
 
-        this._CreateSprites     ();
+        this._CreateDigits      ();
         this._FixDigitsAlignment();
     } // CTOR
 
@@ -63,14 +51,15 @@ class ScoreNumber
             if(value_str[i] == this.curr_value[i]) {
                 continue;
             }
-            const digit  = value_str   [i];
-            const sprite = this.sprites[i];
-            this._CreateBubbleAnimation(sprite, digit);
+            const digit_value = value_str  [i];
+            const digit_text  = this.digits[i];
+
+            this._CreateBubbleAnimation(digit_text, digit_value);
         }
     } // SetNumberAnimated
 
     //--------------------------------------------------------------------------
-    _CreateBubbleAnimation(sprite, digit)
+    _CreateBubbleAnimation(digit_text, digit_value)
     {
         Tween_CreateBasic(BUBBLE_ANIMATION_DURATION, this.bubble_tween_group)
             .from({s: 1})
@@ -78,11 +67,11 @@ class ScoreNumber
             .yoyo(true)
             .repeat(1)
             .onUpdate((value)=>{
-                sprite.scale.set(value.s);
+                digit_text.scale.set(value.s);
             })
             .easing(BUBBLE_ANIMATION_EASING)
             .onRepeat(()=>{
-                sprite.texture = Texture_Get(SCORE_NUMBER_TEXTURES[parseInt(digit)]);
+                digit_text.text = digit_value.toString();
                 if(this.bubble_tween_half_way_callback) {
                     this.bubble_tween_half_way_callback();
                     this.bubble_tween_half_way_callback = null;
@@ -92,32 +81,39 @@ class ScoreNumber
     } // _CreateBubbleAnimation
 
     //--------------------------------------------------------------------------
-    _CreateSprites()
+    _CreateDigits()
     {
         for(let i = 0; i < this.curr_value.length; ++i) {
-            const digit  = this.curr_value[i];
-            const sprite = Sprite_Create(SCORE_NUMBER_TEXTURES[parseInt(digit)]);
-            this.sprites.push(sprite);
-            this.addChild(sprite);
+            const digit_value = this.curr_value[i];
+            const digit_text  = this._CreateDigit(digit_value);
+
+            this.digits.push(digit_text);
+            this.addChild(digit_text);
         }
-    } // _CreateSprites
+    } // _CreateDigits
+
+    _CreateDigit(digit)
+    {
+        var text = new Text(digit, MEDIUM_FONT_DEF.size);
+        return text;
+    }
 
     //--------------------------------------------------------------------------
     _FixDigitsAlignment()
     {
         let curr_width = 0;
-        for(let i = 0; i < this.sprites.length; ++i) {
-            const sprite = this.sprites[i];
-            sprite.anchor.set(0.5);
+        for(let i = 0; i < this.digits.length; ++i) {
+            const item = this.digits[i];
+            item.anchor.set(0.5);
 
-            sprite.x = curr_width + (sprite.width * 0.5);
-            sprite.y = (sprite.height * 0.5);
+            item.x = curr_width + (item.width * 0.5);
+            item.y = (item.height * 0.5);
 
-            curr_width += sprite.width;
+            curr_width += item.width;
         }
 
         this.bg.width  = curr_width;
-        this.bg.height = this.sprites[0].height;
+        this.bg.height = this.digits[0].height;
 
         Update_Anchor(this, 0.5);
     } // _FixDigitsAlignment

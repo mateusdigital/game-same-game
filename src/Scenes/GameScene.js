@@ -54,25 +54,16 @@ class GameScene
         this.brick_container    = null;
         this.is_input_enabled   = false;
         this.current_score      = 0;
-        this.current_level      = GAME_START_LEVEL;
+        this.current_level      = 10; GAME_START_LEVEL;
 
         //
-        // Buttons
-        this.back_button = CreateBackButton(()=>{ this.GoBack(); });
-        this.addChild(this.back_button);
-
-        //
-        // Score HUD.
-        this.score_number_particle = new ScoreNumberParticle();
-        this.addChild(this.score_number_particle);
-
-        this.score_number = new ScoreNumber("0", SCORE_HUD_DIGITS_COUNT)
-        Center_Anchor(this.score_number);
-
-        this.score_number.x = (GAME_DESIGN_WIDTH * 0.5);
-        this.score_number.y = (GAME_HUD_HEIGHT   * 0.5);
-        this.score_number.scale.set(1.5);
-        this.addChild(this.score_number);
+        // User Interface
+        //   Buttons
+        this.back_button = null;
+        //   Score HUD.
+        this.level_text            = null;
+        this.score_number_particle = null;
+        this.score_number_particle = null;
 
         //
         // Animation.
@@ -87,6 +78,7 @@ class GameScene
 
         //
         // Init
+        this._InitializeUI       ();
         this._InitializeLevelData();
         this._InitializeContainer();
     } // CTOR
@@ -128,6 +120,36 @@ class GameScene
     //------------------------------------------------------------------------//
     // Initialize                                                             //
     //------------------------------------------------------------------------//
+    _InitializeUI()
+    {
+        // Level Text.
+        this.level_text = new Text(String_Join(" ", "Level", this.current_level), SMALL_FONT_DEF.size);
+
+        Center_Anchor(this.level_text);
+        this.level_text.x = GAME_DESIGN_WIDTH * 0.5;
+        this.level_text.y = (GAME_HUD_HEIGHT * 0.1) + this.level_text.height * 0.5;
+
+        // Score Particle.
+        this.score_number_particle = new ScoreNumberParticle();
+
+        // Score Number.
+        this.score_number = new ScoreNumber("0", SCORE_HUD_DIGITS_COUNT)
+
+        Center_Anchor(this.score_number);
+        this.score_number.x = (GAME_DESIGN_WIDTH * 0.5);
+        this.score_number.y = this.level_text.y + this.level_text.height * 0.5 + this.score_number.height * 0.5 + BUTTON_GAP * 0.5;
+
+        // Back Button.
+        this.back_button = CreateBackButton(()=>{ this.GoBack(); });
+
+        Add_To_Parent(
+            this,
+            this.back_button,
+            this.score_number_particle,
+            this.level_text,
+            this.score_number
+        );
+    }
     //--------------------------------------------------------------------------
     _InitializeLevelData()
     {
@@ -219,7 +241,7 @@ class GameScene
         const container_start_y = this.brick_container.y;
         const container_height  = this.bricks_rows * brick_height;
 
-        const scale     = Math_Map( target_y, 0, container_height, 1.2, 0.6);
+        const scale     = Math_Map(target_y, 0, container_height, 1.2, 0.6);
         const duration  = START_FALL_ANIMATION_DURATION * (scale);
         const delay_min = duration * 0.8;
         const delay_max = duration * 1.2;

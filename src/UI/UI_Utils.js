@@ -16,12 +16,14 @@ function Update_Anchor(obj, x, y)
     }
 }
 
+//-----------------------------------------------------------------------------
 function Center_Anchor(obj)
 {
     Update_Anchor(obj, 0.5, 0.5);
 }
 
 
+//-----------------------------------------------------------------------------
 function Debug_Tint(...args)
 {
     for(let i = 0; i < args.length; ++i) {
@@ -35,6 +37,8 @@ function Debug_Tint(...args)
 const GAME_WINDOW_PORTRAIT  = 0;
 const GAME_WINDOW_LANDSCAPE = 1;
 
+
+//-----------------------------------------------------------------------------
 function
 Calculate_Window_Scale(window_mode, design_width, design_height)
 {
@@ -47,7 +51,9 @@ Calculate_Window_Scale(window_mode, design_width, design_height)
     return Math_Min(width_ratio, height_ratio);
 }
 
-function Tween_Scale(obj, time, target_scale)
+//-----------------------------------------------------------------------------
+function
+Tween_Scale(obj, time, target_scale)
 {
     return Tween_CreateBasic(time)
         .from({s: obj.scale.x})
@@ -79,8 +85,7 @@ Add_To_Parent(parent, ...args)
     }
 }
 
-
-
+//-----------------------------------------------------------------------------
 function
 CreateBackButton(callback)
 {
