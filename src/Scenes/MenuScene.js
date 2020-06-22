@@ -53,13 +53,13 @@ class MenuScene
         last_value = FillDigits(last_value);
         best_value = FillDigits(best_value);
 
-        const label_font_size = SMALL_FONT_SIZE * 0.8;
-        const value_font_size = SMALL_FONT_SIZE;
+        const label_font_size = SMALL_FONT_DEF.size;
+        const value_font_size = MEDIUM_FONT_DEF.size;
 
-        const last_text  = new Base_BMPText("LAST", SMALL_FONT_NAME, label_font_size);
-        const best_text  = new Base_BMPText("BEST", SMALL_FONT_NAME, label_font_size);
-        const last_score = new Base_BMPText(last_value, SMALL_FONT_NAME, value_font_size);
-        const best_score = new Base_BMPText(best_value, SMALL_FONT_NAME, value_font_size);
+        const best_text  = new Text("best",     label_font_size);
+        const best_score = new Text(best_value, value_font_size);
+        const last_text  = new Text("last",     label_font_size);
+        const last_score = new Text(last_value, value_font_size);
 
         Center_Anchor(best_text);
         best_text.x = (GAME_DESIGN_WIDTH * 0.5);
@@ -67,7 +67,7 @@ class MenuScene
 
         Center_Anchor(best_score);
         best_score.x = best_text.x;
-        best_score.y = best_text.y + best_text.height;
+        best_score.y = best_text.y + best_text.height * 0.5 + best_score.height * 0.5 + BUTTON_GAP * 0.5;
 
         Center_Anchor(last_text);
         last_text.x = best_score.x;
@@ -75,7 +75,7 @@ class MenuScene
 
         Center_Anchor(last_score);
         last_score.x = last_text.x;
-        last_score.y = last_text.y + last_text.height;
+        last_score.y = last_text.y + last_text.height * 0.5 + last_score.height * 0.5 + BUTTON_GAP * 0.5;
 
         this.addChild(best_text);
         this.addChild(best_score);

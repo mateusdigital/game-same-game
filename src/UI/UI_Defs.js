@@ -14,18 +14,20 @@ const SCORE_HUD_DIGITS_COUNT = 8;
 //----------------------------------------------------------------------------//
 // Fonts                                                                      //
 //----------------------------------------------------------------------------//
-const BIG_FONT_NAME = "Ai_Carai";
-const BIG_FONT_SIZE = 80;
+const BIG_FONT_DEF    = { size : 80, family: "big_font"    };
+const MEDIUM_FONT_DEF = { size : 50, family: "medium_font" };
+const SMALL_FONT_DEF  = { size : 30, family: "small_font"  };
 
-const MEDIUM_FONT_NAME = "Ai_Carai";
-const MEDIUM_FONT_SIZE = 40;
-
-const SMALL_FONT_NAME = "Ai_Carai";
-const SMALL_FONT_SIZE = 50;
-
+const FONT_DEFS = [
+    BIG_FONT_DEF,
+    MEDIUM_FONT_DEF,
+    SMALL_FONT_DEF
+];
 
 const FONT_FILE_NAMES = [
-    "res/fonts/Test_FontSuffix.fnt",
+    "res/fonts/big_font.fnt",
+    "res/fonts/medium_font.fnt",
+    "res/fonts/small_font.fnt",
 ];
 
 
