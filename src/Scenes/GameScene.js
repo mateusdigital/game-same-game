@@ -31,6 +31,9 @@ const BRICK_TEXTURES = [
     BRICKS_5
 ];
 
+const LEVEL_STR = "level";
+
+
 //----------------------------------------------------------------------------//
 // Types                                                                      //
 //----------------------------------------------------------------------------//
@@ -54,7 +57,7 @@ class GameScene
         this.brick_container    = null;
         this.is_input_enabled   = false;
         this.current_score      = 0;
-        this.current_level      = 10; GAME_START_LEVEL;
+        this.current_level      = GAME_START_LEVEL;
 
         //
         // User Interface
@@ -123,7 +126,7 @@ class GameScene
     _InitializeUI()
     {
         // Level Text.
-        this.level_text = new Text(String_Join(" ", "Level", this.current_level), SMALL_FONT_DEF.size);
+        this.level_text = new Text(String_Join(" ", LEVEL_STR, this.current_level), SMALL_FONT_DEF.size);
 
         Center_Anchor(this.level_text);
         this.level_text.x = GAME_DESIGN_WIDTH * 0.5;
@@ -154,6 +157,8 @@ class GameScene
     _InitializeLevelData()
     {
         const level_data = this.balance[this.current_level.toString()];
+
+       this.level_text.text = String_Join(" ", LEVEL_STR, this.current_level);
 
         this.bricks_rows       = level_data["Height"];
         this.bricks_cols       = level_data["Width"];
