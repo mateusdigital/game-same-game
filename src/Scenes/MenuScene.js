@@ -77,10 +77,13 @@ class MenuScene
         last_score.x = last_text.x;
         last_score.y = last_text.y + last_text.height * 0.5 + last_score.height * 0.5 + BUTTON_GAP * 0.5;
 
-        this.addChild(best_text);
-        this.addChild(best_score);
-        this.addChild(last_text);
-        this.addChild(last_score);
+        Add_To_Parent(
+            this,
+            best_text,
+            best_score,
+            last_text,
+            last_score
+        );
 
         this.play_button_ui_anchor = last_score;
     } // _CreateScores
@@ -140,25 +143,25 @@ class MenuScene
         this.addChild(this.sound_button);
         Update_Anchor(this.sound_button, 0.5);
 
-        //
-        // Leaderboards - Center.
-        this.leaders_button = new NineSliceButton(
-            ORANGE_TEXTURE_SETTINGS,
-            NINE_SLICE_SETTINGS,
-            SMALL_BUTTON_SIZE_SETTINGS,
-        );
+        // //
+        // // Leaderboards - Center.
+        // this.leaders_button = new NineSliceButton(
+        //     ORANGE_TEXTURE_SETTINGS,
+        //     NINE_SLICE_SETTINGS,
+        //     SMALL_BUTTON_SIZE_SETTINGS,
+        // );
 
-        this.leaders_button.x = this.play_button.x;
-        this.leaders_button.y = this.credits_button.y + BUTTON_HEIGHT + BUTTON_GAP;
-        this.leaders_button.OnPointerDown(()=> { this.GoLeaderboards() });
-        this.leaders_button.AddIcon(Sprite_Create(BUTTONS_ICON_LEADERBOARDS));
-        this.addChild(this.leaders_button);
-        Update_Anchor(this.leaders_button, 0.5);
+        // this.leaders_button.x = this.play_button.x;
+        // this.leaders_button.y = this.credits_button.y + BUTTON_HEIGHT + BUTTON_GAP;
+        // this.leaders_button.OnPointerDown(()=> { this.GoLeaderboards() });
+        // this.leaders_button.AddIcon(Sprite_Create(BUTTONS_ICON_LEADERBOARDS));
+        // this.addChild(this.leaders_button);
+        // Update_Anchor(this.leaders_button, 0.5);
 
         //
         // More - Right.
         this.more_button = new NineSliceButton(
-            GREEN_TEXTURE_SETTINGS,
+            ORANGE_TEXTURE_SETTINGS,
             NINE_SLICE_SETTINGS,
             SMALL_BUTTON_SIZE_SETTINGS,
         );

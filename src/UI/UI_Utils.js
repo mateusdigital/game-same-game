@@ -92,7 +92,7 @@ CreateBackButton(callback)
     const back_button = new NineSliceButton(
         ORANGE_TEXTURE_SETTINGS,
         NINE_SLICE_SETTINGS,
-        SMALL_BUTTON_SIZE_SETTINGS,
+        BACK_BUTTON_SIZE_SETTINGS,
     );
 
     Center_Anchor(back_button);

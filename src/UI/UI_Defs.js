@@ -36,8 +36,9 @@ const FONT_FILE_NAMES = [
 //----------------------------------------------------------------------------//
 const BUTTON_BIG_WIDTH   = (GAME_DESIGN_WIDTH * 0.5);
 const BUTTON_GAP         = 10;
-const BUTTON_SMALL_WIDTH = BUTTON_BIG_WIDTH / 3 - BUTTON_GAP;
-const BUTTON_HEIGHT      = BUTTON_SMALL_WIDTH;
+const BUTTON_SMALL_WIDTH = BUTTON_BIG_WIDTH / 2 - BUTTON_GAP * 0.5;
+const BUTTON_HEIGHT      = BUTTON_BIG_WIDTH / 3 - BUTTON_GAP;
+const BUTTON_BACK_WIDTH  = BUTTON_HEIGHT;
 
 
 //
@@ -61,7 +62,10 @@ const SMALL_BUTTON_SIZE_SETTINGS = {
     width:  BUTTON_SMALL_WIDTH,
     height: BUTTON_HEIGHT
 };
-
+const BACK_BUTTON_SIZE_SETTINGS = {
+    width:  BUTTON_BACK_WIDTH,
+    height: BUTTON_HEIGHT
+};
 
 //
 // Textures Settings
