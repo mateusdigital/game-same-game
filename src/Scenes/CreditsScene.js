@@ -17,17 +17,8 @@ class CreditsScene
 
         //
         // Msgs
-        this.msgs = [];
-        this._StartAnimation          ();
+        this._StartAnimation();
     } // CTOR
-
-
-    //--------------------------------------------------------------------------
-    OnFinishedEnterAnimation()
-    {
-        super.OnFinishedEnterAnimation();
-    } // OnFinishedEnterAnimation
-
 
     //--------------------------------------------------------------------------
     _StartAnimation()
@@ -36,36 +27,45 @@ class CreditsScene
         const small_font = 28;
         const gap        = 20;
 
+        const yellow = 0xFFCC00;
+        const blue   = 0x1EA7E1;
+        const orange = 0xDEDEDE;
+        const white  = 0XFAFAFA;
+
+        // const yellow = 0xFFCC00;
+        // const blue = 0x1886b4;
+        // const orange = 0xADC2D0;
+
         const msgs = [
             [
-                { text: "This little game", font: big_font },
-                { text: "was made with",    font: big_font },
-                { text: "a lot of love!",   font: big_font, gap: 5},
+                { text: "This little game", font: big_font, gap: 0, color: yellow },
+                { text: "was made with",    font: big_font, gap: 0, color: yellow },
+                { text: "a lot of love!",   font: big_font, gap: 5, color: yellow },
 
             ],
 
             [
                 { text: "A big thanks to:", font: small_font * 0.8, gap: gap * 0.8 },
 
-                { text: "Kenney",                   font: big_font              },
-                { text: "for the amazing artwork",  font: small_font,  gap: gap },
+                { text: "Kenney",                   font: big_font,    gap: 0,   color: white },
+                { text: "for the amazing artwork",  font: small_font,  gap: gap, color: orange },
 
-                { text: "PIXIJS",                      font: big_font              },
-                { text: "this framework is fantastic", font: small_font,  gap: gap },
+                { text: "PIXIJS",                      font: big_font,    gap: 0,   color: white },
+                { text: "this framework is fantastic", font: small_font,  gap: gap, color: orange },
 
-                { text: "Sasha",                           font: big_font              },
-                { text: "all the fun is on her balancing", font: small_font,  gap: gap },
+                { text: "Sasha",                           font: big_font,    gap: 0,   color: white },
+                { text: "all the fun is on her balancing", font: small_font,  gap: gap, color: orange },
 
-                { text: "Maezinha e Pingo",              font: big_font              },
-                { text: "Saudade nunca se vai, apenas",  font: small_font            },
-                { text: "aprendemos a conviver com ela", font: small_font,  gap: gap },
+                { text: "Maezinha e Pingo",              font: big_font,   gap: 0,   color: white },
+                { text: "Saudade nunca se vai, apenas",  font: small_font, gap: 0,   color: orange },
+                { text: "aprendemos a conviver com ela", font: small_font, gap: gap, color: orange },
             ],
 
             [
-                { text: "Dedicated to all",         font: big_font   },
-                { text: "people that suffered",     font: big_font   },
-                { text: "with covid-19",            font: big_font   },
-                { text: "Feel strong, stay safe!",  font: small_font,  gap: gap },
+                { text: "Dedicated to all",         font: big_font,   gap: 0,   color: yellow   },
+                { text: "people that suffered",     font: big_font,   gap: 0,   color: yellow   },
+                { text: "with covid-19",            font: big_font,   gap: 0,   color: yellow   },
+                { text: "Feel strong, stay safe!",  font: small_font, gap: gap, color: blue     },
             ],
 
             [
@@ -82,6 +82,7 @@ class CreditsScene
                 const item = msgs[i][j];
                 const msg  = item.text;
                 let   g    = 2;
+                let   c    = 0xFFFFFF;
 
                 if(item.font) {
                     curr_font_size = item.font;
@@ -89,12 +90,16 @@ class CreditsScene
                 if(item.gap) {
                    g += item.gap;
                 }
+                if(item.color) {
+                    c = item.color;
+                }
 
                 const text = new Text(msg, curr_font_size);
 
                 Update_Anchor(text, 0.5, 0);
                 text.position.x = CONTAINER_DESIGN_WIDTH * 0.5;
                 text.position.y = y;
+                text.tint = c;
 
                 y += (text.height + g);
                 Add_To_Parent(this, text);
