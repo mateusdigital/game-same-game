@@ -6,7 +6,7 @@ import sys;
 filenames = [];
 decls     = [];
 
-root_dir    = sys.argv[1];
+root_dir    = sys.argv[1].replace("./", "");
 output_file = sys.argv[2];
 
 for path in Path(root_dir).glob("**/*.png"):
@@ -14,6 +14,7 @@ for path in Path(root_dir).glob("**/*.png"):
     filenames.append(quoted_path);
 
     varname = str(path)        \
+        .replace("./",     "") \
         .replace(root_dir, "") \
         .replace(".png",   "") \
         .replace("/",     "_") \
@@ -31,5 +32,3 @@ with open(output_file, "w") as f:
     f.write("const TEXTURES_TO_LOAD = [ {0} ]".format(
         ",\n".join(filenames)
     ))
-
-
