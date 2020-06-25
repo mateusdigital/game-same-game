@@ -158,7 +158,8 @@ class GameScene
     {
         const level_data = this.balance[this.current_level.toString()];
 
-       this.level_text.text = String_Join(" ", LEVEL_STR, this.current_level);
+        this.level_text.text = String_Join(" ", LEVEL_STR, this.current_level);
+        this.level_text.tint = Random_Element(LEVEL_TEXT_COLORS);
 
         this.bricks_rows       = level_data["Height"];
         this.bricks_cols       = level_data["Width"];

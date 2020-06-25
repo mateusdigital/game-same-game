@@ -1,7 +1,8 @@
+
 class Text
     extends Base_BMPText
 {
-    constructor(str, size)
+    constructor(str, size, color = TEXT_COLOR_WHITE_LIGHT)
     {
         let best_font_def = null;
         let best_size     = null;
@@ -18,6 +19,6 @@ class Text
                 console.log("Size:", size, "Diff:", diff_size, best_font_def.size, best_font_def.family)
             }
         }
-        super(str.toLowerCase(), best_font_def.family, size);
+        super(str.toLowerCase(), best_font_def.family, size, color);
     }
 }

@@ -27,85 +27,77 @@ class CreditsScene
         const small_font = 28;
         const gap        = 20;
 
-        const yellow = 0xFFCC00;
-        const blue   = 0x1EA7E1;
-        const orange = 0xDEDEDE;
-        const white  = 0XFAFAFA;
-
-        // const yellow = 0xFFCC00;
-        // const blue = 0x1886b4;
-        // const orange = 0xADC2D0;
 
         const msgs = [
             [
-                { text: "This little game", font: big_font, gap: 0, color: yellow },
-                { text: "was made with",    font: big_font, gap: 0, color: yellow },
-                { text: "a lot of love!",   font: big_font, gap: 5, color: yellow },
+                { text: "This little game", font: big_font, gap: 0, color: TEXT_COLOR_YELLOW },
+                { text: "was made with",    font: big_font, gap: 0, color: TEXT_COLOR_YELLOW },
+                { text: "a lot of love!",   font: big_font, gap: 5, color: TEXT_COLOR_YELLOW },
 
             ],
 
             [
-                { text: "A big thanks to:", font: small_font * 0.8, gap: gap * 0.8 },
+                { text: "A big thanks to:", font: small_font * 0.8, gap: gap * 0.8, color: TEXT_COLOR_WHITE_LIGHT},
 
-                { text: "Kenney",                   font: big_font,    gap: 0,   color: white },
-                { text: "for the amazing artwork",  font: small_font,  gap: gap, color: orange },
+                { text: "Kenney",                   font: big_font,    gap: 0,   color: TEXT_COLOR_WHITE_LIGHT },
+                { text: "for the amazing artwork",  font: small_font,  gap: gap, color: TEXT_COLOR_WHITE_DARK  },
 
-                { text: "PIXIJS",                      font: big_font,    gap: 0,   color: white },
-                { text: "this framework is fantastic", font: small_font,  gap: gap, color: orange },
+                { text: "PIXIJS",                      font: big_font,    gap: 0,   color: TEXT_COLOR_WHITE_LIGHT },
+                { text: "this framework is fantastic", font: small_font,  gap: gap, color: TEXT_COLOR_WHITE_DARK  },
 
-                { text: "Sasha",                           font: big_font,    gap: 0,   color: white },
-                { text: "all the fun is on her balancing", font: small_font,  gap: gap, color: orange },
+                { text: "Sasha",                           font: big_font,    gap: 0,   color: TEXT_COLOR_WHITE_LIGHT },
+                { text: "all the fun is on her balancing", font: small_font,  gap: gap, color: TEXT_COLOR_WHITE_DARK  },
 
-                { text: "Maezinha e Pingo",              font: big_font,   gap: 0,   color: white },
-                { text: "Saudade nunca se vai, apenas",  font: small_font, gap: 0,   color: orange },
-                { text: "aprendemos a conviver com ela", font: small_font, gap: gap, color: orange },
+                { text: "Maezinha e Pingo",              font: big_font,   gap: 0,   color: TEXT_COLOR_WHITE_LIGHT },
+                { text: "Saudade nunca se vai, apenas",  font: small_font, gap: 0,   color: TEXT_COLOR_WHITE_DARK  },
+                { text: "aprendemos a conviver com ela", font: small_font, gap: gap, color: TEXT_COLOR_WHITE_DARK  },
             ],
 
             [
-                { text: "Dedicated to all",         font: big_font,   gap: 0,   color: yellow   },
-                { text: "people that suffered",     font: big_font,   gap: 0,   color: yellow   },
-                { text: "with covid-19",            font: big_font,   gap: 0,   color: yellow   },
-                { text: "Feel strong, stay safe!",  font: small_font, gap: gap, color: blue     },
+                { text: "Dedicated to all",         font: big_font,   gap: 0,   color: TEXT_COLOR_YELLOW     },
+                { text: "people that suffered",     font: big_font,   gap: 0,   color: TEXT_COLOR_YELLOW     },
+                { text: "with covid-19",            font: big_font,   gap: 0,   color: TEXT_COLOR_YELLOW     },
+                { text: "Feel strong, stay safe!",  font: small_font, gap: gap, color: TEXT_COLOR_WHITE_DARK },
             ],
 
             [
-                { text: "STDMATT MMXX",           font: big_font    },
-                { text: "gplv3 - hack, share it", font: small_font  }
+                { text: "STDMATT MMXX",           font: big_font  , color: TEXT_COLOR_WHITE_LIGHT  },
+                { text: "gplv3 - hack, share it", font: small_font, color: TEXT_COLOR_WHITE_DARK }
             ]
         ];
 
-        let y = this.back_button.y;
+        let y = this.back_button.y + this.back_button.height * 0.5 * this.back_button.scale.x;
         let curr_font_size = 0;
 
         for(let i = 0; i < msgs.length; ++i) {
             for(let j = 0; j < msgs[i].length; ++j) {
-                const item = msgs[i][j];
-                const msg  = item.text;
-                let   g    = 2;
-                let   c    = 0xFFFFFF;
+                const item   = msgs[i][j];
+                const msg    = item.text;
+                let   _gap   = 2;
+                let   _color = 0xFFFFFF;
 
                 if(item.font) {
                     curr_font_size = item.font;
                 }
                 if(item.gap) {
-                   g += item.gap;
+                   _gap += item.gap;
                 }
                 if(item.color) {
-                    c = item.color;
+                    _color = item.color;
                 }
 
-                const text = new Text(msg, curr_font_size);
+                const text = new Text(msg, curr_font_size, _color);
 
                 Update_Anchor(text, 0.5, 0);
                 text.position.x = CONTAINER_DESIGN_WIDTH * 0.5;
                 text.position.y = y;
-                text.tint = c;
+                text.tint       = _color;
 
-                y += (text.height + g);
+                y += (text.height + _gap);
                 Add_To_Parent(this, text);
             }
 
-            y += 30;
+            y += 22;
         }
     }
 

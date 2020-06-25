@@ -56,10 +56,10 @@ class MenuScene
         const label_font_size = SMALL_FONT_DEF.size;
         const value_font_size = MEDIUM_FONT_DEF.size;
 
-        const best_text  = new Text("best",     label_font_size);
-        const best_score = new Text(best_value, value_font_size);
-        const last_text  = new Text("last",     label_font_size);
-        const last_score = new Text(last_value, value_font_size);
+        const best_text  = new Text("best",     label_font_size, TEXT_COLOR_YELLOW);
+        const best_score = new Text(best_value, value_font_size, TEXT_COLOR_WHITE_LIGHT);
+        const last_text  = new Text("last",     label_font_size, TEXT_COLOR_BLUE);
+        const last_score = new Text(last_value, value_font_size, TEXT_COLOR_WHITE_LIGHT);
 
         Center_Anchor(best_text);
         best_text.x = (GAME_DESIGN_WIDTH * 0.5);

@@ -30,6 +30,20 @@ const FONT_FILE_NAMES = [
     "res/fonts/small_font.fnt",
 ];
 
+const TEXT_COLOR_WHITE_DARK  = 0xE4E0CD;
+const TEXT_COLOR_WHITE_LIGHT = 0xFFFCF0;
+const TEXT_COLOR_YELLOW      = 0xFFDB49;
+const TEXT_COLOR_BLUE        = 0x1EA7E1;
+const TEXT_COLOR_ORGANGE     = 0xE86A17;
+const TEXT_COLOR_GREEN       = 0x73CD4B;
+
+const LEVEL_TEXT_COLORS = [
+    TEXT_COLOR_YELLOW,
+    TEXT_COLOR_BLUE,
+    TEXT_COLOR_ORGANGE,
+    TEXT_COLOR_GREEN
+];
+
 
 //----------------------------------------------------------------------------//
 // Buttons                                                                    //
