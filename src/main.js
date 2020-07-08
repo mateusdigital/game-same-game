@@ -32,8 +32,7 @@ PreLoad()
 function
 Setup()
 {
-    GameSettings_Init     ();
-    LeaderboardsUtils_Init();
+    GameSettings_Init();
 
     const params     = new URLSearchParams(location.search);
     const scene_name = params.get("scene");
@@ -51,6 +50,15 @@ Setup()
         SCENE_MANAGER.SetScene(new MenuScene());
     }
 
+    AUDIO_MANAGER.PreloadMusic(
+        ()=> {
+            console.log("Loaded");
+            AUDIO_MANAGER.PlayMusic("res/audio/life-of-riley-by-kevin-macleod-from-filmmusic-io.mp3");
+        },
+        [
+            "res/audio/life-of-riley-by-kevin-macleod-from-filmmusic-io.mp3"
+        ]
+    );
     Application_Start(GameLoop);
     Input_InstallBasicMouseHandler(g_App.view);
 }

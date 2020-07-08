@@ -506,11 +506,7 @@ class GameScene
         const new_best_score = Math_Max(old_best_score, this.current_score);
         GameSettings_Set(SETTINGS_KEY_BEST_SCORE, new_best_score);
 
-        if(LeaderboardsUtils_IsOnLeaderboard(new_best_score)) {
-            this.GoScene(new LeaderboardsScene(LEADERBOARDS_SCENE_MODE_ENTER));
-        } else {
-            this.GoScene(new MenuScene());
-        }
+        this.GoScene(new MenuScene());
     } // _OnBricksSlideEnded
 
 
