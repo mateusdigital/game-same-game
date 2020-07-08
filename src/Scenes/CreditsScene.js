@@ -23,50 +23,50 @@ class CreditsScene
     //--------------------------------------------------------------------------
     _StartAnimation()
     {
-        const big_font   = 45;
-        const small_font = 28;
-        const gap        = 20;
+        const big_font   = 40;
+        const small_font = 25;
+        const gap        = 35;
 
+        const header = TEXT_COLOR_WHITE_LIGHT;
+        const sub    = TEXT_COLOR_YELLOW;
 
         const msgs = [
             [
-                { text: "This little game", font: big_font, gap: 0, color: TEXT_COLOR_YELLOW },
-                { text: "was made with",    font: big_font, gap: 0, color: TEXT_COLOR_YELLOW },
-                { text: "a lot of love!",   font: big_font, gap: 5, color: TEXT_COLOR_YELLOW },
+                { text: "This little game", font: big_font, gap: 0, color: header },
+                { text: "was made with",    font: big_font, gap: 0, color: header },
+                { text: "a lot of love!",   font: big_font, gap: 0, color: header },
 
             ],
 
             [
-                { text: "A big thanks to:", font: small_font * 0.8, gap: gap * 0.8, color: TEXT_COLOR_WHITE_LIGHT},
-
-                { text: "Kenney",                   font: big_font,    gap: 0,   color: TEXT_COLOR_WHITE_LIGHT },
-                { text: "for the amazing artwork",  font: small_font,  gap: gap, color: TEXT_COLOR_WHITE_DARK  },
-
-                { text: "PIXIJS",                      font: big_font,    gap: 0,   color: TEXT_COLOR_WHITE_LIGHT },
-                { text: "this framework is fantastic", font: small_font,  gap: gap, color: TEXT_COLOR_WHITE_DARK  },
-
-                { text: "Sasha",                           font: big_font,    gap: 0,   color: TEXT_COLOR_WHITE_LIGHT },
-                { text: "all the fun is on her balancing", font: small_font,  gap: gap, color: TEXT_COLOR_WHITE_DARK  },
-
-                { text: "Maezinha e Pingo",              font: big_font,   gap: 0,   color: TEXT_COLOR_WHITE_LIGHT },
-                { text: "Saudade nunca se vai, apenas",  font: small_font, gap: 0,   color: TEXT_COLOR_WHITE_DARK  },
-                { text: "aprendemos a conviver com ela", font: small_font, gap: gap, color: TEXT_COLOR_WHITE_DARK  },
+                { text: "Dedicated to all",         font: big_font,   gap: 0,  color: header },
+                { text: "people that suffered",     font: big_font,   gap: 0,  color: header },
+                { text: "from covid-19",            font: big_font,   gap: 20, color: header },
+                { text: "Feel strong, stay safe!",  font: small_font, gap: 80, color: sub    },
             ],
 
             [
-                { text: "Dedicated to all",         font: big_font,   gap: 0,   color: TEXT_COLOR_YELLOW     },
-                { text: "people that suffered",     font: big_font,   gap: 0,   color: TEXT_COLOR_YELLOW     },
-                { text: "with covid-19",            font: big_font,   gap: 0,   color: TEXT_COLOR_YELLOW     },
-                { text: "Feel strong, stay safe!",  font: small_font, gap: gap, color: TEXT_COLOR_WHITE_DARK },
+                { text: "A big thanks to:", font: small_font * 0.9, gap: 10, color: TEXT_COLOR_ORANGE},
+
+                { text: "Sasha",                           font: big_font,    gap: 0,  color: header},
+                { text: "all the fun is on her balancing", font: small_font,  gap: 20, color: sub},
+
+                { text: "Maezinha e Pingo",              font: big_font,   gap: 0,   color: header },
+                { text: "Saudade nunca se vai, apenas",  font: small_font, gap: 0,   color: sub    },
+                { text: "aprendemos a conviver com ela", font: small_font, gap: 80, color: sub    },
             ],
 
             [
-                { text: "STDMATT MMXX",           font: big_font  , color: TEXT_COLOR_WHITE_LIGHT  },
-                { text: "gplv3 - hack, share it", font: small_font, color: TEXT_COLOR_WHITE_DARK }
-            ]
+                { text: "STDMATT MMXX",           font: big_font  , color: TEXT_COLOR_WHITE_DARK},
+                { text: "gplv3 - hack, share it", font: small_font, color: TEXT_COLOR_WHITE_DARK, gap: 30}
+            ],
+
+            [
+                { text: "Check here info about licenses!!", font: small_font, color: TEXT_COLOR_BLUE, is_link: true},
+            ],
         ];
 
-        let y = this.back_button.y + this.back_button.height * 0.5 * this.back_button.scale.x;
+        let y = this.back_button.y + this.back_button.height * 1 * this.back_button.scale.x;
         let curr_font_size = 0;
 
         for(let i = 0; i < msgs.length; ++i) {
@@ -95,6 +95,16 @@ class CreditsScene
 
                 y += (text.height + _gap);
                 Add_To_Parent(this, text);
+
+                // This is the copy right button
+                if(item.is_link) {
+                    text.interactive = true;
+                    text.buttonMode  = true;
+                    text.on("pointerdown", ()=>{
+                        const win = window.open("./thanks_to.html", '_blank');
+                        win.focus();
+                    });
+                }
             }
 
             y += 22;
