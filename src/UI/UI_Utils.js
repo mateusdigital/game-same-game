@@ -38,18 +38,6 @@ const GAME_WINDOW_PORTRAIT  = 0;
 const GAME_WINDOW_LANDSCAPE = 1;
 
 
-//-----------------------------------------------------------------------------
-function
-Calculate_Window_Scale(window_mode, design_width, design_height)
-{
-    const parent_width  = window.innerWidth;
-    const parent_height = window.innerHeight;
-
-    const width_ratio  = (parent_width  / design_width);
-    const height_ratio = (parent_height / design_height);
-
-    return Math_Min(width_ratio, height_ratio);
-}
 
 //-----------------------------------------------------------------------------
 function
