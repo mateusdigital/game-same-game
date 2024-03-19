@@ -24,6 +24,7 @@ class CreditsScene
     _StartAnimation()
     {
         const big_font   = 40;
+        const med_font   = 25;
         const small_font = 25;
         const gap        = 35;
 
@@ -34,31 +35,29 @@ class CreditsScene
             [
                 { text: "This little game", font: big_font, gap: 0, color: header },
                 { text: "was made with",    font: big_font, gap: 0, color: header },
-                { text: "a lot of love!",   font: big_font, gap: 0, color: header },
-
+                { text: "a lot of love!",   font: big_font, gap: 40, color: header },
             ],
 
             [
-                { text: "Dedicated to all",         font: big_font,   gap: 0,  color: header },
-                { text: "people that suffered",     font: big_font,   gap: 0,  color: header },
-                { text: "from covid-19",            font: big_font,   gap: 20, color: header },
-                { text: "Feel strong, stay safe!",  font: small_font, gap: 80, color: sub    },
+                { text: "It was made in 2020 while ",   font: med_font,   gap: 0,  color: header },
+                { text: "I was in Belarus",             font: med_font,   gap: 0,  color: header },
+                { text: "during the covid-19 pandemic", font: med_font,   gap: 0, color: header },
+                { text: "and finished in 2024",         font: med_font,   gap: 0,  color: header },
+                { text: "while I'm in Brasil!",         font: med_font,   gap: 40,  color: header },
             ],
 
             [
-                { text: "A big thanks to:", font: small_font * 0.9, gap: 10, color: TEXT_COLOR_ORANGE},
+                { text: "With all my love",              font: small_font * 0.9, gap: 10, color: TEXT_COLOR_ORANGE},
+                { text: "to Marla",                      font: big_font,         gap: 0,  color: header},
+                { text: "Maezinha e Pingo",              font: big_font,         gap: 10,   color: header },
 
-                { text: "Sasha",                           font: big_font,    gap: 0,  color: header},
-                { text: "all the fun is on her balancing", font: small_font,  gap: 20, color: sub},
-
-                { text: "Maezinha e Pingo",              font: big_font,   gap: 0,   color: header },
-                { text: "Saudade nunca se vai, apenas",  font: small_font, gap: 0,   color: sub    },
-                { text: "aprendemos a conviver com ela", font: small_font, gap: 80, color: sub    },
+                { text: "Saudade nunca se vai, apenas",  font: small_font,       gap: 0,   color: sub    },
+                { text: "aprendemos a conviver com ela", font: small_font,       gap: 40, color: sub    },
             ],
 
             [
-                { text: "STDMATT MMXX",           font: big_font  , color: TEXT_COLOR_WHITE_DARK},
-                { text: "gplv3 - hack, share it", font: small_font, color: TEXT_COLOR_WHITE_DARK, gap: 30}
+                { text: "mateus.digital 2024",           font: big_font  , color: TEXT_COLOR_WHITE_DARK},
+                { text: "gplv3 - hack, share it", font: small_font, color: TEXT_COLOR_WHITE_DARK, gap: 100}
             ],
 
             [
@@ -66,7 +65,7 @@ class CreditsScene
             ],
         ];
 
-        let y = this.back_button.y + this.back_button.height * 1 * this.back_button.scale.x;
+        let y = this.back_button.y + this.back_button.height * 1 * this.back_button.scale.x + 20;
         let curr_font_size = 0;
 
         for(let i = 0; i < msgs.length; ++i) {
