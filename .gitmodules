@@ -1,6 +1,0 @@
-[submodule "libs/mcow_js_pixi"]
-	path = libs/mcow_js_pixi
-	url = https://gitlab.com/stdmatt-libs/mcow_js_pixi
-[submodule "libs/mcow_js_core"]
-	path = libs/mcow_js_core
-	url = https://gitlab.com/stdmatt-libs/mcow_js_core
