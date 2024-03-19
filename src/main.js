@@ -2,7 +2,9 @@
 function
 PreInit()
 {
+    const container = document.getElementById("canvas_container");
     Application_Create(
+        container,
         GAME_DESIGN_WIDTH,
         GAME_DESIGN_HEIGHT,
         GAME_SEED
@@ -74,11 +76,22 @@ GameLoop()
 function
 ResizeGame()
 {
-    const scale = Calculate_Window_Scale(
-        GAME_WINDOW_PORTRAIT,
-        GAME_DESIGN_WIDTH,
-        GAME_DESIGN_HEIGHT
-    );
+    const container = document.getElementById("canvas_container");
+
+    const parent_width  = window.innerWidth;
+    const parent_height = window.innerHeight;
+
+    const computed_style = window.getComputedStyle(container);
+
+    const top    = parseFloat(computed_style.paddingTop);
+    const right  = parseFloat(computed_style.paddingRight);
+    const bottom = parseFloat(computed_style.paddingBottom);
+    const left   = parseFloat(computed_style.paddingLeft);
+
+    const width_ratio  = (parent_width - (left + right)) / GAME_DESIGN_WIDTH;
+    const height_ratio = (parent_height- (top + bottom)) / GAME_DESIGN_HEIGHT;
+
+    const scale = Math_Min(width_ratio, height_ratio);
 
     g_App.stage.scale.set(scale, scale);
     g_App.renderer.resize(
