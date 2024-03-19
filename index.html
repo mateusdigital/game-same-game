@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
+
     <link rel="stylesheet" href="./res/css/main.css">
+    <title>Same Game - mateus.digital</title>
 
     <!-- CORE -->
     <script type="text/javascript" src="./libs/mcow_js_core/libs/third_party/chroma.js"></script>
@@ -41,7 +44,11 @@
 </head>
 
 <body>
-    <div id="canvas_div"></div>
+    <div class="container"> <!-- Add the container class here -->
+        <div class="background" id="background"></div> <!-- Add the background class and ID here -->
+        <div class="canvas_container" id="canvas_container"></div>
+    </div>
+
 
     <script type="text/javascript" src="src/Constants.js"></script>
     <script type="text/javascript" src="src/Textures.js"></script>
