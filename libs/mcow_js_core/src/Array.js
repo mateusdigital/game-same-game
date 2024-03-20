@@ -164,3 +164,21 @@ function Array_GetFront(arr)
     }
     return arr[0];
 }
+
+//------------------------------------------------------------------------------
+function
+pw_Array_MakeFlat(...args)
+{
+    let expanded_args = [];
+    for(let i = 0; i < args.length; ++i) {
+        const curr_arg = args[i];
+        if(Array.isArray(curr_arg)) {
+            const inner = pw_Array_MakeFlat(...curr_arg);
+            expanded_args = expanded_args.concat(inner);
+        } else {
+            expanded_args.push(curr_arg);
+        }
+    }
+
+    return expanded_args;
+}

@@ -86,9 +86,12 @@ CreateBackButton(callback)
     Center_Anchor(back_button);
 
     back_button.scale.set(0.6);
-    back_button.x = (back_button.width  * 0.5);
-    back_button.y = (back_button.height * 0.5);
-    back_button.OnPointerDown(()=> { callback() });
+    back_button.x = (back_button.width  * 0.5) + back_button.width  * 0.2;
+    back_button.y = (back_button.height * 0.5) + back_button.height * 0.2;
+    back_button.OnPointerDown(()=> { 
+        AUDIO_MANAGER.PlayRandomButtonEffect();
+        callback() 
+    });
     back_button.AddIcon(Sprite_Create(BUTTONS_ICON_ARROW_LEFT));
 
     return back_button;

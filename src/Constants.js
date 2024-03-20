@@ -25,3 +25,15 @@ const SETTINGS_KEY_LAST_SCORE    = "last_score";
 // MUSIC                                                                      //
 //----------------------------------------------------------------------------//
 const MUSIC_BACKGROUND = "res/audio/life-of-riley-by-kevin-macleod-from-filmmusic-io.mp3";
+const SOUND_BUTTONS = [
+  "res/audio/MI_SFX 10.wav",
+  "res/audio/MI_SFX 29.wav",
+  "res/audio/MI_SFX 30.wav",
+  "res/audio/MI_SFX 32.wav",
+]
+
+const MUSIC_TO_LOAD = [
+  MUSIC_BACKGROUND
+]
+
+const SOUNDS_TO_LOAD = SOUND_BUTTONS;

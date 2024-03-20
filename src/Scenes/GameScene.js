@@ -130,7 +130,7 @@ class GameScene
 
         Center_Anchor(this.level_text);
         this.level_text.x = GAME_DESIGN_WIDTH * 0.5;
-        this.level_text.y = (GAME_HUD_HEIGHT * 0.1) + this.level_text.height * 0.5;
+        this.level_text.y = (GAME_HUD_HEIGHT * 0.1) + this.level_text.height * 0.8;
 
         // Score Particle.
         this.score_number_particle = new ScoreNumberParticle();

@@ -52,19 +52,17 @@ Setup()
         SCENE_MANAGER.SetScene(new MenuScene());
     }
 
-    AUDIO_MANAGER.PreloadMusic(
-        ()=> {
-            console.log("Loaded");
-            const sound_is_on = GameSettings_Get(SETTINGS_KEY_SOUND_ENABLED, true);
-            AUDIO_MANAGER.PlayMusic(MUSIC_BACKGROUND);
-            if(!sound_is_on) {
+    AUDIO_MANAGER.PreloadSounds(
+        ()=> {  
+            AUDIO_MANAGER.Play(MUSIC_BACKGROUND, true);
+            const sound_on = GameSettings_Get(SETTINGS_KEY_SOUND_ENABLED, true);
+            if(!sound_on) {
                 AUDIO_MANAGER.ToggleMute();
             }
         },
-        [
-            MUSIC_BACKGROUND
-        ]
+        SOUNDS_TO_LOAD, MUSIC_TO_LOAD
     );
+
     Application_Start(GameLoop);
     Input_InstallBasicMouseHandler(g_App.view);
 }
