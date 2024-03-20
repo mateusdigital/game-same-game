@@ -53,7 +53,7 @@ Setup()
     }
 
     AUDIO_MANAGER.PreloadSounds(
-        ()=> {  
+        ()=> {
             AUDIO_MANAGER.Play(MUSIC_BACKGROUND, true);
             const sound_on = GameSettings_Get(SETTINGS_KEY_SOUND_ENABLED, true);
             if(!sound_on) {

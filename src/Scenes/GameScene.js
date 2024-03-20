@@ -266,6 +266,7 @@ class GameScene
             .onComplete(()=>{
                 brick.x = target_x;
                 brick.y = target_y;
+                AUDIO_MANAGER.PlayRandomBoxEnterEffect();
             })
             .delay(Random_Int(delay_min, delay_max))
             .easing(START_FALL_ANIMATION_EASING)
@@ -294,6 +295,8 @@ class GameScene
         if(matching_bricks.length < 2) {
             return;
         }
+
+        AUDIO_MANAGER.PlayRandomBoxPopEffect();
 
         this.is_input_enabled = false;
         for(let i = 0; i < matching_bricks.length; ++i) {

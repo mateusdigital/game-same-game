@@ -15,7 +15,9 @@
 //                                                                            //
 //----------------------------------------------------------------------------//
 
-const EFFECT_VOLUME = 20;
+const BUTTON_EFFECT_VOLUME = 20;
+const BOX_ENTER_EFFECT_VOLUME = 2;
+const BOX_POP_EFFECT_VOLUME = 2;
 
 //----------------------------------------------------------------------------//
 // Audio Player                                                               //
@@ -66,8 +68,9 @@ class AudioPlayer
     } // PreloadSounds
 
     //--------------------------------------------------------------------------
-    PlayEffect(name)
+    PlayEffect(name, volume)
     {
+        console.log(name);
         const playing_effect = this.sounds[this.effectName];
         if(playing_effect) {
             playing_effect.stop();
@@ -80,8 +83,9 @@ class AudioPlayer
             return;
         }
 
+        effect_to_play.volume = volume;
         this.effectName = name;
-        effect_to_play.volume = EFFECT_VOLUME
+
         effect_to_play.play(()=>{
             this.effectName = null;
         });
@@ -136,7 +140,19 @@ class AudioPlayer
     PlayRandomButtonEffect()
     {
         const value = Random_Element(SOUND_BUTTONS);
-        this.PlayEffect(value);
+        this.PlayEffect(value, BUTTON_EFFECT_VOLUME);
+    }
+
+    PlayRandomBoxEnterEffect()
+    {
+        const value = Random_Element(SOUNDS_BOX_ENTER);
+        this.PlayEffect(value, BOX_ENTER_EFFECT_VOLUME);
+    }
+
+    PlayRandomBoxPopEffect()
+    {
+        const value = Random_Element(SOUND_BOX_POP);
+        this.PlayEffect(value, BOX_POP_EFFECT_VOLUME);
     }
 
 } // AudioPlayer
