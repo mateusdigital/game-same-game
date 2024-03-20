@@ -494,6 +494,8 @@ class GameScene
         if(!defeat) {
             ++this.current_level;
 
+            AUDIO_MANAGER.PlayRandomLevelUpEffect();
+
             this._InitializeLevelData();
             this._InitializeContainer();
             this._InitializeBricks   ();

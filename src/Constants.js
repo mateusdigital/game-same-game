@@ -42,12 +42,6 @@ const SOUNDS_BOX_ENTER = [
   "res/audio/Minimalist8.wav",
 ]
 
-// const SOUND_BOX_POP = [
-//   "res/audio/African1.wav",
-//   "res/audio/African2.wav",
-//   "res/audio/African3.wav",
-// ];
-
 const SOUND_BOX_POP = [
   "res/audio/pop1.wav",
   "res/audio/pop2.wav",
@@ -55,6 +49,12 @@ const SOUND_BOX_POP = [
   "res/audio/pop4.wav",
 ];
 
+const SOUND_LEVEL_UP = [
+  "res/audio/levelup1.wav",
+  "res/audio/levelup2.wav",
+  "res/audio/levelup3.wav",
+  "res/audio/levelup4.wav",
+];
 
 
 const MUSIC_TO_LOAD = [
@@ -64,3 +64,4 @@ const MUSIC_TO_LOAD = [
 const SOUNDS_TO_LOAD = SOUND_BUTTONS
   .concat(SOUNDS_BOX_ENTER)
   .concat(SOUND_BOX_POP)
+  .concat(SOUND_LEVEL_UP);

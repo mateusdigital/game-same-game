@@ -18,6 +18,7 @@
 const BUTTON_EFFECT_VOLUME = 20;
 const BOX_ENTER_EFFECT_VOLUME = 2;
 const BOX_POP_EFFECT_VOLUME = 2;
+const LEVEL_UP_EFFECT_VOLUME = 2;
 
 //----------------------------------------------------------------------------//
 // Audio Player                                                               //
@@ -155,6 +156,11 @@ class AudioPlayer
         this.PlayEffect(value, BOX_POP_EFFECT_VOLUME);
     }
 
+    PlayRandomLevelUpEffect()
+    {
+        const value = Random_Element(SOUND_LEVEL_UP);
+        this.PlayEffect(value, LEVEL_UP_EFFECT_VOLUME);
+    }
 } // AudioPlayer
 
 
