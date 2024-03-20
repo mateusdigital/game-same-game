@@ -195,6 +195,7 @@ class MenuScene
         const sound_on = GameSettings_Get(SETTINGS_KEY_SOUND_ENABLED, true);
         GameSettings_Set(SETTINGS_KEY_SOUND_ENABLED, !sound_on);
         this._UpdateSoundIcon();
+        AUDIO_MANAGER.ToggleMute();
     }
 
     //--------------------------------------------------------------------------
@@ -206,7 +207,7 @@ class MenuScene
     //--------------------------------------------------------------------------
     GoMore()
     {
-        const win = window.open("https://stdmatt.com/games.html", '_blank');
+        const win = window.open("https://mateus.digital/games.html", '_blank');
         win.focus();
     }
 

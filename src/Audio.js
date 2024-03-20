@@ -19,7 +19,7 @@ class Base_Audio
         this.data = []
         this.data[AUDIO_TYPE_MUSIC]  =  new _Base_Audio_Data(false),
         this.data[AUDIO_TYPE_EFFECT] =  new _Base_Audio_Data(true )
-
+        this.isMuted = false;
     }
 
     // Preload
@@ -53,6 +53,13 @@ class Base_Audio
     PreloadEffect(cb, ...filenames) { this._Preload(AUDIO_TYPE_EFFECT, cb, filenames); }
     PlayEffect   (filename)     { this._Play   (AUDIO_TYPE_EFFECT, filename  ); }
     StopEffect   (filename)     { this._Stop   (AUDIO_TYPE_EFFECT, filename  ); }
-}
+
+      ToggleMute()
+    {
+        this.isMuted = !this.isMuted;
+        PIXI.sound.toggleMuteAll();
+    } // ToggleMute
+}   
+
 
 const AUDIO_MANAGER = new Base_Audio();

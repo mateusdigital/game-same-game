@@ -55,10 +55,14 @@ Setup()
     AUDIO_MANAGER.PreloadMusic(
         ()=> {
             console.log("Loaded");
-            AUDIO_MANAGER.PlayMusic("res/audio/life-of-riley-by-kevin-macleod-from-filmmusic-io.mp3");
+            const sound_is_on = GameSettings_Get(SETTINGS_KEY_SOUND_ENABLED, true);
+            AUDIO_MANAGER.PlayMusic(MUSIC_BACKGROUND);
+            if(!sound_is_on) {
+                AUDIO_MANAGER.ToggleMute();
+            }
         },
         [
-            "res/audio/life-of-riley-by-kevin-macleod-from-filmmusic-io.mp3"
+            MUSIC_BACKGROUND
         ]
     );
     Application_Start(GameLoop);
