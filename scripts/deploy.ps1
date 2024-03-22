@@ -28,7 +28,7 @@
 ##------------------------------------------------------------------------------
 $SOURCE_FOLDER="./out";
 $REMOTE_SERVER="mateus@mateus.digital";
-$REMOTE_FOLDER="/var/www/mateus.digital/html/koliery";
+$REMOTE_FOLDER="/var/www/mateus.digital/html/same_game";
 
 scp -r                                 `
     "${SOURCE_FOLDER}/*"               `
